@@ -91,7 +91,7 @@ public class NoteListViewAdapter extends BaseAdapter {
         }
         if(pasDeNote){
             holder.matiere.setText("Il n'y a pas encore de note");
-            holder.note.setText("  ");
+            holder.note.setText(" ");
             holder.coeff.setText(" ");
         }
         else {
