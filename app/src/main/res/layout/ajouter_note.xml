@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:verificator="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/ajouterNoteTitre"
+        android:id="@+id/ajouterNoteTitre"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/labelMatiere"
+        android:id="@+id/labelMatiere"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_marginLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/ajoutNote"
+        android:id="@+id/ajoutNote"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <com.andreabaccega.widget.FormEditText
+        android:id="@+id/noteField"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:layout_marginLeft="20dp"
+        verificator:testType="regexp"
+        verificator:customRegexp="^([0-9]{1,2})|([0-9]{1,2}+.[0-9]{1,3})$"
+        verificator:testErrorString="@string/noteField" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/ajoutCoef"
+        android:id="@+id/ajoutCoef"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <com.andreabaccega.widget.FormEditText
+        android:id="@+id/coefField"
+        android:layout_width="126dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_marginLeft="20dp"
+        verificator:testType="regexp"
+        verificator:customRegexp="^[0-9]{1,2}$"
+        verificator:testErrorString="@string/coefField"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ajouterBouton"
+        android:onClick="ajouterNote"
+        android:id="@+id/ajouterBouton"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retourNoteBouton"
+        android:onClick="retourNoteButton"
+        android:id="@+id/retourNoteBouton"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/nom_matiere"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Matière"
+        android:layout_toLeftOf="@+id/note"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/coef"
+        android:text="Note"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:text="Coef"
+        android:id="@+id/coef"
+        android:layout_alignParentRight="true"
+        android:gravity="center"/>
+</RelativeLayout>

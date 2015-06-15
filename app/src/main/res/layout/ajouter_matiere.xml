@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:verificator="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/ajouterMatiereTitre"
+        android:id="@+id/ajouterMatiereTitre"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/labelMatiereNom"
+        android:id="@+id/labelMatiereNom"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp" />
+
+    <com.andreabaccega.widget.FormEditText
+        android:id="@+id/nom_matiereField"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_marginLeft="20dp"
+        verificator:testType="regexp"
+        verificator:customRegexp="^[a-zA-Z]{2,30}$"
+        verificator:testErrorString="@string/noteField" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/labelMatiereCoef"
+        android:id="@+id/labelMatiereCoef"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp" />
+
+    <com.andreabaccega.widget.FormEditText
+        android:id="@+id/coef_matiereField"
+        android:layout_width="126dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_marginLeft="20dp"
+        verificator:testType="regexp"
+        verificator:customRegexp="^[0-9]{1,2}$"
+        verificator:testErrorString="@string/coef_matiereField"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ajouterMatiereBouton"
+        android:onClick="ajouterMatiere"
+        android:id="@+id/ajouterMatiereBouton"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retourMatiereBouton"
+        android:onClick="retourMatiereButton"
+        android:id="@+id/retourMatiereBouton"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+
+
+</LinearLayout>
