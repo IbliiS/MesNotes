@@ -11,7 +11,6 @@ import android.widget.Spinner;
 
 import com.andreabaccega.widget.FormEditText;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
-import com.project.baptiste.mesnoteas.general.Note;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
 
