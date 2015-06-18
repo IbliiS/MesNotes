@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * Created by Baptiste on 02/06/2015.
  */
-public interface IEtudiant {
+public interface IEtudiant extends IObjet {
     IAnnee creerAnnee();
 
     boolean supprimerAnnee(int i);

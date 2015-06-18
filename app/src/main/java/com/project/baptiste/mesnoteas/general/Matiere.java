@@ -4,9 +4,9 @@ import com.project.baptiste.mesnoteas.fabrique.note.FabriqueNote;
 import com.project.baptiste.mesnoteas.fabrique.note.IFabriqueNote;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -18,7 +18,7 @@ public class Matiere implements IMatiere {
     private int id;
     private String nomMatiere;
     private int coef;
-    private List<INote> notes;
+    private List<IObjet> notes;
     private IFabriqueNote fabriqueNote;
     private double moyenne;
 
@@ -38,7 +38,7 @@ public class Matiere implements IMatiere {
     }
 
     @Override
-    public INote supprimerNote(int i){
+    public IObjet supprimerNote(int i){
         return notes.remove(i);
     }
 
@@ -63,12 +63,12 @@ public class Matiere implements IMatiere {
     }
 
     @Override
-    public List<INote> getNotes() {
+    public List<IObjet> getNotes() {
         return notes;
     }
 
     @Override
-    public void setNotes(List<INote> notes) {
+    public void setNotes(List<IObjet> notes) {
         this.notes = notes;
     }
 
@@ -84,13 +84,15 @@ public class Matiere implements IMatiere {
 
     @Override
     public double resultatMatiere(){
+        INote n;
         double r = 0.0;
         int diviseur = 0;
         if(notes.isEmpty()){
             return r;
         }
         else {
-            for (INote n : notes) {
+            for (IObjet o : notes) {
+                n = (INote) o;
                 diviseur += n.getCoef();
                 r += n.getNote() * n.getCoef();
             }
@@ -101,8 +103,10 @@ public class Matiere implements IMatiere {
 
     @Override
     public String toString() {
+        INote n;
         String s = "        -" + nomMatiere +" : " ;
-        for (INote n : notes){
+        for (IObjet o : notes){
+            n = (INote) o;
             s = s +n.toString()+" ";
         }
         return s+"\n        = "+resultatMatiere()+"\n";

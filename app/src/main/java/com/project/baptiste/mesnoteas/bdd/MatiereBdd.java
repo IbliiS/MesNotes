@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.project.baptiste.mesnoteas.general.Matiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +15,9 @@ import java.util.List;
 /**
  * Created by Baptiste on 13/06/2015.
  */
-public class MatiereBdd {
+public class MatiereBdd implements IObjetBdd {
 
-    private List<IMatiere> matieres;
+    private List<IObjet> matieres;
 
     /** TABLE MATIERE */
     private static final String TABLE_MATIERE = "table_matieres";
@@ -28,20 +30,20 @@ public class MatiereBdd {
     private static final String COL_MOYENNE = "Moyenne";
     private static final int NUM_COL_MOYENNE = 3;
 
-    private int nbMatieres = 0;
+    private int nbElements = 0;
     private RunBDD runBDD;
 
     public MatiereBdd(RunBDD runBDD) {
         this.runBDD = runBDD;
-        matieres = new ArrayList<>();
-        getAllMatiere();
+        getAll();
     }
 
-    public long insertMatiere(IMatiere matiere){
+    public long insert(IObjet objet){
         IMatiere m = null;
+        IMatiere matiere = (IMatiere) objet;
         int i = matieres.indexOf(matiere);
         if (i != -1){
-            m = matieres.get(i);
+            m = (IMatiere) matieres.get(i);
         }
         Boolean estVide = matieres.size() == 0;
         if( estVide || m == null) {
@@ -57,9 +59,12 @@ public class MatiereBdd {
         else return m.getId();
     }
 
-    public int updateMatiere(int id, IMatiere matiere){
+    public int update(int id, IObjet objet){
         IMatiere matiereADelete = new Matiere();
-        for(IMatiere m : matieres){
+        IMatiere matiere = (IMatiere) objet;
+        IMatiere m;
+        for(IObjet o : matieres){
+            m = (IMatiere) o;
             if(m.getId() == matiere.getId()){
                 matiereADelete = m;
             }
@@ -74,10 +79,13 @@ public class MatiereBdd {
         return runBDD.getBdd().update(TABLE_MATIERE, values, COL_ID + " = " + id, null);
     }
 
-    public int removeMatiereWithID(int id){
+    public int removeWithID(int id){
+        /*
         IMatiere matiereADelete = new Matiere();
         boolean b = false;
-        for(IMatiere m : matieres){
+        IMatiere m;
+        for(IObjet o : matieres){
+            m = (IMatiere) o;
             if(m.getId() == id){
                 matiereADelete = m;
                 b = true;
@@ -87,13 +95,20 @@ public class MatiereBdd {
             matieres.remove(matiereADelete);
         }
         return runBDD.getBdd().delete(TABLE_MATIERE, COL_ID + " = " + id, null);
+    */
+        IMatiere matiereADelete = (IMatiere) getWithId(id);
+        matieres.remove(matiereADelete);
+        runBDD.getMatiereNoteBdd().removeWithID(matiereADelete.getId());
+        return runBDD.getBdd().delete(TABLE_MATIERE, COL_ID + " = " + id, null);
     }
 
-    public int removeMatiereWithName(String s){
-        int i =-1;
+    public int removeWithName(String s){
+        /* int i =-1;
         IMatiere matiereADelete = new Matiere();
+        IMatiere m;
         boolean b = false;
-        for(IMatiere m : matieres){
+        for(IObjet o : matieres){
+            m = (IMatiere) o;
             if(m.getNomMatiere().equals(s)){
                 matiereADelete = m;
                 b = true;
@@ -104,38 +119,59 @@ public class MatiereBdd {
             matieres.remove(matiereADelete);
         }
         return runBDD.getBdd().delete(TABLE_MATIERE, COL_ID + " = " + i, null);
+    */
+
+        IMatiere matiereADelete = (IMatiere) getWithName(s);
+        matieres.remove(matiereADelete);
+        runBDD.getMatiereNoteBdd().removeWithID(matiereADelete.getId());
+        return runBDD.getBdd().delete(TABLE_MATIERE, COL_NOM + " = '" + s + "'", null);
     }
 
 
-    public IMatiere getMatiereWithId(int i) {
-        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MATIERE + " WHERE ID=" + i, null);
-        return cursorToMatiere(c);
+    public IObjet getWithId(int i) {
+         Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MATIERE + " WHERE ID=" + i, null);
+        return cursorToObject(c);
+        /*
+        IMatiere m;
+        for(IObjet o : matieres){
+            m = (IMatiere) o;
+            if(m.getId() == i){
+                return m;
+            }
+        }
+        return new Matiere();
+        */
     }
 
-    public IMatiere getMatiereWithName(String nom) {
-        //Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MATIERE + " WHERE " +COL_NOM+ " = " + nom, null);
-        //return cursorToMatiere(c);
+    public IObjet getWithName(String nom) {
+
         Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " +TABLE_MATIERE  + " where "+ COL_NOM +" = '" + nom + "'", null);
-        /**for(IMatiere m : matieres){
+        return cursorToObject(c);
+         /*
+        IMatiere m;
+        for(IObjet o : matieres){
+            m = (IMatiere) o;
             if(m.getNomMatiere().equals(nom)){
                 return m;
             }
-        }*/
-        return cursorToMatiere(c);
-
+        }
+        return new Matiere();
+        */
     }
 
 
-    public List<IMatiere> getAllMatiere(){
+    public List<IObjet> getAll(){
+        /*
         open();
-        if (matieres.size() == 0 || getNbMatieres() != matieres.size()){
+
+        if (matieres.size() == 0 || getNbElements() != matieres.size()){
             matieres.clear();
             IMatiere matiere;
             int cpt = 0;
-            int nbElement = getNbMatieres();
+            int nbElement = getNbElements();
             int j = nbElement;
             for(int i = 1; i <= j; i++){
-                matiere = getMatiereWithId(i);
+                matiere = (IMatiere) getWithId(i);
                if(matiere != null && ! (matiere.getNomMatiere().equals("")) ) {
                     matieres.add(matiere);
                    cpt ++;
@@ -147,9 +183,22 @@ public class MatiereBdd {
         }
         close();
         return matieres;
+         */
+        open();
+        int nbElem = getNbElements();
+        close();
+        if(matieres == null){
+            matieres = new ArrayList<>();
+        }
+        else if(matieres.size() == 0 || nbElem != matieres.size()){
+            matieres.clear();
+            matieres = runBDD.getMatiereNoteBdd().getAll();
+        }
+        return matieres;
+
     }
 
-    private IMatiere cursorToMatiere(Cursor c){
+    public IObjet cursorToObject(Cursor c){
         if (c.getCount() == 0) {
             return new Matiere();
         }
@@ -163,12 +212,12 @@ public class MatiereBdd {
         return matiere;
     }
 
-    public int getNbMatieres() {
-        nbMatieres = taille();
-        return nbMatieres;
+    public int getNbElements() {
+        nbElements = taille();
+        return nbElements;
     }
 
-    private int taille(){
+    public int taille(){
         SQLiteStatement s = runBDD.getBdd().compileStatement("SELECT COUNT (*) FROM " + TABLE_MATIERE);
         return (int) s.simpleQueryForLong();
     }

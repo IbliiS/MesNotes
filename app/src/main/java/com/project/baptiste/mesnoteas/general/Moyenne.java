@@ -5,9 +5,11 @@ import com.project.baptiste.mesnoteas.fabrique.matiere.FabriqueMatiere;
 import com.project.baptiste.mesnoteas.fabrique.matiere.IFabriqueMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -18,11 +20,14 @@ public class Moyenne implements IMoyenne {
     private int id;
     private String nomMoyenne;
     private IFabriqueMatiere fabriqueMatiere;
-    private Collection<IMatiere> matieres;
+    private double moyenne;
+    private List<IObjet> matieres;
 
     public Moyenne() {
         matieres = new ArrayList<>();
         fabriqueMatiere = new FabriqueMatiere();
+        moyenne = 0;
+        nomMoyenne = "";
     }
 
     @Override
@@ -33,7 +38,7 @@ public class Moyenne implements IMoyenne {
     }
 
     @Override
-    public boolean supprimerMatiere(int i){
+    public IObjet supprimerMatiere(int i){
         return matieres.remove(i);
     }
 
@@ -45,11 +50,14 @@ public class Moyenne implements IMoyenne {
             return r;
         }
         else {
-            for (IMatiere m : matieres) {
+            IMatiere m;
+            for ( IObjet o : matieres) {
+                m = (IMatiere) o;
                 r += m.resultatMatiere() * m.getCoef();
                 diviseur += m.getCoef();
             }
-            return r / diviseur;
+            moyenne = r / diviseur;
+            return moyenne;
         }
     }
 
@@ -74,12 +82,12 @@ public class Moyenne implements IMoyenne {
     }
 
     @Override
-    public Collection<IMatiere> getMatieres() {
+    public List<IObjet> getMatieres() {
         return matieres;
     }
 
     @Override
-    public void setMatieres(Collection<IMatiere> matieres) {
+    public void setMatieres(List<IObjet> matieres) {
         this.matieres = matieres;
     }
 
@@ -87,7 +95,9 @@ public class Moyenne implements IMoyenne {
     public String toString(){
         String s =
                 "   Période "+nomMoyenne+" : \n";
-        for(IMatiere m : matieres){
+        IMatiere m;
+        for(IObjet o : matieres){
+            m = (IMatiere) o;
             s = s+m.toString();
         }
         s = s+ "\n"+
@@ -103,5 +113,23 @@ public class Moyenne implements IMoyenne {
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public double getMoyenne() {
+        return moyenne;
+    }
+    @Override
+    public void setMoyenne(double moyenne) {
+        this.moyenne = moyenne;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof IMoyenne){
+            IMoyenne m = (IMoyenne) o;
+            return m.getId() == this.id;
+        }
+        return false;
     }
 }

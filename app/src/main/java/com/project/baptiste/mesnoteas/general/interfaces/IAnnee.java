@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * Created by Baptiste on 02/06/2015.
  */
-public interface IAnnee {
+public interface IAnnee extends IObjet {
     double moyenneAnnee();
 
     boolean supprimerMoyenne(int i);

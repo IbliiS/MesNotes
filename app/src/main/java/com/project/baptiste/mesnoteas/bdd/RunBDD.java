@@ -4,6 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Baptiste on 12/06/2015.
  */
@@ -14,9 +19,12 @@ public class RunBDD {
     private SQLiteDatabase bdd;
     private MaBaseSQLite maBaseSQLite;
 
-    private NoteBdd noteBdd;
-    private MatiereBdd matiereBdd;
-    private MatiereNoteBdd matiereNoteBdd;
+    private List<ITableBdd> objetsBdd;
+    private ITableBdd noteBdd;
+    private ITableBdd matiereBdd;
+    private ITableBdd matiereNoteBdd;
+    private ITableBdd moyenneBdd;
+    private ITableBdd moyenneMatiereBdd;
 
     private static RunBDD instance = null;
 
@@ -30,9 +38,18 @@ public class RunBDD {
 
     private RunBDD(Context context) {
         maBaseSQLite = new MaBaseSQLite(context, NOM_BDD, null, VERSION_BDD);
+        objetsBdd = new ArrayList<>();
         noteBdd = new NoteBdd(this);
         matiereBdd = new MatiereBdd(this);
+        moyenneBdd = new MoyenneBdd(this);
         matiereNoteBdd = new MatiereNoteBdd(this);
+        moyenneMatiereBdd = new MatiereMoyenneBdd(this);
+
+        objetsBdd.add(noteBdd);
+        objetsBdd.add(matiereBdd);
+        objetsBdd.add(moyenneBdd);
+        objetsBdd.add(matiereNoteBdd);
+        objetsBdd.add(moyenneMatiereBdd);
 
     }
 
@@ -62,21 +79,29 @@ public class RunBDD {
         this.maBaseSQLite = maBaseSQLite;
     }
 
-    public NoteBdd getNoteBdd() {
-        return noteBdd;
+    public IObjetBdd getNoteBdd() {
+        return (IObjetBdd) noteBdd;
     }
 
-    public MatiereBdd getMatiereBdd() {
-        return matiereBdd;
+    public IObjetBdd getMatiereBdd() {
+        return (IObjetBdd) matiereBdd;
     }
 
-    public MatiereNoteBdd getMatiereNoteBdd() {
-        return matiereNoteBdd;
+    public IObjetAssoBdd getMatiereNoteBdd() {
+        return (IObjetAssoBdd) matiereNoteBdd;
+    }
+
+    public IObjetBdd getMoyenneBdd() {
+        return (IObjetBdd) moyenneBdd;
+    }
+
+    public IObjetAssoBdd getMoyenneMatiereBdd() {
+        return (IObjetAssoBdd) moyenneMatiereBdd;
     }
 
     public void viderBdd(){
-        matiereNoteBdd.dropTable();
-        noteBdd.dropTable();
-        matiereBdd.dropTable();
+        for(ITableBdd t : objetsBdd){
+            t.dropTable();
+        }
     }
 }

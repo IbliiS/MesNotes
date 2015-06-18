@@ -11,6 +11,7 @@ import com.project.baptiste.mesnoteas.R;
 import com.project.baptiste.mesnoteas.general.Matiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +20,15 @@ import java.util.List;
  * Created by Baptiste on 13/06/2015.
  */
 public class NoteListViewAdapter extends BaseAdapter {
-    List<INote> notes;
+    List<IObjet> notes;
     LayoutInflater inflater;
     Context context;
-    List<IMatiere> matieres;
+    List<IObjet> matieres;
     List<IMatiere> listeMatiere;
     boolean pasDeNote;
 
 
-    public NoteListViewAdapter(Context context, List<INote> notes, List<IMatiere> matieres) {
+    public NoteListViewAdapter(Context context, List<IObjet> notes, List<IObjet> matieres) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.notes = notes;
@@ -39,11 +40,15 @@ public class NoteListViewAdapter extends BaseAdapter {
         int nbMatiere = 0;
         IMatiere mat;
         listeMatiere = new ArrayList<>();
-        List<INote> listNote;
-        for(IMatiere m : matieres){
-            listNote = (List<INote>) m.getNotes();
+        List<IObjet> listNote;
+        IMatiere m;
+        for(IObjet ob : matieres){
+            m = (IMatiere) ob;
+            listNote =  m.getNotes();
             if( !(listNote.isEmpty()) ){
-                for(INote n : listNote ){
+                INote n;
+                for(IObjet o: listNote ){
+                    n = (INote) o;
                     mat = new Matiere();
                     mat.copyMatiere(m);
                     mat.getNotes().add(n);
@@ -89,15 +94,18 @@ public class NoteListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
+
         if(pasDeNote){
             holder.matiere.setText("Il n'y a pas encore de note");
             holder.note.setText(" ");
             holder.coeff.setText(" ");
         }
         else {
-            holder.matiere.setText(listeMatiere.get(position).getNomMatiere());
-            holder.note.setText(String.valueOf(listeMatiere.get(position).getNotes().get(0).getNote()));
-            holder.coeff.setText(String.valueOf(listeMatiere.get(position).getNotes().get(0).getCoef()));
+            IMatiere m = listeMatiere.get(position);
+            INote n = (INote) m.getNotes().get(0);
+            holder.matiere.setText(m.getNomMatiere());
+            holder.note.setText(String.valueOf(n.getNote()));
+            holder.coeff.setText(String.valueOf(n.getCoef()));
         }
         return view;
     }

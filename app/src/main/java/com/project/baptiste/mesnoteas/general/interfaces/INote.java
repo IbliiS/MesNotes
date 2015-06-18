@@ -3,7 +3,7 @@ package com.project.baptiste.mesnoteas.general.interfaces;
 /**
  * Une note et son coefficient.
  */
-public interface INote {
+public interface INote extends IObjet{
     double getNote();
 
     void setNote(double note);

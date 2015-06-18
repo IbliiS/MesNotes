@@ -86,8 +86,12 @@ public class MaBaseSQLite extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //On peut fait ce qu'on veut ici moi j'ai décidé de supprimer la table et de la recréer
-        //comme ça lorsque je change la version les id repartent de 0
+        dropTables(db);
+
+    }
+
+    public void dropTables(SQLiteDatabase db){
+        //SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DROP TABLE " + TABLE_MATIERENOTE + ";");
         db.execSQL("DROP TABLE " + TABLE_MATIEREMOYENNE + ";");
         db.execSQL("DROP TABLE " + TABLE_ANNEEMOYENNE + ";");

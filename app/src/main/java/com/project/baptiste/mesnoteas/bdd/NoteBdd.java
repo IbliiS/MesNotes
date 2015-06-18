@@ -10,6 +10,7 @@ import com.project.baptiste.mesnoteas.general.Matiere;
 import com.project.baptiste.mesnoteas.general.Note;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,9 @@ import java.util.List;
 /**
  * Created by Baptiste on 12/06/2015.
  */
-public class NoteBdd {
+public class NoteBdd implements IObjetBdd {
 
-    private List<INote> notes;
+    private List<IObjet> notes;
     /** TABLE NOTES **/
     private static final String TABLE_NOTES = "table_notes";
     private static final String COL_ID = "ID";
@@ -28,14 +29,15 @@ public class NoteBdd {
     private static final int NUM_COL_NOTE = 1;
     private static final String  COL_COEF = "Coef";
     private static final int NUM_COL_COEF = 2;
-    private int nbNotes = 0;
+
+    private int nbElements = 0;
 
     private RunBDD runBDD;
 
     public NoteBdd(RunBDD runBDD){
         this.runBDD = runBDD;
         notes = new ArrayList<>();
-        getAllNote();
+        getAll();
     }
 
     public void open(){
@@ -47,15 +49,13 @@ public class NoteBdd {
     }
 
 
-    public SQLiteDatabase getBDD(){
-        return runBDD.getBdd();
-    }
 
-    public long insertNote(INote note){
+    public long insert(IObjet objet){
+        INote note = (INote) objet;
         INote n =null;
         int i = notes.indexOf(note);
         if(i != -1){
-            n = notes.get(i);
+            n = (INote) notes.get(i);
         }
         boolean estVide = notes.size() == 0;
         if(estVide || n == null) {
@@ -70,9 +70,12 @@ public class NoteBdd {
         else return n.getId();
     }
 
-    public int updateNote(int id, INote note){
+    public int update(int id, IObjet objet){
+        INote note = (INote) objet;
         INote noteADelete = new Note();
-        for(INote n : notes){
+        INote n;
+        for(IObjet o : notes){
+            n = (INote) o;
             if(n.getId() == note.getId()){
                 noteADelete = n;
             }
@@ -86,10 +89,12 @@ public class NoteBdd {
         return runBDD.getBdd().update(TABLE_NOTES, values, COL_ID + " = " + id, null);
     }
 
-    public int removeNoteWithID(int id){
+    public int removeWithID(int id){
         INote noteADelete = new Note();
         boolean b = false;
-        for(INote n : notes){
+        INote n;
+        for(IObjet o : notes){
+            n = (INote) o;
             if(n.getId() == id){
                 noteADelete = n;
                 b = true;
@@ -101,21 +106,31 @@ public class NoteBdd {
         return runBDD.getBdd().delete(TABLE_NOTES, COL_ID + " = " + id, null);
     }
 
-    public INote getNoteWithId(int i) {
-        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_NOTES + " WHERE ID=" + i, null);
-        return cursorToNote(c);
+    @Override
+    public int removeWithName(String s) {
+        return 0;
     }
 
-    public List<INote> getAllNote(){
+    public IObjet getWithId(int i) {
+        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_NOTES + " WHERE ID=" + i, null);
+        return cursorToObject(c);
+    }
+
+    @Override
+    public IObjet getWithName(String nom) {
+        return null;
+    }
+
+    public List<IObjet> getAll(){
         open();
-        if (notes.size() == 0 || getNbNotes() != notes.size()){
+        if (notes.size() == 0 || getNbElements() != notes.size()){
             notes.clear();
             int cpt = 0;
             INote note;
-            int nbElement = getNbNotes();
+            int nbElement = getNbElements();
             int j = nbElement;
             for(int i = 1; i <= j; i++){
-                note = getNoteWithId(i);
+                note = (INote) getWithId(i);
                 if(note != null && ! (Double.toString(note.getNote())).equals("-1.0") ) {
                     cpt ++;
                     notes.add(note);
@@ -131,7 +146,7 @@ public class NoteBdd {
     }
 
 
-    private INote cursorToNote(Cursor c){
+    public IObjet cursorToObject(Cursor c){
         if (c.getCount() == 0) {
             return new Note();
         }
@@ -144,9 +159,9 @@ public class NoteBdd {
         return note;
     }
 
-    public int getNbNotes() {
-        nbNotes = taille();
-        return nbNotes;
+    public int getNbElements() {
+        nbElements = taille();
+        return nbElements;
     }
 
     public int taille(){

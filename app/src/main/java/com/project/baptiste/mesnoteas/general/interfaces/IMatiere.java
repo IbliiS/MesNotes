@@ -9,10 +9,10 @@ import java.util.List;
  * Un module, comprend une ou plusieurs notes, une matiere a également
  * un coeffcient. Elle possède aussi un nom
  */
-public interface IMatiere {
+public interface IMatiere extends IObjet{
     INote creerNote();
 
-    INote supprimerNote(int i);
+    IObjet supprimerNote(int i);
 
     String getNomMatiere();
 
@@ -22,9 +22,9 @@ public interface IMatiere {
 
     void setCoef(int coef);
 
-    List<INote> getNotes();
+    List<IObjet> getNotes();
 
-    void setNotes(List<INote> notes);
+    void setNotes(List<IObjet> notes);
 
     IFabriqueNote getFabriqueNote();
 

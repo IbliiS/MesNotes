@@ -2,8 +2,12 @@
     <string name="app_name">MesNoteAS</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <!-- accueil  -->
+    <string name="accueilTitre">Mes notes</string>
+    <string name="accueilButtonAjouterNote">Ajouter note</string>
+    <string name="labelAnneeAccueil">Selectionner un semestre :</string>
     <!-- ajouter_note  -->
-    <string name="ajouterNoteTitre">Ajout d une note</string>
+    <string name="ajouterNoteTitre">Ajout d\'une note</string>
     <string name="labelMatiere">Choix de la matière</string>
     <string name="ajoutNote">Ajout note</string>
     <string name="noteField">Entrez une note correcte.</string>
@@ -11,14 +15,21 @@
     <string name="coefField">Entrez un coef correct</string>
     <string name="ajouterBouton">Ajouter</string>
     <string name="retourNoteBouton">Retour</string>
+    <string name="labelMoyenne">Choix de la période</string>
+    <string name="ajouterNoteTextViewVide"></string>
     <!-- ajouter_matiere  -->
-    <string name="ajouterMatiereTitre">Ajout d une matière</string>
+    <string name="ajouterMatiereTitre">Ajout d\'une matière</string>
     <string name="labelMatiereNom">Nom de la matière</string>
     <string name="nom_matiereField">Doit commencer par une lettre</string>
     <string name="labelMatiereCoef">Coefficient</string>
     <string name="coef_matiereField">Doit être entre 1 et 20</string>
     <string name="ajouterMatiereBouton">Ajouter</string>
     <string name="retourMatiereBouton">Retour</string>
+    <!-- ajouter_moyenne  -->
+    <string name="ajouterMoyenneTitre">Ajout d\'une année</string>
+    <string name="labelMoyenneNom">Nom de l\'année</string>
+    <string name="ajouterMoyenneBouton">Ajouter</string>
+    <string name="retourMoyenneBouton">Retour</string>
 
 
 

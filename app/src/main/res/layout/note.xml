@@ -5,25 +5,34 @@
     <TextView
         android:id="@+id/nom_matiere"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="Matière"
-        android:layout_toLeftOf="@+id/note"
         android:paddingLeft="10dp"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
     <TextView
         android:id="@+id/note"
         android:layout_width="70dp"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/coef"
+        android:layout_height="wrap_content"
         android:text="Note"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:layout_alignTop="@+id/nom_matiere"
+        android:layout_toLeftOf="@+id/coef"
+        android:layout_toStartOf="@+id/coef" />
+
+
 
     <TextView
         android:layout_width="60dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="Coef"
         android:id="@+id/coef"
+        android:gravity="center"
+        android:layout_alignTop="@+id/nom_matiere"
         android:layout_alignParentRight="true"
-        android:gravity="center"/>
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

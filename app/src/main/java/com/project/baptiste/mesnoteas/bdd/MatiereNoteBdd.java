@@ -8,6 +8,7 @@ import com.project.baptiste.mesnoteas.general.Matiere;
 import com.project.baptiste.mesnoteas.general.Note;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,10 +17,9 @@ import java.util.List;
 /**
  * Created by Baptiste on 14/06/2015.
  */
-public class MatiereNoteBdd {
+public class MatiereNoteBdd implements IObjetAssoBdd {
 
-    private HashMap<IMatiere,List<INote>> matieresNotesMap;
-    private List<IMatiere> matieresNotes;
+    private List<IObjet> matieresNotes;
 
     /** TABLE ASSOCIATIVE MATIERENOTE */
     private static final String TABLE_MATIERENOTE = "table_matierenote";
@@ -28,26 +28,39 @@ public class MatiereNoteBdd {
     private static final String COL_REFMATIERE = "RefMatiere";
     private static final int NUM_COL_REFMATIERE = 0;
 
-    private int nbMatieresNotes;
+    private int nbElements = 0;
 
     private RunBDD runBDD;
+    private IObjetBdd noteBdd;
+    private IObjetBdd matiereBdd;
 
     public MatiereNoteBdd(RunBDD runBDD) {
         this.runBDD = runBDD;
+        noteBdd = runBDD.getNoteBdd();
+        matiereBdd = runBDD.getMatiereBdd();
         matieresNotes = new ArrayList<>();
-        matieresNotesMap = new HashMap<>();
-        getAllMatiereNote();
+        getAll();
     }
 
+    @Override
     public void open(){
         runBDD.open();
     }
 
+    @Override
     public void close(){
         runBDD.close();
     }
 
-    public long insertMatiereNote(INote note, IMatiere matiere){
+    /**
+     * @param objet1 la note
+     * @param objet2 la matiere
+     * @return l'id
+     */
+    @Override
+    public long insert(IObjet objet1, IObjet objet2){
+        INote note = (INote) objet1;
+        IMatiere matiere = (IMatiere) objet2;
         if( ! (matieresNotes.contains(matiere)) ){
             matieresNotes.add(matiere);
         }
@@ -55,16 +68,22 @@ public class MatiereNoteBdd {
         values.put(COL_REFMATIERE, matiere.getId());
         values.put(COL_REFNOTE, note.getId());
         return runBDD.getBdd().insert(TABLE_MATIERENOTE, null, values);
-
     }
 
-    public List<INote> getListNoteWithId(int i) {
+    /**
+     * Retourne la liste de note d'une matiere
+     * @param i
+     * @return liste de note
+     */
+    @Override
+    public List<IObjet> getListObjetWithId(int i) {
         Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MATIERENOTE + " WHERE "+ COL_REFMATIERE + "=" + i, null);
-        return cursorToNote(c);
+        return cursorToObject(c);
     }
 
-    private List<INote> cursorToNote(Cursor c) {
-        List<INote> notes = new ArrayList<>();
+    @Override
+    public List<IObjet> cursorToObject(Cursor c) {
+        List<IObjet> notes = new ArrayList<>();
         if(c.getCount() == 0){
             return notes;
         }
@@ -76,7 +95,7 @@ public class MatiereNoteBdd {
                 note = new Note();
                 idMatiere = c.getInt(NUM_COL_REFMATIERE);
                 idNote = c.getInt(NUM_COL_REFNOTE);
-                note = runBDD.getNoteBdd().getNoteWithId(idNote);
+                note = (INote) noteBdd.getWithId(idNote);
                 notes.add(note);
                 c.moveToNext();
             }
@@ -85,22 +104,22 @@ public class MatiereNoteBdd {
     }
 
 
-    public List<IMatiere> getAllMatiereNote(){
+    @Override
+    public List<IObjet> getAll(){
         open();
-        if(matieresNotes.size() == 0 || getNbMatieresNotes() != matieresNotes.size() ){
+        if(matieresNotes.size() == 0 || getNbElements() != matieresNotes.size() ){
             matieresNotes.clear();
             IMatiere matiere;
-            List<INote> notes;
             int cpt = 0;
-            int nbMatieres = runBDD.getMatiereBdd().getNbMatieres();
+            int nbMatieres = matiereBdd.getNbElements();
             int j = nbMatieres;
             for(int i = 1; i <= j; i++){
                 matiere = new Matiere();
-                matiere = runBDD.getMatiereBdd().getMatiereWithId(i);
-                  if( ! (matiere.getNomMatiere().equals("")) ){
-                      cpt++;
-                      matiere.setNotes(getListNoteWithId(i));
-                      matieresNotes.add(matiere);
+                matiere = (IMatiere) matiereBdd.getWithId(i);
+                if( ! (matiere.getNomMatiere().equals("")) ){
+                    cpt++;
+                    matiere.setNotes(getListObjetWithId(i));
+                    matieresNotes.add(matiere);
                 }
                 if(cpt != nbMatieres ){
                     j++;
@@ -111,34 +130,47 @@ public class MatiereNoteBdd {
         return matieresNotes;
     }
 
-    public int getNbMatieresNotes() {
-        nbMatieresNotes = taille();
-        return nbMatieresNotes;
+    @Override
+    public int getNbElements() {
+        nbElements = taille();
+        return nbElements;
     }
 
-    private int taille(){
+    @Override
+    public int taille(){
         SQLiteStatement s = runBDD.getBdd().compileStatement("SELECT COUNT (*) FROM " + TABLE_MATIERENOTE);
         return (int) s.simpleQueryForLong();
     }
 
+    @Override
     public void dropTable() {
         open();
         runBDD.getBdd().delete(TABLE_MATIERENOTE,null,null);
         close();
     }
 
-    public int removeMatiereWithID(int id){
+    @Override
+    public int removeWithID(int id){
         IMatiere matiereADelete = new Matiere();
         boolean b = false;
-        for(IMatiere m : matieresNotes){
+        IMatiere m;
+        for(IObjet o : matieresNotes){
+            m = (IMatiere) o;
             if(m.getId() == id){
                 matiereADelete = m;
                 b = true;
             }
         }
         if(b){
+            /** ON SUPPRIME TOUTES LES NOTES DE LA MATIERE **/
+            INote n;
+            for(IObjet o : matiereADelete.getNotes()){
+                n = (INote) o;
+                runBDD.getNoteBdd().removeWithID(n.getId());
+            }
             matieresNotes.remove(matiereADelete);
         }
+        //runBDD.getMatiereBdd().removeWithID(id);
         return runBDD.getBdd().delete(TABLE_MATIERENOTE, COL_REFMATIERE + " = " + id, null);
     }
 
