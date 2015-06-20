@@ -2,7 +2,10 @@ package com.project.baptiste.mesnoteas;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
@@ -44,8 +48,29 @@ public class AccueilActivity extends Activity {
         setContentView(R.layout.accueil);
         runBDD = RunBDD.getInstance(this);
         initVariable();
+        initTextView();
         beginSpinner();
         initAnneeSpinner();
+    }
+
+    /**
+     * Mettre Text view en italic
+     */
+    private void initTextView() {
+        TextView labelAnneeAccueil = (TextView) findViewById(R.id.labelAnneeAccueil);
+        TextView labelMoyenneAccueil = (TextView) findViewById(R.id.labelMoyenneAccueil);
+        TextView labelMatiereAccueil = (TextView) findViewById(R.id.labelMatiereAccueil);
+        TextView[] tabTV = {labelAnneeAccueil,labelMoyenneAccueil,labelMatiereAccueil};
+        SpannableString annee = new SpannableString(getText(R.string.labelAnneeAccueil));
+        SpannableString moyenne = new SpannableString(getText(R.string.labelMoyenneAccueil));
+        SpannableString matiere = new SpannableString(getText(R.string.labelMatiereAccueil));
+        SpannableString[] tabSS = {annee,moyenne,matiere};
+        for(int i =0;i<tabSS.length;i++){
+            tabSS[i].setSpan(new StyleSpan(Typeface.BOLD), 0, tabSS[i].length(), 0);
+            tabTV[i].setText(tabSS[i]);
+        }
+
+
     }
 
     public void beginSpinner(){
