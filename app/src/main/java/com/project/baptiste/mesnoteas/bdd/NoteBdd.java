@@ -8,6 +8,7 @@ import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.general.Note;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +30,13 @@ public class NoteBdd implements IObjetBdd {
 
     private int nbElements = 0;
 
+    private Utilitaire utilitaire;
     private RunBDD runBDD;
 
     public NoteBdd(RunBDD runBDD){
         this.runBDD = runBDD;
         notes = new ArrayList<>();
+        utilitaire = new Utilitaire();
         getAll();
     }
 
@@ -139,7 +142,7 @@ public class NoteBdd implements IObjetBdd {
 
             close();
         }
-        return notes;
+        return utilitaire.copyList(notes);
     }
 
 

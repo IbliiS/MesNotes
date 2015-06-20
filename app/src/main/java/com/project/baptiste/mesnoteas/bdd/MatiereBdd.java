@@ -8,6 +8,7 @@ import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.general.Matiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class MatiereBdd implements IObjetBdd {
 
     private List<IObjet> matieres;
+    private Utilitaire utilitaire;
 
     /** TABLE MATIERE */
     private static final String TABLE_MATIERE = "table_matieres";
@@ -35,6 +37,7 @@ public class MatiereBdd implements IObjetBdd {
 
     public MatiereBdd(RunBDD runBDD) {
         this.runBDD = runBDD;
+        utilitaire = new Utilitaire();
         getAll();
     }
 
@@ -103,24 +106,6 @@ public class MatiereBdd implements IObjetBdd {
     }
 
     public int removeWithName(String s){
-        /* int i =-1;
-        IMatiere matiereADelete = new Matiere();
-        IMatiere m;
-        boolean b = false;
-        for(IObjet o : matieres){
-            m = (IMatiere) o;
-            if(m.getNomMatiere().equals(s)){
-                matiereADelete = m;
-                b = true;
-            }
-        }
-        if(b) {
-            i = matiereADelete.getId();
-            matieres.remove(matiereADelete);
-        }
-        return runBDD.getBdd().delete(TABLE_MATIERE, COL_ID + " = " + i, null);
-    */
-
         IMatiere matiereADelete = (IMatiere) getWithName(s);
         matieres.remove(matiereADelete);
         runBDD.getMatiereNoteBdd().removeWithID(matiereADelete.getId());
@@ -131,59 +116,16 @@ public class MatiereBdd implements IObjetBdd {
     public IObjet getWithId(int i) {
          Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MATIERE + " WHERE ID=" + i, null);
         return cursorToObject(c);
-        /*
-        IMatiere m;
-        for(IObjet o : matieres){
-            m = (IMatiere) o;
-            if(m.getId() == i){
-                return m;
-            }
-        }
-        return new Matiere();
-        */
     }
 
     public IObjet getWithName(String nom) {
 
         Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " +TABLE_MATIERE  + " where "+ COL_NOM +" = '" + nom + "'", null);
         return cursorToObject(c);
-         /*
-        IMatiere m;
-        for(IObjet o : matieres){
-            m = (IMatiere) o;
-            if(m.getNomMatiere().equals(nom)){
-                return m;
-            }
-        }
-        return new Matiere();
-        */
     }
 
 
     public List<IObjet> getAll(){
-        /*
-        open();
-
-        if (matieres.size() == 0 || getNbElements() != matieres.size()){
-            matieres.clear();
-            IMatiere matiere;
-            int cpt = 0;
-            int nbElement = getNbElements();
-            int j = nbElement;
-            for(int i = 1; i <= j; i++){
-                matiere = (IMatiere) getWithId(i);
-               if(matiere != null && ! (matiere.getNomMatiere().equals("")) ) {
-                    matieres.add(matiere);
-                   cpt ++;
-                }
-                if(cpt != nbElement){
-                    j++;
-                }
-            }
-        }
-        close();
-        return matieres;
-         */
         open();
         int nbElem = getNbElements();
         close();
@@ -194,7 +136,7 @@ public class MatiereBdd implements IObjetBdd {
             matieres.clear();
             matieres = runBDD.getMatiereNoteBdd().getAll();
         }
-        return matieres;
+        return utilitaire.copyList(matieres);
 
     }
 

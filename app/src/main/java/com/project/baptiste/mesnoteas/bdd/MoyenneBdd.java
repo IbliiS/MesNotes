@@ -8,6 +8,7 @@ import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.general.Moyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class MoyenneBdd implements IObjetBdd {
 
     private List<IObjet> moyennes;
+    private Utilitaire utilitaire;
 
     /** TABLE MOYENNE */
     private static final String TABLE_MOYENNE = "table_moyennes";
@@ -33,6 +35,7 @@ public class MoyenneBdd implements IObjetBdd {
 
     public MoyenneBdd(RunBDD runBDD) {
         this.runBDD = runBDD;
+        utilitaire = new Utilitaire();
         getAll();
 
     }
@@ -124,7 +127,7 @@ public class MoyenneBdd implements IObjetBdd {
 
     @Override
     public IObjet getWithName(String nom) {
-        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " +TABLE_MOYENNE  + " where "+ COL_NOM +" = '" + nom + "'", null);
+        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MOYENNE  + " where "+ COL_NOM +" = '" + nom + "'", null);
         return cursorToObject(c);
         /*IMoyenne m;
         for(IObjet o : moyennes){
@@ -148,7 +151,7 @@ public class MoyenneBdd implements IObjetBdd {
             moyennes.clear();
             moyennes = runBDD.getMoyenneMatiereBdd().getAll();
         }
-        return moyennes;
+        return utilitaire.copyList(moyennes);
     }
 
 

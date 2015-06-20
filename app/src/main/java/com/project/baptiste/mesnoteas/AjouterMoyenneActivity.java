@@ -103,10 +103,17 @@ public class AjouterMoyenneActivity extends Activity {
     public void ajouterMoyenne(View view){
         String nomAnnee = anneeSpinner.getSelectedItem().toString();
         String nomMoyenne = this.nomMoyenne.getText().toString();
-        if(moyenneString.contains(nomMoyenne)){
+        runBDD.open();
+        IMoyenne m = (IMoyenne) runBDD.getMoyenneBdd().getWithName(nomMoyenne);
+        runBDD.close();
+        if(! (m.getNomMoyenne().equals(""))){
             Toast.makeText(getApplicationContext(),
                     "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
         }
+        //if(moyenneString.contains(nomMoyenne)){
+         //   Toast.makeText(getApplicationContext(),
+        //            "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
+        //}
         else{
             boolean allValid = true;
             FormEditText[] formEditTexts = {this.nomMoyenne};

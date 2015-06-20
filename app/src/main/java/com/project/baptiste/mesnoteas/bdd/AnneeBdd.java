@@ -10,6 +10,7 @@ import com.project.baptiste.mesnoteas.general.Moyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class AnneeBdd implements IObjetBdd {
 
     private List<IObjet> annees;
-
+    private Utilitaire utilitaire;
 
     /** TABLE ANNEE */
     private static final String TABLE_ANNEE = "table_annees";
@@ -36,6 +37,7 @@ public class AnneeBdd implements IObjetBdd {
 
     public AnneeBdd(RunBDD runBDD) {
         this.runBDD = runBDD;
+        utilitaire = new Utilitaire();
         getAll();
     }
 
@@ -149,7 +151,7 @@ public class AnneeBdd implements IObjetBdd {
             annees.clear();
             annees = runBDD.getAnneeMoyenneBdd().getAll();
         }
-        return annees;
+        return utilitaire.copyList(annees);
     }
 
     @Override

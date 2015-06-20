@@ -11,6 +11,7 @@ import com.project.baptiste.mesnoteas.general.Note;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class MatiereNoteBdd implements IObjetAssoBdd {
 
     private List<IObjet> matieresNotes;
+    private Utilitaire utilitaire;
 
     /** TABLE ASSOCIATIVE MATIERENOTE */
     private static final String TABLE_MATIERENOTE = "table_matierenote";
@@ -39,6 +41,7 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
         this.runBDD = runBDD;
         noteBdd = runBDD.getNoteBdd();
         matiereBdd = runBDD.getMatiereBdd();
+        utilitaire = new Utilitaire();
         matieresNotes = new ArrayList<>();
         getAll();
     }
@@ -128,7 +131,7 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
             }
         }
         close();
-        return matieresNotes;
+        return utilitaire.copyList(matieresNotes);
     }
 
     @Override
