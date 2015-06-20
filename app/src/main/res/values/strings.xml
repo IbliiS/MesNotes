@@ -4,8 +4,17 @@
     <string name="action_settings">Settings</string>
     <!-- accueil  -->
     <string name="accueilTitre">Mes notes</string>
-    <string name="accueilButtonAjouterNote">Ajouter note</string>
-    <string name="labelAnneeAccueil">Selectionner un semestre :</string>
+    <string name="accueilButtonAjouterNote">Ajout note</string>
+    <string name="labelAnneeAccueil">Choix année</string>
+    <string name="labelMoyenneAccueil">Filtre période</string>
+    <string name="labelMatiereAccueil">Filtre matière</string>
+    <string name="accueilButtonAjouterAnnee">Ajout année</string>
+    <string name="accueilButtonAjouterMoyenne">Ajout moyen.</string>
+    <string name="accueilButtonAjouterMatiere">Ajout matière</string>
+    <string name="labelMatiereListViewAccueil">Matière</string>
+    <string name="labelNoteListViewAccueil">Note</string>
+    <string name="labelCoefListViewAccueil">Coeff</string>
+    <string name="labelMoyenneListViewAccueil">Moyenne</string>
     <!-- ajouter_note  -->
     <string name="ajouterNoteTitre">Ajout d\'une note</string>
     <string name="labelMatiere">Choix de la matière</string>
@@ -17,20 +26,32 @@
     <string name="retourNoteBouton">Retour</string>
     <string name="labelMoyenne">Choix de la période</string>
     <string name="ajouterNoteTextViewVide"></string>
+    <string name="labelAnnee">Choix de l\'année</string>
     <!-- ajouter_matiere  -->
     <string name="ajouterMatiereTitre">Ajout d\'une matière</string>
     <string name="labelMatiereNom">Nom de la matière</string>
-    <string name="nom_matiereField">Doit commencer par une lettre</string>
+    <string name="nom_matiereField">Doit commencer par une lettre, au moins 2 car.</string>
     <string name="labelMatiereCoef">Coefficient</string>
     <string name="coef_matiereField">Doit être entre 1 et 20</string>
     <string name="ajouterMatiereBouton">Ajouter</string>
     <string name="retourMatiereBouton">Retour</string>
     <!-- ajouter_moyenne  -->
-    <string name="ajouterMoyenneTitre">Ajout d\'une année</string>
-    <string name="labelMoyenneNom">Nom de l\'année</string>
+    <string name="ajouterMoyenneTitre">Ajout d\'une moyenne</string>
+    <string name="labelMoyenneNom">Nom de la moyenne</string>
     <string name="ajouterMoyenneBouton">Ajouter</string>
     <string name="retourMoyenneBouton">Retour</string>
-
-
+    <string name="nom_moyenneField">Entrez une période correcte</string>
+    <string name="labelAnneeAjoutMoyenne">Choix année</string>
+    <!-- note  -->
+    <string name="nom_matiere">Matiere</string>
+    <string name="note">Note</string>
+    <string name="coef">Coeff</string>
+    <string name="note_moyenneLabel">Moyenne</string>
+    <!-- ajouter_annee  -->
+    <string name="ajouterAnneeTitre">Ajout d\'une année</string>
+    <string name="labelAnneeNom">Nom de l\'année</string>
+    <string name="nom_anneeField">Doit commencer par une lettre, au moins 2 car.</string>
+    <string name="ajouterAnneeBouton">Ajouter</string>
+    <string name="retourAnneeBouton">Retour</string>
 
 </resources>

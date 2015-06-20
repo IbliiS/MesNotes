@@ -124,7 +124,7 @@ public class Matiere implements IMatiere {
 
     @Override
     public double getMoyenne() {
-        return moyenne;
+        return resultatMatiere();
     }
 
     @Override
@@ -144,6 +144,8 @@ public class Matiere implements IMatiere {
     @Override
     public void copyMatiere(IMatiere matiere){
         this.id = matiere.getId();
+        //
+        this.notes = matiere.getNotes();
         this.nomMatiere = matiere.getNomMatiere();
         this.moyenne = matiere.getMoyenne();
         this.coef = matiere.getCoef();

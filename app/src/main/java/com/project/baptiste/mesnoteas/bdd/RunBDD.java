@@ -1,9 +1,11 @@
 package com.project.baptiste.mesnoteas.bdd;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetAssoBdd;
+import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
+import com.project.baptiste.mesnoteas.bdd.interfacesBdd.ITableBdd;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.List;
  */
 public class RunBDD {
 
-    private static final int VERSION_BDD = 2;
+    private static final int VERSION_BDD = 3;
     private static final String NOM_BDD = "notes.db";
     private SQLiteDatabase bdd;
     private MaBaseSQLite maBaseSQLite;
@@ -24,7 +26,9 @@ public class RunBDD {
     private ITableBdd matiereBdd;
     private ITableBdd matiereNoteBdd;
     private ITableBdd moyenneBdd;
+    private ITableBdd anneeBdd;
     private ITableBdd moyenneMatiereBdd;
+    private ITableBdd anneeMoyenneBdd;
 
     private static RunBDD instance = null;
 
@@ -42,14 +46,22 @@ public class RunBDD {
         noteBdd = new NoteBdd(this);
         matiereBdd = new MatiereBdd(this);
         moyenneBdd = new MoyenneBdd(this);
+        anneeBdd = new AnneeBdd(this);
         matiereNoteBdd = new MatiereNoteBdd(this);
         moyenneMatiereBdd = new MatiereMoyenneBdd(this);
+        anneeMoyenneBdd = new AnneeMoyenneBdd(this);
 
         objetsBdd.add(noteBdd);
         objetsBdd.add(matiereBdd);
         objetsBdd.add(moyenneBdd);
+        objetsBdd.add(anneeBdd);
         objetsBdd.add(matiereNoteBdd);
         objetsBdd.add(moyenneMatiereBdd);
+        objetsBdd.add(anneeMoyenneBdd);
+
+        for(ITableBdd o : objetsBdd){
+            o.getAll();
+        }
 
     }
 
@@ -97,6 +109,14 @@ public class RunBDD {
 
     public IObjetAssoBdd getMoyenneMatiereBdd() {
         return (IObjetAssoBdd) moyenneMatiereBdd;
+    }
+
+    public IObjetAssoBdd getAnneeMoyenneBdd() {
+        return (IObjetAssoBdd) anneeMoyenneBdd;
+    }
+
+    public IObjetBdd getAnneeBdd() {
+        return (IObjetBdd) anneeBdd;
     }
 
     public void viderBdd(){

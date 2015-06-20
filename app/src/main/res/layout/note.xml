@@ -1,38 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:weightSum="100">
+
 
     <TextView
         android:id="@+id/nom_matiere"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Matière"
-        android:paddingLeft="10dp"
-        android:gravity="center_vertical"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="match_parent"
+        android:text="@string/nom_matiere"
+        android:layout_weight="25"
+        android:gravity="left"
+         />
 
 
     <TextView
         android:id="@+id/note"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:text="Note"
-        android:gravity="center"
-        android:layout_alignTop="@+id/nom_matiere"
-        android:layout_toLeftOf="@+id/coef"
-        android:layout_toStartOf="@+id/coef" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/note"
+        android:layout_weight="25"
+        android:gravity="center_horizontal"
+         />
 
 
 
     <TextView
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:text="Coef"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/coef"
+        android:layout_weight="25"
         android:id="@+id/coef"
-        android:gravity="center"
-        android:layout_alignTop="@+id/nom_matiere"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-</RelativeLayout>
+        android:gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/note_moyenneLabel"
+        android:id="@+id/note_moyenneLabel"
+        android:layout_weight="25"
+        android:gravity="right"
+        />
+
+</LinearLayout>

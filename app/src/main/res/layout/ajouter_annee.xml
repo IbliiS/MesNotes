@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:verificator="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/ajouterAnneeTitre"
+        android:id="@+id/ajouterAnneeTitre"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/labelAnneeNom"
+        android:id="@+id/labelAnneeNom"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp" />
+
+    <com.andreabaccega.widget.FormEditText
+        android:id="@+id/nom_anneeField"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_marginLeft="20dp"
+        verificator:testType="regexp"
+        verificator:customRegexp="^[a-zA-Z][a-zA-Z0-9 ]{1,30}$"
+        verificator:testErrorString="@string/nom_anneeField" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ajouterAnneeBouton"
+        android:onClick="ajouterAnnee"
+        android:id="@+id/ajouterAnneeBouton"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retourAnneeBouton"
+        android:onClick="retourAnneeBouton"
+        android:id="@+id/retourAnneeBouton"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

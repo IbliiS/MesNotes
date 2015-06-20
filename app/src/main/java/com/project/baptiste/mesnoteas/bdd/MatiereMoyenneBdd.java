@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
+import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetAssoBdd;
 import com.project.baptiste.mesnoteas.general.Matiere;
 import com.project.baptiste.mesnoteas.general.Moyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
@@ -105,7 +106,7 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
             int cpt = 0;
             int nbMoyennes = runBDD.getMoyenneBdd().getNbElements();
             int j = nbMoyennes;
-            for(int i = 0; i <= j; i++){
+            for(int i = 1; i <= j; i++){
                 moyenne = new Moyenne();
                 moyenne = (IMoyenne) runBDD.getMoyenneBdd().getWithId(i);
                 if( ! (moyenne.getNomMoyenne().equals(""))){
@@ -134,7 +135,6 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
 
     @Override
     public void dropTable() {
-
         open();
         runBDD.getBdd().delete(TABLE_MATIEREMOYENNE,null,null);
         close();

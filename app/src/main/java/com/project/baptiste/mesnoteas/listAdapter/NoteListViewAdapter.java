@@ -51,7 +51,7 @@ public class NoteListViewAdapter extends BaseAdapter {
                     n = (INote) o;
                     mat = new Matiere();
                     mat.copyMatiere(m);
-                    mat.getNotes().add(n);
+                    //mat.getNotes().add(n);
                     listeMatiere.add(mat);
                     nbMatiere++;
                 }
@@ -79,6 +79,7 @@ public class NoteListViewAdapter extends BaseAdapter {
         TextView matiere;
         TextView note;
         TextView coeff;
+        TextView moyenne;
     }
 
     @Override
@@ -90,6 +91,7 @@ public class NoteListViewAdapter extends BaseAdapter {
             holder.matiere = (TextView) view.findViewById(R.id.nom_matiere);
             holder.note = (TextView) view.findViewById(R.id.note);
             holder.coeff = (TextView) view.findViewById(R.id.coef);
+            holder.moyenne = (TextView) view.findViewById(R.id.note_moyenneLabel);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -99,14 +101,33 @@ public class NoteListViewAdapter extends BaseAdapter {
             holder.matiere.setText("Il n'y a pas encore de note");
             holder.note.setText(" ");
             holder.coeff.setText(" ");
+            holder.moyenne.setText(" ");
         }
         else {
             IMatiere m = listeMatiere.get(position);
-            INote n = (INote) m.getNotes().get(0);
+            //INote n = (INote) m.getNotes().get(0);
+            INote n = (INote) notes.get(position);
+            String moy = coupeMoyenne(m.getMoyenne());
             holder.matiere.setText(m.getNomMatiere());
             holder.note.setText(String.valueOf(n.getNote()));
             holder.coeff.setText(String.valueOf(n.getCoef()));
+            holder.moyenne.setText(moy);
         }
         return view;
+    }
+
+    public String coupeMoyenne(Double d){
+        String moy;
+        String nombre =String.valueOf(d);
+        moy = nombre.concat("000");
+        if(d>10){
+            moy = moy.substring(0,5);
+        }
+        else {
+            moy = moy.substring(0,4);
+
+        }
+
+        return moy;
     }
 }

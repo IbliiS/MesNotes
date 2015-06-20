@@ -117,7 +117,7 @@ public class Moyenne implements IMoyenne {
 
     @Override
     public double getMoyenne() {
-        return moyenne;
+        return resultatMoyenne();
     }
     @Override
     public void setMoyenne(double moyenne) {

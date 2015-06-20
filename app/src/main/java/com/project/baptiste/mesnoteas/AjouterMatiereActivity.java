@@ -7,16 +7,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.andreabaccega.widget.FormEditText;
-import com.project.baptiste.mesnoteas.bdd.IObjetBdd;
+import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
-import com.project.baptiste.mesnoteas.general.Matiere;
-import com.project.baptiste.mesnoteas.general.Moyenne;
-import com.project.baptiste.mesnoteas.general.Note;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
@@ -65,7 +61,7 @@ public class AjouterMatiereActivity extends Activity {
                 String item_selected = ajouterMatiereSpinnerMoyenne.getSelectedItem().toString();
                 if (!(item_selected.equals(selectionner))) {
                     tousValides[1]=true;
-                   ajouterMatiereButton.setEnabled(true);
+                    ajouterMatiereButton.setEnabled(true);
                 }
             }
 
@@ -127,19 +123,18 @@ public class AjouterMatiereActivity extends Activity {
             }
             if (allValid) {
                 runBDD.open();
-                IMoyenne moyenne = (IMoyenne) runBDD.getMoyenneBdd().getWithName(ajouterMatiereSpinnerMoyenne.getSelectedItem().toString());
+                String nomMoyenne = ajouterMatiereSpinnerMoyenne.getSelectedItem().toString();
+                IMoyenne moyenne = (IMoyenne) runBDD.getMoyenneBdd().getWithName(nomMoyenne);
                 matiere = moyenne.creerMatiere();
                 matiere.setNomMatiere(String.valueOf(nomMatiereField.getText().toString()));
                 matiere.setCoef(Integer.valueOf(coefMatiereField.getText().toString()));
                 matiere.setId((int) matiereBdd.insert(matiere));
-                int i = (int) runBDD.getMoyenneMatiereBdd().insert(matiere, moyenne);
-                System.out.println(i);
+                runBDD.getMoyenneMatiereBdd().insert(matiere, moyenne);
                 runBDD.close();
                 startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
                 finish();
             }
         }
-
     }
 
     public void verifMatiere(){

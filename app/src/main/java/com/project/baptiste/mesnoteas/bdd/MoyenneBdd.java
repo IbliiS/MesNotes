@@ -4,10 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
+import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.general.Moyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
-import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Baptiste on 16/06/2015.
  */
-public class MoyenneBdd implements IObjetBdd, Cloneable {
+public class MoyenneBdd implements IObjetBdd {
 
     private List<IObjet> moyennes;
 
@@ -118,63 +118,26 @@ public class MoyenneBdd implements IObjetBdd, Cloneable {
 
     @Override
     public IObjet getWithId(int i) {
-
         Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MOYENNE + " WHERE ID=" + i, null);
         return cursorToObject(c);
-           /*
-        IMoyenne m;
-        for(IObjet o : moyennes){
-            m = (IMoyenne) o;
-            if(m.getId()== i){
-                return m;
-            }
-        }
-        return new Moyenne();
-        */
     }
 
     @Override
     public IObjet getWithName(String nom) {
-        /*Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MOYENNE  + " where "+ COL_NOM +" = '" + nom + "'", null);
+        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " +TABLE_MOYENNE  + " where "+ COL_NOM +" = '" + nom + "'", null);
         return cursorToObject(c);
-        */
-        IMoyenne m;
+        /*IMoyenne m;
         for(IObjet o : moyennes){
             m = (IMoyenne) o;
             if(m.getNomMoyenne().equals(nom)){
                 return m;
             }
         }
-        return new Moyenne();
+        return new Moyenne(); */
     }
 
     @Override
     public List<IObjet> getAll(){
-        /*
-        open();
-        if (moyennes.size() == 0 || getNbElements() != moyennes.size()){
-            moyennes.clear();
-
-            IMoyenne moyenne;
-
-            int cpt = 0;
-            int nbElement = getNbElements();
-            int j = nbElement;
-            for(int i = 1; i <= j; i++){
-                moyenne = (IMoyenne) getWithId(i);
-                if(moyenne != null && ! (moyenne.getNomMoyenne().equals("")) ) {
-                    moyennes.add(moyenne);
-                    cpt ++;
-                }
-                if(cpt != nbElement){
-                    j++;
-                }
-            }
-
-        }
-        close();
-        return moyennes;
-        */
         open();
         int nbElem = getNbElements();
         close();

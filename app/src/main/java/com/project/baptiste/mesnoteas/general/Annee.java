@@ -5,9 +5,11 @@ import com.project.baptiste.mesnoteas.fabrique.moyenne.FabriqueMoyenne;
 import com.project.baptiste.mesnoteas.fabrique.moyenne.IFabriqueMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Baptiste on 01/06/2015.
@@ -15,12 +17,15 @@ import java.util.Collection;
 public class Annee implements IAnnee {
     private int id;
     private String nomAnnee;
-    private Collection<IMoyenne> moyennes;
+    private List<IObjet> moyennes;
     private IFabriqueMoyenne fabriqueMoyenne;
+    private double moyenne;
 
     public Annee() {
         fabriqueMoyenne = new FabriqueMoyenne();
         moyennes = new ArrayList<>();
+        moyenne = 0;
+        nomAnnee = "";
     }
 
     @Override
@@ -31,16 +36,19 @@ public class Annee implements IAnnee {
             return r;
         }
         else{
-            for(IMoyenne m : moyennes){
+            IMoyenne m;
+            for(IObjet o : moyennes){
+                m = (IMoyenne) o;
                 r += m.resultatMoyenne();
                 diviseur += 1;
             }
-            return r/diviseur;
+            moyenne = r/diviseur;
+            return moyenne;
         }
     }
 
     @Override
-    public boolean supprimerMoyenne(int i){
+    public IObjet supprimerMoyenne(int i){
         return moyennes.remove(i);
     }
 
@@ -62,12 +70,12 @@ public class Annee implements IAnnee {
     }
 
     @Override
-    public Collection<IMoyenne> getMoyennes() {
+    public List<IObjet> getMoyennes() {
         return moyennes;
     }
 
     @Override
-    public void setMoyennes(Collection<IMoyenne> moyennes) {
+    public void setMoyennes(List<IObjet> moyennes) {
         this.moyennes = moyennes;
     }
 
@@ -85,7 +93,9 @@ public class Annee implements IAnnee {
     public String toString() {
         String s;
         s = "Annee "+nomAnnee+ " :\n";
-        for (IMoyenne m : moyennes){
+        IMoyenne m;
+        for (IObjet o : moyennes){
+            m = (IMoyenne) o;
             s = s+m.toString()+"\n";
         }
         return s+"\nMoyenne année : "+moyenneAnnee()+"\n";
@@ -99,5 +109,24 @@ public class Annee implements IAnnee {
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public double getMoyenne() {
+        return moyenneAnnee();
+    }
+
+    @Override
+    public void setMoyenne(double moyenne) {
+        this.moyenne = moyenne;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof IAnnee){
+            IAnnee a = (IAnnee) o;
+            return a.getId() == this.id;
+        }
+        return false;
     }
 }

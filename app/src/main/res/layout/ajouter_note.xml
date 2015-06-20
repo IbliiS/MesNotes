@@ -22,57 +22,78 @@
     </LinearLayout>
 
 
-    <!-- Labels des spinner matiere et periode -->
+    <!-- Labels des spinner annee matiere et periode -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="100">
+        android:weightSum="99">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/labelAnnee"
+            android:id="@+id/labelAnnee"
+            android:layout_marginTop="20dp"
+            android:gravity="center" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/labelMoyenne"
             android:id="@+id/labelMoyenne"
-            android:layout_weight="50"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp" />
+            android:layout_weight="33"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="33"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/labelMatiere"
             android:id="@+id/labelMatiere"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:gravity="right" />
+            android:gravity="center" />
+
+
+
 
 
     </LinearLayout>
 
-    <!-- Spinner periode et matiere -->
+    <!-- Spinner periode et matiere et annee -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="100">
+        android:weightSum="99">
 
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:id="@+id/ajouterNotespinnerMoyenne"
+            android:layout_weight="33"
+            android:id="@+id/ajouterNotespinnerAnnee"
             android:gravity="left" />
 
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
+            android:layout_weight="33"
+            android:id="@+id/ajouterNotespinnerMoyenne"
+            android:gravity="left"
+           />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
             android:id="@+id/spinner"
-            android:layout_marginLeft="10dp"
-            android:gravity="right" />
+            />
 
     </LinearLayout>
 
@@ -81,7 +102,8 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="100">
+        android:weightSum="100"
+        android:layout_marginTop="20dp">
 
         <TextView
             android:layout_width="wrap_content"

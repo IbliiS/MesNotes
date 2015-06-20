@@ -1,4 +1,4 @@
-package com.project.baptiste.mesnoteas.bdd;
+package com.project.baptiste.mesnoteas.bdd.interfacesBdd;
 
 import android.database.Cursor;
 

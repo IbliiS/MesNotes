@@ -4,6 +4,7 @@ package com.project.baptiste.mesnoteas.general.interfaces;
 import com.project.baptiste.mesnoteas.fabrique.moyenne.IFabriqueMoyenne;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Baptiste on 02/06/2015.
@@ -11,7 +12,7 @@ import java.util.Collection;
 public interface IAnnee extends IObjet {
     double moyenneAnnee();
 
-    boolean supprimerMoyenne(int i);
+    IObjet supprimerMoyenne(int i);
 
     IMoyenne creerMoyenne();
 
@@ -19,9 +20,9 @@ public interface IAnnee extends IObjet {
 
     void setNomAnnee(String nomAnnee);
 
-    Collection<IMoyenne> getMoyennes();
+    List<IObjet> getMoyennes();
 
-    void setMoyennes(Collection<IMoyenne> moyennes);
+    void setMoyennes(List<IObjet> moyennes);
 
     IFabriqueMoyenne getFabriqueMoyenne();
 
@@ -30,4 +31,8 @@ public interface IAnnee extends IObjet {
     int getId();
 
     void setId(int id);
+
+    double getMoyenne();
+
+    void setMoyenne(double moyenne);
 }
