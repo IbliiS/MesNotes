@@ -3,24 +3,37 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
 
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/accueilTitre"
-        android:id="@+id/accueilTitre"
-        android:gravity="center"
-        android:layout_marginTop="15dp"/>
+        android:background="@color/blue"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/accueilTitre"
+            android:id="@+id/accueilTitre"
+            android:gravity="center"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            android:textColor="@color/white"
+            />
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="99"
-        android:layout_marginTop="25dp"
         >
 
         <TextView
@@ -41,7 +54,7 @@
             android:id="@+id/labelMoyenneAccueil"
             android:layout_weight="33"
             android:gravity="center"
-             />
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -51,7 +64,7 @@
             android:id="@+id/labelMatiereAccueil"
             android:layout_weight="33"
             android:gravity="center"
-             />
+            />
 
 
     </LinearLayout>
@@ -63,7 +76,7 @@
         android:weightSum="99">
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/accueilAnneeSpinner"
             android:gravity="center"
@@ -71,7 +84,7 @@
             />
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/accueilSpinner"
             android:gravity="center"
@@ -79,7 +92,7 @@
             />
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/accueilMatiereSpinner"
             android:gravity="center"
@@ -97,10 +110,9 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_weight="1"
-            android:layout_gravity="top"
+            android:layout_weight="40"
             android:weightSum="110"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
@@ -112,6 +124,7 @@
                 android:text="@string/labelMatiereListViewAccueil"
                 android:id="@+id/labelMatiereListViewAccueil"
                 android:layout_weight="20"
+                android:layout_gravity="bottom"
                 android:gravity="left"
                 />
             <TextView
@@ -120,6 +133,7 @@
                 android:text="@string/labelNoteListViewAccueil"
                 android:id="@+id/labelNoteListViewAccueil"
                 android:layout_weight="30"
+                android:layout_gravity="bottom"
                 android:gravity="center"
                 />
 
@@ -129,6 +143,7 @@
                 android:text="@string/labelCoefListViewAccueil"
                 android:id="@+id/labelCoefListViewAccueil"
                 android:layout_weight="30"
+                android:layout_gravity="bottom"
                 android:gravity="center"
                 />
 
@@ -138,6 +153,7 @@
                 android:text="@string/labelMoyenneListViewAccueil"
                 android:id="@+id/labelMoyenneListViewAccueil"
                 android:layout_weight="30"
+                android:layout_gravity="bottom"
                 android:gravity="right"
                 />
 
@@ -147,66 +163,146 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="85"
+            android:layout_weight="30"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:id="@+id/listView"
             />
 
 
+
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="25"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="10dp"
-            android:weightSum="100">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:orientation="vertical"
+            android:weightSum="100"
+            >
 
-            <Button
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/accueilButtonAjouterAnnee"
-                android:id="@+id/accueilButtonAjouterAnnee"
-                android:onClick="addAnnee"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="25"
-                style="?android:attr/borderlessButtonStyle"
-                />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="44"
+                android:weightSum="100"
+                >
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="50"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:weightSum="100">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/accueilButtonAjouterMoyenne"
-                android:id="@+id/accueilButtonAjouterMoyenne"
-                android:onClick="addMoyenne"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="25"
-                style="?android:attr/borderlessButtonStyle"
-                />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:gravity="bottom"
+                        android:text="@string/labelMoyenneAnnee"
+                        android:id="@+id/labelMoyenneAnnee"
+                        />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/accueilButtonAjouterMatiere"
-                android:id="@+id/accueilButtonAjouterMatiere"
-                android:onClick="addMatiere"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="25"
-                style="?android:attr/borderlessButtonStyle"
-                />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:gravity="bottom"
+                        android:text="@string/labelMoyenneAnnee"
+                        android:id="@+id/fieldMoyenneAnnee"
+                        />
+                </LinearLayout>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/accueilButtonAjouterNote"
-                android:id="@+id/accueilButtonAjouterNote"
-                android:onClick="addNote"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:layout_weight="25"
-                style="?android:attr/borderlessButtonStyle"
-                />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="50"
+                    android:weightSum="100">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:gravity="top"
+                        android:text="@string/labelMoyennePeriode"
+                        android:id="@+id/labelMoyennePeriode"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:gravity="top"
+                        android:text="@string/labelMoyennePeriode"
+                        android:id="@+id/fieldMoyennePeriode"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:layout_weight="56"
+                android:weightSum="100"
+                >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="@string/accueilButtonAjouterAnnee"
+                    android:id="@+id/accueilButtonAjouterAnnee"
+                    android:onClick="addAnnee"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="25"
+                    style="?android:attr/borderlessButtonStyle"
+                    />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="@string/accueilButtonAjouterMoyenne"
+                    android:id="@+id/accueilButtonAjouterMoyenne"
+                    android:onClick="addMoyenne"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="25"
+                    style="?android:attr/borderlessButtonStyle"
+                    />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="@string/accueilButtonAjouterMatiere"
+                    android:id="@+id/accueilButtonAjouterMatiere"
+                    android:onClick="addMatiere"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="25"
+                    style="?android:attr/borderlessButtonStyle"
+                    />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="@string/accueilButtonAjouterNote"
+                    android:id="@+id/accueilButtonAjouterNote"
+                    android:onClick="addNote"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:layout_weight="25"
+                    style="?android:attr/borderlessButtonStyle"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
+
 
 
     </LinearLayout>

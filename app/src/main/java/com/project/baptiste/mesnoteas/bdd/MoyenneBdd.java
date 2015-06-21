@@ -36,7 +36,7 @@ public class MoyenneBdd implements IObjetBdd {
     public MoyenneBdd(RunBDD runBDD) {
         this.runBDD = runBDD;
         utilitaire = new Utilitaire();
-        getAll();
+        //getAll();
 
     }
 
@@ -122,13 +122,17 @@ public class MoyenneBdd implements IObjetBdd {
     @Override
     public IObjet getWithId(int i) {
         Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MOYENNE + " WHERE ID=" + i, null);
-        return cursorToObject(c);
+        IMoyenne m = (IMoyenne) cursorToObject(c);
+        m.setMatieres(runBDD.getMoyenneMatiereBdd().getListObjetWithId(m.getId()));
+        return m;
     }
 
     @Override
     public IObjet getWithName(String nom) {
         Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MOYENNE  + " where "+ COL_NOM +" = '" + nom + "'", null);
-        return cursorToObject(c);
+        IMoyenne m = (IMoyenne) cursorToObject(c);
+        m.setMatieres(runBDD.getMoyenneMatiereBdd().getListObjetWithId(m.getId()));
+        return m;
         /*IMoyenne m;
         for(IObjet o : moyennes){
             m = (IMoyenne) o;

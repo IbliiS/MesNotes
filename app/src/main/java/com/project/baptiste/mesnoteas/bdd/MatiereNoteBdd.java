@@ -43,7 +43,7 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
         matiereBdd = runBDD.getMatiereBdd();
         utilitaire = new Utilitaire();
         matieresNotes = new ArrayList<>();
-        getAll();
+        //getAll();
     }
 
     @Override

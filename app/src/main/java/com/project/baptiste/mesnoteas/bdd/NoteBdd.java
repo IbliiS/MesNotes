@@ -37,7 +37,7 @@ public class NoteBdd implements IObjetBdd {
         this.runBDD = runBDD;
         notes = new ArrayList<>();
         utilitaire = new Utilitaire();
-        getAll();
+        //getAll();
     }
 
     public void open(){

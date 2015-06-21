@@ -15,6 +15,8 @@
     <string name="labelNoteListViewAccueil">Note</string>
     <string name="labelCoefListViewAccueil">Coeff</string>
     <string name="labelMoyenneListViewAccueil">Moyenne</string>
+    <string name="labelMoyennePeriode">Moyenne période :</string>
+    <string name="labelMoyenneAnnee">Moyenne année :</string>
     <!-- ajouter_note  -->
     <string name="ajouterNoteTitre">Ajout d\'une note</string>
     <string name="labelMatiere">Choix de la matière</string>

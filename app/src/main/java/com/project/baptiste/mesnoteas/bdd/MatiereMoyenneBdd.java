@@ -37,7 +37,7 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         this.runBDD = runBDD;
         moyennesMatieres = new ArrayList<>();
         utilitaire = new Utilitaire();
-        getAll();
+        //getAll();
     }
 
     @Override

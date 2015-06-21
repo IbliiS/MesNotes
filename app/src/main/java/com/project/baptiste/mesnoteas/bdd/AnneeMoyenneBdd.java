@@ -37,7 +37,7 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
         this.runBDD = runBDD;
         anneesMoyennes = new ArrayList<>();
         utilitaire = new Utilitaire();
-        getAll();
+        //getAll();
 
     }
 

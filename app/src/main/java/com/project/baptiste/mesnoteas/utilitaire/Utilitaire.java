@@ -22,4 +22,24 @@ public class Utilitaire {
         IObjet o = objet;
         return o;
     }
+
+    /**
+     * Ajuste le string de la moyenne pour qu'il n'y ait que 2 chiffre après la virgule
+     * @param d la moyenne
+     * @return le string coupé
+     */
+    public String coupeMoyenne(Double d){
+        String moy;
+        String nombre =String.valueOf(d);
+        moy = nombre.concat("000");
+        if(d>10){
+            moy = moy.substring(0,5);
+        }
+        else {
+            moy = moy.substring(0,4);
+
+        }
+
+        return moy;
+    }
 }

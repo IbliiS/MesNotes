@@ -38,7 +38,7 @@ public class MatiereBdd implements IObjetBdd {
     public MatiereBdd(RunBDD runBDD) {
         this.runBDD = runBDD;
         utilitaire = new Utilitaire();
-        getAll();
+        //getAll();
     }
 
     public long insert(IObjet objet){

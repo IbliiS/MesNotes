@@ -38,7 +38,7 @@ public class AnneeBdd implements IObjetBdd {
     public AnneeBdd(RunBDD runBDD) {
         this.runBDD = runBDD;
         utilitaire = new Utilitaire();
-        getAll();
+        //getAll();
     }
 
     @Override
@@ -124,19 +124,17 @@ public class AnneeBdd implements IObjetBdd {
     @Override
     public IObjet getWithId(int i) {
         Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_ANNEE + " WHERE ID=" + i, null);
-        return cursorToObject(c);
+        IAnnee a = (IAnnee) cursorToObject(c);
+        a.setMoyennes(runBDD.getAnneeMoyenneBdd().getListObjetWithId(a.getId()));
+        return a;
     }
 
     @Override
     public IObjet getWithName(String nom) {
-        IAnnee a;
-        for(IObjet o : annees){
-            a = (IAnnee) o;
-            if(a.getNomAnnee().equals(nom)){
-                return a;
-            }
-        }
-        return new Annee();
+        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_ANNEE  + " where "+ COL_NOM +" = '" + nom + "'", null);
+        IAnnee a = (IAnnee) cursorToObject(c);
+        a.setMoyennes(runBDD.getAnneeMoyenneBdd().getListObjetWithId(a.getId()));
+        return a;
     }
 
     @Override

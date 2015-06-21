@@ -41,8 +41,12 @@ public class AccueilActivity extends Activity {
     private List<IObjet> annees;
     private IObjetBdd noteBdd;
     private boolean begin = true;
-    private Utilitaire utilitaire;
     private InitSpinnerAndList initSpinnerAndList;
+    private TextView moyennePeriodeField;
+    private TextView moyennePeriodeLabel;
+    private Utilitaire utilitaire;
+    private TextView labelMoyenneAnnee;
+    private TextView fieldMoyenneAnnee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +55,12 @@ public class AccueilActivity extends Activity {
         runBDD = RunBDD.getInstance(this);
         initVariable();
         initTextView();
+        initMoyennePeriodeTextView("-- Toutes --");
         beginSpinner();
     }
 
     /**
-     * Mettre Text view en italic
+     * Mettre Text view en bold italic
      */
     private void initTextView() {
         TextView labelAnneeAccueil = (TextView) findViewById(R.id.labelAnneeAccueil);
@@ -67,7 +72,7 @@ public class AccueilActivity extends Activity {
         SpannableString matiere = new SpannableString(getText(R.string.labelMatiereAccueil));
         SpannableString[] tabSS = {annee,moyenne,matiere};
         for(int i =0;i<tabSS.length;i++){
-            tabSS[i].setSpan(new StyleSpan(Typeface.BOLD), 0, tabSS[i].length(), 0);
+            tabSS[i].setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 0, tabSS[i].length(), 0);
             tabTV[i].setText(tabSS[i]);
         }
     }
@@ -91,13 +96,15 @@ public class AccueilActivity extends Activity {
 
     public void initVariable(){
         utilitaire = new Utilitaire();
+        fieldMoyenneAnnee = (TextView) findViewById(R.id.fieldMoyenneAnnee);
+        labelMoyenneAnnee = (TextView) findViewById(R.id.labelMoyenneAnnee);
+        moyennePeriodeField = (TextView) findViewById(R.id.fieldMoyennePeriode);
+        moyennePeriodeLabel = (TextView) findViewById(R.id.labelMoyennePeriode);
         notes = new ArrayList<>();
         matieres = new ArrayList<>();
         moyennes = new ArrayList<>();
         noteBdd = runBDD.getNoteBdd();
         annees = new ArrayList<>();
-        //annees = utilitaire.copyList(runBDD.getAnneeBdd().getAll());
-        /** -------- */
         anneeSpinner = (Spinner) findViewById(R.id.accueilAnneeSpinner);
         spinner = (Spinner) findViewById(R.id.accueilSpinner);
         matiereSpinner = (Spinner) findViewById(R.id.accueilMatiereSpinner);
@@ -112,7 +119,12 @@ public class AccueilActivity extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, initSpinnerAndList.getAnneeString());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         anneeSpinner.setAdapter(adapter);
-        anneeSpinner.setSelection(0);
+        if(initSpinnerAndList.getAnneeString().size() == 0){
+            anneeSpinner.setSelection(0);
+        }
+        else {
+            anneeSpinner.setSelection(1);
+        }
         final String selectionner = "-- Selectionner --";
         anneeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -127,13 +139,14 @@ public class AccueilActivity extends Activity {
                     matiereSpinner = initSpinnerAndList.getMatiereSpinner();
                     initMoyenneSpinner2();
                     initMatiereSpinner2();
-                    //initListView();
-                }
-                else{
+                } else {
+                    initListView();
                     spinner.setEnabled(false);
                     matiereSpinner.setEnabled(false);
                 }
+                initMoyenneAnneeTextView(item_selected);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 return;
@@ -151,16 +164,17 @@ public class AccueilActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item_selected = spinner.getSelectedItem().toString();
-                if(item_selected.equals(toutes)){
+                if (item_selected.equals(toutes)) {
                     matieres = initSpinnerAndList.initMatieresParAnnee(anneeSpinner.getSelectedItem().toString());
-                }
-                else{
+                } else {
                     matieres = initSpinnerAndList.initMatieresParMoyenne(item_selected);
                 }
+                initMoyennePeriodeTextView(item_selected);
                 matiereSpinner = initSpinnerAndList.getMatiereSpinner();
                 initMatiereSpinner2();
                 initListView();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 return;
@@ -190,6 +204,33 @@ public class AccueilActivity extends Activity {
         });
     }
 
+    public void initMoyennePeriodeTextView(String item_selected){
+        if(item_selected.equals("-- Toutes --")){
+            moyennePeriodeField.setText("");
+            moyennePeriodeLabel.setText("");
+        }
+        else{
+            runBDD.open();
+            IMoyenne m = (IMoyenne) runBDD.getMoyenneBdd().getWithName(item_selected);
+            runBDD.close();
+            moyennePeriodeField.setText(utilitaire.coupeMoyenne(m.getMoyenne()));
+            moyennePeriodeLabel.setText("Moyenne période "+item_selected+ " :");
+        }
+    }
+
+    public void initMoyenneAnneeTextView(String item_selected){
+        if(item_selected.equals("-- Toutes --")){
+            labelMoyenneAnnee.setText("");
+            fieldMoyenneAnnee.setText("");
+        }
+        else{
+            runBDD.open();
+            IAnnee a = (IAnnee) runBDD.getAnneeBdd().getWithName(item_selected);
+            runBDD.close();
+            fieldMoyenneAnnee.setText(utilitaire.coupeMoyenne(a.getMoyenne()));
+            labelMoyenneAnnee.setText("Moyenne année "+item_selected+ " :");
+        }
+    }
 
     public void initListView(){
         notes = initSpinnerAndList.getNotes();
@@ -220,7 +261,6 @@ public class AccueilActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_mes_notes, menu);
         return true;
     }
@@ -228,11 +268,9 @@ public class AccueilActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

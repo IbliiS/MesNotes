@@ -12,6 +12,7 @@ import com.project.baptiste.mesnoteas.general.Matiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +27,14 @@ public class NoteListViewAdapter extends BaseAdapter {
     List<IObjet> matieres;
     List<IMatiere> listeMatiere;
     boolean pasDeNote;
+    private Utilitaire utilitaire;
 
 
     public NoteListViewAdapter(Context context, List<IObjet> notes, List<IObjet> matieres) {
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.notes = notes;
+        utilitaire = new Utilitaire();
         this.matieres = matieres;
         initListMatiere();
     }
@@ -107,7 +110,7 @@ public class NoteListViewAdapter extends BaseAdapter {
             IMatiere m = listeMatiere.get(position);
             //INote n = (INote) m.getNotes().get(0);
             INote n = (INote) notes.get(position);
-            String moy = coupeMoyenne(m.getMoyenne());
+            String moy = utilitaire.coupeMoyenne(m.getMoyenne());
             holder.matiere.setText(m.getNomMatiere());
             holder.note.setText(String.valueOf(n.getNote()));
             holder.coeff.setText(String.valueOf(n.getCoef()));
@@ -116,18 +119,4 @@ public class NoteListViewAdapter extends BaseAdapter {
         return view;
     }
 
-    public String coupeMoyenne(Double d){
-        String moy;
-        String nombre =String.valueOf(d);
-        moy = nombre.concat("000");
-        if(d>10){
-            moy = moy.substring(0,5);
-        }
-        else {
-            moy = moy.substring(0,4);
-
-        }
-
-        return moy;
-    }
 }
