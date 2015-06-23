@@ -5,11 +5,11 @@
     <!-- accueil  -->
     <string name="accueilTitre">Mes notes</string>
     <string name="accueilButtonAjouterNote">Ajout note</string>
-    <string name="labelAnneeAccueil">Choix année</string>
-    <string name="labelMoyenneAccueil">Filtre période</string>
-    <string name="labelMatiereAccueil">Filtre matière</string>
+    <string name="labelAnneeAccueil">Année</string>
+    <string name="labelMoyenneAccueil">Période</string>
+    <string name="labelMatiereAccueil">Matière</string>
     <string name="accueilButtonAjouterAnnee">Ajout année</string>
-    <string name="accueilButtonAjouterMoyenne">Ajout moyen.</string>
+    <string name="accueilButtonAjouterMoyenne">Ajout période</string>
     <string name="accueilButtonAjouterMatiere">Ajout matière</string>
     <string name="labelMatiereListViewAccueil">Matière</string>
     <string name="labelNoteListViewAccueil">Note</string>
@@ -38,8 +38,8 @@
     <string name="ajouterMatiereBouton">Ajouter</string>
     <string name="retourMatiereBouton">Retour</string>
     <!-- ajouter_moyenne  -->
-    <string name="ajouterMoyenneTitre">Ajout d\'une moyenne</string>
-    <string name="labelMoyenneNom">Nom de la moyenne</string>
+    <string name="ajouterMoyenneTitre">Ajout d\'une période</string>
+    <string name="labelMoyenneNom">Nom de la période</string>
     <string name="ajouterMoyenneBouton">Ajouter</string>
     <string name="retourMoyenneBouton">Retour</string>
     <string name="nom_moyenneField">Entrez une période correcte</string>

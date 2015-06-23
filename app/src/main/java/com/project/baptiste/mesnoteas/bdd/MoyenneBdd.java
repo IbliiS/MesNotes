@@ -133,14 +133,6 @@ public class MoyenneBdd implements IObjetBdd {
         IMoyenne m = (IMoyenne) cursorToObject(c);
         m.setMatieres(runBDD.getMoyenneMatiereBdd().getListObjetWithId(m.getId()));
         return m;
-        /*IMoyenne m;
-        for(IObjet o : moyennes){
-            m = (IMoyenne) o;
-            if(m.getNomMoyenne().equals(nom)){
-                return m;
-            }
-        }
-        return new Moyenne(); */
     }
 
     @Override

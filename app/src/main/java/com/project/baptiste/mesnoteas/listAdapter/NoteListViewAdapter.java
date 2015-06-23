@@ -70,6 +70,9 @@ public class NoteListViewAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
+        if(notes.size()==0){
+            return null;
+        }
         return notes.get(position);
     }
 

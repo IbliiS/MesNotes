@@ -149,7 +149,7 @@ public class AjouterMatiereActivity extends Activity {
 
 
     public void retourMatiereButton(View view){
-        startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
+        startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
     }
 }

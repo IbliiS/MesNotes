@@ -20,6 +20,10 @@ public interface IObjetAssoBdd extends ITableBdd{
 
     List<IObjet> cursorToObject(Cursor c);
 
+    IObjet getOtherObjetWithId(int id);
+
+    IObjet cursorToOtherObject(Cursor c);
+
     List<IObjet> getAll();
 
     int getNbElements();

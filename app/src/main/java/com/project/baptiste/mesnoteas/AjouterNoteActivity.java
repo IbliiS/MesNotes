@@ -18,6 +18,7 @@ import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.listAdapter.InitSpinnerAndList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,10 @@ public class AjouterNoteActivity extends Activity {
     private IObjetBdd matiereBdd;
     private IObjetBdd noteBdd;
     private Spinner ajouterNotespinnerMoyenne;
-    private Boolean[] tousValides = {false, false, false};
     private boolean begin = true;
     private Spinner anneeSpinner;
+    private InitSpinnerAndList initSpinnerAndList;
+
 
 
     @Override
@@ -50,22 +52,145 @@ public class AjouterNoteActivity extends Activity {
         setContentView(R.layout.ajouter_note);
         initVariable();
         initField();
-        initAnneeSpinner();
+        //initAnneeSpinner();
     }
 
 
 
     public void initVariable(){
         runBDD = RunBDD.getInstance(this);
+        ajouterNotespinnerMoyenne = (Spinner) findViewById(R.id.ajouterNotespinnerMoyenne);
+        spinnerMatiere = (Spinner) findViewById(R.id.spinner);
+        anneeSpinner = (Spinner) findViewById(R.id.ajouterNotespinnerAnnee);
+        initSpinnerAndList = new InitSpinnerAndList(runBDD,ajouterNotespinnerMoyenne,anneeSpinner,spinnerMatiere);
         matiereBdd =  runBDD.getMatiereBdd();
         noteBdd = runBDD.getNoteBdd();
         matieres = new ArrayList<>();
         moyennes = new ArrayList<>();
         annees = new ArrayList<>();
-        annees = runBDD.getAnneeBdd().getAll();
         moyennes = runBDD.getMoyenneBdd().getAll();
+        //
+        annees = initSpinnerAndList.getAnnees();
+        anneeSpinner = initSpinnerAndList.getAnneeSpinner();
+        initAnneeSpinner2();
+
 
     }
+
+    public void initField(){
+        beginSpinner();
+        buttonAjouter = (Button) findViewById(R.id.ajouterBouton);
+        buttonAjouter.setEnabled(false);
+        noteField = (FormEditText) findViewById(R.id.noteField);
+        coefField = (FormEditText) findViewById(R.id.coefField);
+    }
+
+    public void beginSpinner(){
+        if(begin) {
+            final String selectionner = "-- Selectionner --";
+            List<String> exemple = new ArrayList<String>();
+            exemple.add(selectionner);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerMatiere.setAdapter(adapter);
+            spinnerMatiere.setSelection(0);
+            spinnerMatiere.setEnabled(false);
+            ajouterNotespinnerMoyenne.setAdapter(adapter);
+            ajouterNotespinnerMoyenne.setSelection(0);
+            ajouterNotespinnerMoyenne.setEnabled(false);
+            begin = false;
+        }
+    }
+
+    private void initAnneeSpinner2() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, initSpinnerAndList.getAnneeString());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        anneeSpinner.setAdapter(adapter);
+        if(initSpinnerAndList.getAnneeString().size() == 1){
+            anneeSpinner.setSelection(0);
+        }
+        else {
+            anneeSpinner.setSelection(1);
+        }
+        final String selectionner = "-- Selectionner --";
+        anneeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item_selected = anneeSpinner.getSelectedItem().toString();
+                if (!(item_selected.equals(selectionner))) {
+                    ajouterNotespinnerMoyenne.setEnabled(true);
+                    spinnerMatiere.setEnabled(true);
+                    moyennes = initSpinnerAndList.initMoyenne(item_selected);
+                    ajouterNotespinnerMoyenne = initSpinnerAndList.getMoyenneSpinner();
+                    matieres = initSpinnerAndList.initMatieresParAnnee(item_selected);
+                    spinnerMatiere = initSpinnerAndList.getMatiereSpinner();
+                    initMoyenneSpinner2();
+                    initMatiereSpinner2();
+                } else {
+                    //moyennes <- toutes les moyennes
+                    //matieres <- toutes les matieres
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                return;
+            }
+        });
+    }
+
+    private void initMoyenneSpinner2(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, initSpinnerAndList.getMoyenneString());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ajouterNotespinnerMoyenne.setAdapter(adapter);
+        ajouterNotespinnerMoyenne.setSelection(0);
+        final String toutes = "-- Toutes --";
+        ajouterNotespinnerMoyenne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item_selected = ajouterNotespinnerMoyenne.getSelectedItem().toString();
+                if (item_selected.equals(toutes)) {
+                    matieres = initSpinnerAndList.initMatieresParAnnee(anneeSpinner.getSelectedItem().toString());
+                } else {
+                    matieres = initSpinnerAndList.initMatieresParMoyenne(item_selected);
+                }
+                spinnerMatiere = initSpinnerAndList.getMatiereSpinner();
+                initMatiereSpinner2();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                return;
+            }
+        });
+
+    }
+
+    private void initMatiereSpinner2(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, initSpinnerAndList.getMatiereString());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMatiere.setAdapter(adapter);
+        spinnerMatiere.setSelection(0);
+        final String selectionner = "-- Toutes --";
+        spinnerMatiere.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item_selected = spinnerMatiere.getSelectedItem().toString();
+                int id_selected = spinnerMatiere.getSelectedItemPosition();
+                if (!(item_selected.equals(selectionner))) {
+                    matieres = initSpinnerAndList.initMatiereParMatiere(item_selected);
+                    buttonAjouter.setEnabled(true);
+                } else {
+                    buttonAjouter.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                return;
+            }
+        });
+    }
+
 
     public void initAnneeSpinner(){
         final String selectionner = "-- Selectionner une année --";
@@ -74,7 +199,6 @@ public class AjouterNoteActivity extends Activity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item_selected = anneeSpinner.getSelectedItem().toString();
                 if (!(item_selected.equals(selectionner))) {
-                    tousValides[2] = true;
                     ajouterNotespinnerMoyenne.setEnabled(true);
                     runBDD.open();
                     IAnnee annee = (IAnnee) runBDD.getAnneeBdd().getWithName(item_selected);
@@ -115,7 +239,6 @@ public class AjouterNoteActivity extends Activity {
                         startActivity(new Intent(getApplicationContext(), AjouterMoyenneActivity.class));
                         finish();
                     } else {
-                        tousValides[1] = true;
                         spinnerMatiere.setEnabled(true);
                         runBDD.open();
                         IMoyenne moyenne = (IMoyenne) runBDD.getMoyenneBdd().getWithName(item_selected);
@@ -157,9 +280,6 @@ public class AjouterNoteActivity extends Activity {
                     if (item_selected.equals(ajouter)) {
                         startActivity(new Intent(getApplicationContext(), AjouterMatiereActivity.class));
                         finish();
-                    } else {
-                        tousValides[0] = true;
-                        activerBoutonAjouter();
                     }
                 }
             }
@@ -184,34 +304,9 @@ public class AjouterNoteActivity extends Activity {
     }
 
 
-    // APPELE UNE SEULE FOIS POUR AVOIR UN ELEMENT DANS LE SPINNER DE MATIERE
-    public void beginSpinner(){
-        if(begin) {
-            ajouterNotespinnerMoyenne = (Spinner) findViewById(R.id.ajouterNotespinnerMoyenne);
-            spinnerMatiere = (Spinner) findViewById(R.id.spinner);
-            final String selectionner = "-- Selectionner --";
-            List<String> exemple = new ArrayList<String>();
-            exemple.add(selectionner);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerMatiere.setAdapter(adapter);
-            spinnerMatiere.setSelection(0);
-            spinnerMatiere.setEnabled(false);
-            ajouterNotespinnerMoyenne.setAdapter(adapter);
-            ajouterNotespinnerMoyenne.setSelection(0);
-            ajouterNotespinnerMoyenne.setEnabled(false);
-            begin = false;
-        }
-    }
 
-    public void initField(){
-        beginSpinner();
-        anneeSpinner = (Spinner) findViewById(R.id.ajouterNotespinnerAnnee);
-        buttonAjouter = (Button) findViewById(R.id.ajouterBouton);
-        buttonAjouter.setEnabled(false);
-        noteField = (FormEditText) findViewById(R.id.noteField);
-        coefField = (FormEditText) findViewById(R.id.coefField);
-    }
+
+
 
     // BOUTON AJOUTER NOTE
     public void ajouterNote(View view){
@@ -228,17 +323,13 @@ public class AjouterNoteActivity extends Activity {
             note.setCoef(Integer.valueOf(coefField.getText().toString()));
             note.setId((int) noteBdd.insert(note));
             runBDD.getMatiereNoteBdd().insert(note,matiere);
+            //IMoyenne moyenne = (IMoyenne) runBDD.getMoyenneMatiereBdd().getOtherObjetWithId(matiere.getId());
             runBDD.close();
             startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
             finish();
         }
     }
 
-    public void activerBoutonAjouter(){
-        if(tousValides[1] && tousValides[0] && tousValides[2] ){
-            buttonAjouter.setEnabled(true);
-        }
-    }
 
     public void retourNoteButton(View view){
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));

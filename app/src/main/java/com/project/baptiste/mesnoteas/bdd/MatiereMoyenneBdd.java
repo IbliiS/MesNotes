@@ -100,6 +100,33 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         return matieres;
     }
 
+    /**
+     * Récupérer une moyenne depuis une matière
+     * @param id l'id de la matière
+     * @return la moyenne
+     */
+    @Override
+    public IObjet getOtherObjetWithId(int id){
+        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MATIEREMOYENNE + " WHERE "+ COL_REFMATIERE + "=" + id, null);
+        return cursorToOtherObject(c);
+    }
+
+
+    @Override
+    public IObjet cursorToOtherObject(Cursor c) {
+        IMoyenne moyenne = new Moyenne();
+        if(c.getCount()==0){
+            return moyenne;
+        }
+        c.moveToFirst();
+        int idMoyenne;
+        idMoyenne = c.getInt(NUM_COL_REFMOYENNE);
+        moyenne = (IMoyenne) runBDD.getMoyenneBdd().getWithId(idMoyenne);
+        moyenne.setMatieres(getListObjetWithId(moyenne.getId()));
+        c.close();
+        return moyenne;
+    }
+
     @Override
     public List<IObjet> getAll() {
         open();
@@ -168,4 +195,5 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         return runBDD.getBdd().delete(TABLE_MATIEREMOYENNE, COL_REFMOYENNE + " = " + id, null);
 
     }
+
 }

@@ -104,6 +104,16 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
     }
 
     @Override
+    public IObjet getOtherObjetWithId(int id) {
+        return null;
+    }
+
+    @Override
+    public IObjet cursorToOtherObject(Cursor c) {
+        return null;
+    }
+
+    @Override
     public List<IObjet> getAll() {
         open();
         if(anneesMoyennes.size() == 0 || getNbElements() != anneesMoyennes.size()){

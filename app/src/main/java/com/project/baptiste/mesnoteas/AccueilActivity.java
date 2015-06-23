@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
@@ -39,14 +41,11 @@ public class AccueilActivity extends Activity {
     private Spinner matiereSpinner;
     private List<IObjet> moyennes;
     private List<IObjet> annees;
-    private IObjetBdd noteBdd;
     private boolean begin = true;
     private InitSpinnerAndList initSpinnerAndList;
-    private TextView moyennePeriodeField;
     private TextView moyennePeriodeLabel;
     private Utilitaire utilitaire;
     private TextView labelMoyenneAnnee;
-    private TextView fieldMoyenneAnnee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,27 +53,49 @@ public class AccueilActivity extends Activity {
         setContentView(R.layout.accueil);
         runBDD = RunBDD.getInstance(this);
         initVariable();
-        initTextView();
         initMoyennePeriodeTextView("-- Toutes --");
+        initFab();
         beginSpinner();
     }
 
-    /**
-     * Mettre Text view en bold italic
-     */
-    private void initTextView() {
-        TextView labelAnneeAccueil = (TextView) findViewById(R.id.labelAnneeAccueil);
-        TextView labelMoyenneAccueil = (TextView) findViewById(R.id.labelMoyenneAccueil);
-        TextView labelMatiereAccueil = (TextView) findViewById(R.id.labelMatiereAccueil);
-        TextView[] tabTV = {labelAnneeAccueil,labelMoyenneAccueil,labelMatiereAccueil};
-        SpannableString annee = new SpannableString(getText(R.string.labelAnneeAccueil));
-        SpannableString moyenne = new SpannableString(getText(R.string.labelMoyenneAccueil));
-        SpannableString matiere = new SpannableString(getText(R.string.labelMatiereAccueil));
-        SpannableString[] tabSS = {annee,moyenne,matiere};
-        for(int i =0;i<tabSS.length;i++){
-            tabSS[i].setSpan(new StyleSpan(Typeface.BOLD_ITALIC), 0, tabSS[i].length(), 0);
-            tabTV[i].setText(tabSS[i]);
-        }
+
+    public void initFab(){
+        final FloatingActionButton action_note = (FloatingActionButton) findViewById(R.id.action_note);
+        action_note.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
+                finish();
+            }
+        });
+
+        final FloatingActionButton action_matiere = (FloatingActionButton) findViewById(R.id.action_matiere);
+        action_matiere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AjouterMatiereActivity.class));
+                finish();
+            }
+        });
+
+        final FloatingActionButton action_annee = (FloatingActionButton) findViewById(R.id.action_annee);
+        action_annee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AjouterAnneeActivity.class));
+                finish();
+            }
+        });
+
+        final FloatingActionButton action_periode = (FloatingActionButton) findViewById(R.id.action_periode);
+        action_periode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AjouterMoyenneActivity.class));
+                finish();
+            }
+        });
+
     }
 
     public void beginSpinner(){
@@ -96,14 +117,11 @@ public class AccueilActivity extends Activity {
 
     public void initVariable(){
         utilitaire = new Utilitaire();
-        fieldMoyenneAnnee = (TextView) findViewById(R.id.fieldMoyenneAnnee);
         labelMoyenneAnnee = (TextView) findViewById(R.id.labelMoyenneAnnee);
-        moyennePeriodeField = (TextView) findViewById(R.id.fieldMoyennePeriode);
         moyennePeriodeLabel = (TextView) findViewById(R.id.labelMoyennePeriode);
         notes = new ArrayList<>();
         matieres = new ArrayList<>();
         moyennes = new ArrayList<>();
-        noteBdd = runBDD.getNoteBdd();
         annees = new ArrayList<>();
         anneeSpinner = (Spinner) findViewById(R.id.accueilAnneeSpinner);
         spinner = (Spinner) findViewById(R.id.accueilSpinner);
@@ -119,7 +137,7 @@ public class AccueilActivity extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, initSpinnerAndList.getAnneeString());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         anneeSpinner.setAdapter(adapter);
-        if(initSpinnerAndList.getAnneeString().size() == 0){
+        if(initSpinnerAndList.getAnneeString().size() == 1){
             anneeSpinner.setSelection(0);
         }
         else {
@@ -165,9 +183,15 @@ public class AccueilActivity extends Activity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item_selected = spinner.getSelectedItem().toString();
                 if (item_selected.equals(toutes)) {
-                    matieres = initSpinnerAndList.initMatieresParAnnee(anneeSpinner.getSelectedItem().toString());
+                    if (annees.size() != 0) {
+                        matieres = initSpinnerAndList.initMatieresParAnnee(anneeSpinner.getSelectedItem().toString());
+
+                    }
+
                 } else {
-                    matieres = initSpinnerAndList.initMatieresParMoyenne(item_selected);
+                    if (matieres.size() != 0) {
+                        matieres = initSpinnerAndList.initMatieresParMoyenne(item_selected);
+                    }
                 }
                 initMoyennePeriodeTextView(item_selected);
                 matiereSpinner = initSpinnerAndList.getMatiereSpinner();
@@ -197,6 +221,7 @@ public class AccueilActivity extends Activity {
                     initListView();
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 return;
@@ -206,29 +231,29 @@ public class AccueilActivity extends Activity {
 
     public void initMoyennePeriodeTextView(String item_selected){
         if(item_selected.equals("-- Toutes --")){
-            moyennePeriodeField.setText("");
             moyennePeriodeLabel.setText("");
         }
         else{
             runBDD.open();
             IMoyenne m = (IMoyenne) runBDD.getMoyenneBdd().getWithName(item_selected);
             runBDD.close();
-            moyennePeriodeField.setText(utilitaire.coupeMoyenne(m.getMoyenne()));
-            moyennePeriodeLabel.setText("Moyenne période "+item_selected+ " :");
+            //moyennePeriodeField.setText(utilitaire.coupeMoyenne(m.getMoyenne()));
+            moyennePeriodeLabel.setText("Moyenne "+item_selected+ " : " +utilitaire.coupeMoyenne(m.getMoyenne()));
         }
     }
 
     public void initMoyenneAnneeTextView(String item_selected){
         if(item_selected.equals("-- Toutes --")){
             labelMoyenneAnnee.setText("");
-            fieldMoyenneAnnee.setText("");
         }
         else{
             runBDD.open();
             IAnnee a = (IAnnee) runBDD.getAnneeBdd().getWithName(item_selected);
             runBDD.close();
-            fieldMoyenneAnnee.setText(utilitaire.coupeMoyenne(a.getMoyenne()));
-            labelMoyenneAnnee.setText("Moyenne année "+item_selected+ " :");
+            if(  !(a.getNomAnnee().equals("")) ) {
+                //fieldMoyenneAnnee.setText(utilitaire.coupeMoyenne(a.getMoyenne()));
+                labelMoyenneAnnee.setText("Moyenne " + item_selected + " : " + utilitaire.coupeMoyenne(a.getMoyenne()));
+            }
         }
     }
 
@@ -239,25 +264,6 @@ public class AccueilActivity extends Activity {
         listView.setAdapter(noteListViewAdapter);
     }
 
-    //lancer une autre vue
-    public void addNote(View view){
-        startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
-        finish();
-    }
-
-    public void addAnnee(View view){
-        startActivity(new Intent(getApplicationContext(), AjouterAnneeActivity.class ));
-        finish();
-    }
-
-    public void addMoyenne(View view){
-        startActivity(new Intent(getApplicationContext(), AjouterMoyenneActivity.class));
-        finish();
-    }
-
-    public void addMatiere(View view){
-        startActivity(new Intent(getApplicationContext(), AjouterMatiereActivity.class));
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

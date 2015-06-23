@@ -107,6 +107,17 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
         return  notes;
     }
 
+    @Override
+    public IObjet getOtherObjetWithId(int id) {
+
+        return null;
+    }
+
+    @Override
+    public IObjet cursorToOtherObject(Cursor c) {
+        return null;
+    }
+
 
     @Override
     public List<IObjet> getAll(){
