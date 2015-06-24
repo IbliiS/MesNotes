@@ -24,7 +24,22 @@
     <color name="bluelight_pressed">#80D8FF</color>
 
 
+    <color name="annee_color">#D500F9</color>
+    <color name="moyenne_color">#76FF03</color>
+    <color name="matiere_color">#00B0FF</color>
+    <color name="note_color">#FF8F00</color>
 
 
 
+
+    <color name="bluedark">#303F9F</color>
+    <color name="green">#4CAF50</color>
+    <color name="purpledark">#673AB7</color>
+    <color name="cyan">#00BCD4</color>
+    <color name="orange">#e95609</color>
+
+    <color name="accent_color">@color/cyan</color>
+    <color name="colorPrimary">@color/cyan</color>
+    <color name="colorPrimaryDark">@color/cyan</color>
+    <color name="statusBarColor">@color/cyan</color>
 </resources>

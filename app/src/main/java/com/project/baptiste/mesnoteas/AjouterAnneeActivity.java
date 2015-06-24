@@ -1,15 +1,18 @@
 package com.project.baptiste.mesnoteas;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
+import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity.*;
 import com.andreabaccega.widget.FormEditText;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.general.Annee;
-import com.project.baptiste.mesnoteas.general.Moyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
@@ -19,7 +22,7 @@ import java.util.List;
 /**
  * Created by Baptiste on 19/06/2015.
  */
-public class AjouterAnneeActivity extends Activity{
+public class AjouterAnneeActivity extends AppCompatActivity {
     private FormEditText nomAnnee;
     private List<IObjet> annees;
     private List<String> anneeString;
@@ -33,7 +36,38 @@ public class AjouterAnneeActivity extends Activity{
         setContentView(R.layout.ajouter_annee);
         initField();
         initVar();
+        initToolbar();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater myMenu = getMenuInflater();
+        myMenu.inflate(R.menu.my_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.addOne){
+            ajouterAnnee();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterAnnee);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+    }
+
+
 
     private void initVar() {
         runBDD = RunBDD.getInstance(this);
@@ -51,7 +85,7 @@ public class AjouterAnneeActivity extends Activity{
         nomAnnee = (FormEditText) findViewById(R.id.nom_anneeField);
     }
 
-    public void ajouterAnnee(View view){
+    public void ajouterAnnee(){
         String nomAnnee = this.nomAnnee.getText().toString();
         if(anneeString.contains(nomAnnee)){
             Toast.makeText(getApplicationContext(),

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,21 +8,25 @@
     android:background="@color/white"
     >
 
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbarAjouterAnnee"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/purple"
         >
-        <TextView
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/ajouterAnneeTitre"
-            android:id="@+id/ajouterAnneeTitre"
-            android:gravity="center"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"/>
+        <!--<TextView-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:text="@string/ajouterAnneeTitre"-->
+            <!--android:id="@+id/ajouterAnneeTitre"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:layout_marginBottom="25dp"/>-->
 
     </LinearLayout>
 
@@ -45,14 +50,7 @@
         verificator:testType="regexp"
         verificator:customRegexp="^[a-zA-Z][a-zA-Z0-9 ]{1,30}$"
         verificator:testErrorString="@string/nom_anneeField" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ajouterAnneeBouton"
-        android:onClick="ajouterAnnee"
-        android:id="@+id/ajouterAnneeBouton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

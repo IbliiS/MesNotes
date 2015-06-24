@@ -177,7 +177,7 @@
 
     <TextView
         android:layout_below="@+id/listView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/labelMoyenneAnnee"
         android:id="@+id/labelMoyenneAnnee"
@@ -189,7 +189,7 @@
     <TextView
 
         android:layout_below="@+id/labelMoyenneAnnee"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/labelMoyennePeriode"
         android:id="@+id/labelMoyennePeriode"

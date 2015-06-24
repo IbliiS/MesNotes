@@ -131,7 +131,7 @@ public class AjouterMatiereActivity extends Activity {
                 matiere.setId((int) matiereBdd.insert(matiere));
                 runBDD.getMoyenneMatiereBdd().insert(matiere, moyenne);
                 runBDD.close();
-                startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
+                startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
                 finish();
             }
         }

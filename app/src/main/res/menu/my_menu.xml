@@ -1,22 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MesNotesActivity">
-
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        app:showAsAction="never"
-        />
+    tools:context=".MesNotesActivity"
+    >
 
     <item
         android:id="@+id/addOne"
         android:title="@string/add"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         app:showAsAction="always"
         app:icon="@drawable/ic_done_black"
         />
-
 
 </menu>

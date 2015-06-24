@@ -243,7 +243,7 @@ public class AccueilActivity extends Activity {
     }
 
     public void initMoyenneAnneeTextView(String item_selected){
-        if(item_selected.equals("-- Toutes --")){
+        if(item_selected.equals("-- Toutes --") || item_selected.equals("-- Selectionner --")){
             labelMoyenneAnnee.setText("");
         }
         else{
