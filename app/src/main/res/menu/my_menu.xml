@@ -8,10 +8,9 @@
 
     <item
         android:id="@+id/addOne"
+        android:icon="@drawable/ic_done_white_24dp"
         android:title="@string/add"
-        android:orderInCategory="200"
         app:showAsAction="always"
-        app:icon="@drawable/ic_done_black"
         />
 
 </menu>

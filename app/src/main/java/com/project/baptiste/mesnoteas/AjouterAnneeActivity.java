@@ -54,12 +54,16 @@ public class AjouterAnneeActivity extends AppCompatActivity {
         if(id == R.id.addOne){
             ajouterAnnee();
         }
+        if (item.getItemId() == android.R.id.home) {
+            retourAnneeBouton();
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterAnnee);
+        toolbar.setTitle("Ajout Année");
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -109,7 +113,7 @@ public class AjouterAnneeActivity extends AppCompatActivity {
         }
     }
 
-    public void retourAnneeBouton(View view){
+    public void retourAnneeBouton(){
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
     }

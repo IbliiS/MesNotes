@@ -6,26 +6,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
+    android:theme="@style/AppThemeNote"
     >
 
-    <!-- Label titre -->
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:popupTheme="@style/AppThemeNoteToolbar"
+        android:theme="@style/AppThemeNoteToolbar"
+        android:id="@+id/toolbarAjouterNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/amber"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/ajouterNoteTitre"
-            android:id="@+id/ajouterNoteTitre"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
-            android:gravity="center"
-            android:textColor="@color/white"
-            />
-    </LinearLayout>
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/note_color"
+        />
 
 
     <!-- Labels des spinner annee matiere et periode -->
@@ -33,6 +26,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:weightSum="99">
 
         <TextView
@@ -77,6 +71,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:weightSum="99">
 
         <Spinner
@@ -109,7 +104,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:weightSum="100"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -177,23 +172,6 @@
             verificator:testErrorString="@string/coefField"/>
 
     </LinearLayout>
-    <!-- Boutons -->
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ajouterBouton"
-            android:onClick="ajouterNote"
-            android:id="@+id/ajouterBouton"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/retourNoteBouton"
-            android:onClick="retourNoteButton"
-            android:id="@+id/retourNoteBouton"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp" />
 
 </LinearLayout>

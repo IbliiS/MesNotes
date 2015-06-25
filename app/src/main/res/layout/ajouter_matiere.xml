@@ -6,27 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:theme="@style/AppThemeMatiere"
     >
 
-
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:popupTheme="@style/AppThemeMatiereToolbar"
+        android:theme="@style/AppThemeMatiereToolbar"
+        android:id="@+id/toolbarAjouterMatiere"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bluelight"
-        >
-        <TextView
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/ajouterMatiereTitre"
-            android:id="@+id/ajouterMatiereTitre"
-            android:gravity="center"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"/>
-
-    </LinearLayout>
-
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/matiere_color"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -82,24 +74,5 @@
         verificator:testType="regexp"
         verificator:customRegexp="^[0-9]{1,2}$"
         verificator:testErrorString="@string/coef_matiereField"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ajouterMatiereBouton"
-        android:onClick="ajouterMatiere"
-        android:id="@+id/ajouterMatiereBouton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/retourMatiereBouton"
-        android:onClick="retourMatiereButton"
-        android:id="@+id/retourMatiereBouton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
-
-
 
 </LinearLayout>

@@ -5,26 +5,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:theme="@style/AppThemeMoyenne"
     >
 
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:popupTheme="@style/AppThemeMoyenneToolbar"
+        android:theme="@style/AppThemeMoyenneToolbar"
+        android:id="@+id/toolbarAjouterMoyenne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/greenlight"
-        >
-        <TextView
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/ajouterMoyenneTitre"
-            android:id="@+id/ajouterMoyenneTitre"
-            android:gravity="center"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"/>
-
-    </LinearLayout>
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/moyenne_color"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,22 +54,5 @@
         verificator:testType="regexp"
         verificator:customRegexp="^[a-zA-Z][a-zA-Z0-9 ]{1,30}$"
         verificator:testErrorString="@string/nom_moyenneField" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ajouterMoyenneBouton"
-        android:onClick="ajouterMoyenne"
-        android:id="@+id/ajouterMoyenneBouton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/retourMoyenneBouton"
-        android:onClick="retourMoyenneButton"
-        android:id="@+id/retourMatiereBouton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
-
 
 </LinearLayout>

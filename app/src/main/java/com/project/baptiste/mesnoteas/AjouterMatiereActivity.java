@@ -3,6 +3,11 @@ package com.project.baptiste.mesnoteas;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,9 +28,8 @@ import java.util.List;
 /**
  * Created by Baptiste on 14/06/2015.
  */
-public class AjouterMatiereActivity extends Activity {
+public class AjouterMatiereActivity extends AppCompatActivity {
     private RunBDD runBDD;
-    private Button ajouterMatiereButton;
     private FormEditText nomMatiereField;
     private FormEditText coefMatiereField;
     private List<String> matieres;
@@ -43,10 +47,43 @@ public class AjouterMatiereActivity extends Activity {
         setContentView(R.layout.ajouter_matiere);
         runBDD = RunBDD.getInstance(this);
         matiereBdd = runBDD.getMatiereBdd();
+        initToolbar();
         initMatieres();
         initMoyennes();
         initField();
         initSpinnerMoyenne();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater myMenu = getMenuInflater();
+        myMenu.inflate(R.menu.my_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.addOne){
+            ajouterMatiere();
+        }
+        if (item.getItemId() == android.R.id.home) {
+            retourMatiereButton();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterMatiere);
+        toolbar.setTitle("Ajout Matière");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 
@@ -61,7 +98,6 @@ public class AjouterMatiereActivity extends Activity {
                 String item_selected = ajouterMatiereSpinnerMoyenne.getSelectedItem().toString();
                 if (!(item_selected.equals(selectionner))) {
                     tousValides[1]=true;
-                    ajouterMatiereButton.setEnabled(true);
                 }
             }
 
@@ -85,10 +121,8 @@ public class AjouterMatiereActivity extends Activity {
     }
 
     public void initField(){
-        ajouterMatiereButton = (Button) findViewById(R.id.ajouterMatiereBouton);
         nomMatiereField = (FormEditText) findViewById(R.id.nom_matiereField);
         coefMatiereField = (FormEditText) findViewById(R.id.coef_matiereField);
-        ajouterMatiereButton.setEnabled(false);
 
 
     }
@@ -113,7 +147,18 @@ public class AjouterMatiereActivity extends Activity {
         }
     }
 
-    public void ajouterMatiere(View view){
+    public void verifMatiere(){
+        String nomMatiere = nomMatiereField.getText().toString();
+        // LA MATIERE EXISTE DEJA
+        if(matieres.contains(nomMatiere)){
+            Toast.makeText(getApplicationContext(),
+                    "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
+        }
+        else tousValides[0]=true;
+    }
+
+
+    public void ajouterMatiere(){
         verifMatiere();
         if( tousValides[0] && tousValides[1]){
             boolean allValid = true;
@@ -137,18 +182,9 @@ public class AjouterMatiereActivity extends Activity {
         }
     }
 
-    public void verifMatiere(){
-        String nomMatiere = nomMatiereField.getText().toString();
-        // LA MATIERE EXISTE DEJA
-        if(matieres.contains(nomMatiere)){
-            Toast.makeText(getApplicationContext(),
-                    "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
-        }
-        else tousValides[0]=true;
-    }
 
 
-    public void retourMatiereButton(View view){
+    public void retourMatiereButton(){
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
     }

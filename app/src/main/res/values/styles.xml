@@ -3,31 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base">
-
-    </style>
-
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--<item name="windowActionBar">false</item>-->
-        <!--<item name="windowNoTitle">true</item>-->
-
-        <!-- Material Theme -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColorSecondary">@color/black</item>
-        <item name="colorAccent">@color/green</item>
-
-        <!--<item name="android:statusBarColor" tools:targetApi="21">@color/statusBarColor</item>-->
-        <!--<item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="21">true</item>-->
-
     </style>
-    
-    <style name="MyCustomToolBarTheme" parent="ThemeOverlay.AppCompat.Light">
 
-        <item name="colorAccent">@color/greenlight</item>
 
+    <style name="AppThemeMatiere" parent="AppTheme">
+        <item name="colorAccent">@color/matiere_color</item>
     </style>
+
+    <style name="AppThemeMatiereToolbar" parent="AppTheme">
+        <item name="colorPrimary">@color/matiere_color</item>
+        <item name="colorPrimaryDark">@color/matiere_colorDark</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+
+    <style name="AppThemeMoyenne" parent="AppTheme">
+        <item name="colorAccent">@color/moyenne_color</item>
+    </style>
+
+    <style name="AppThemeMoyenneToolbar" parent="AppTheme">
+        <item name="colorPrimary">@color/moyenne_color</item>
+        <item name="colorPrimaryDark">@color/moyenne_colorDark</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+
+    <style name="AppThemeAnnee" parent="AppTheme">
+        <item name="colorAccent">@color/annee_color</item>
+    </style>
+
+    <style name="AppThemeAnneeToolbar" parent="AppTheme">
+        <item name="colorPrimary">@color/annee_color</item>
+        <item name="colorPrimaryDark">@color/annee_colorDark</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+    <style name="AppThemeNote" parent="AppTheme">
+        <item name="colorAccent">@color/note_color</item>
+    </style>
+
+    <style name="AppThemeNoteToolbar" parent="AppTheme">
+        <item name="colorPrimary">@color/note_color</item>
+        <item name="colorPrimaryDark">@color/note_colorDark</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
 
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>

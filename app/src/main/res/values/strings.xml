@@ -19,16 +19,16 @@
     <string name="labelMoyenneAnnee">Moyenne année :</string>
     <!-- ajouter_note  -->
     <string name="ajouterNoteTitre">Ajout d\'une note</string>
-    <string name="labelMatiere">Choix de la matière</string>
+    <string name="labelMatiere">Matière</string>
     <string name="ajoutNote">Ajout note</string>
     <string name="noteField">Entrez une note correcte.</string>
     <string name="ajoutCoef">Ajout coefficient</string>
     <string name="coefField">Entrez un coef correct</string>
     <string name="ajouterBouton">Ajouter</string>
     <string name="retourNoteBouton">Retour</string>
-    <string name="labelMoyenne">Choix de la période</string>
+    <string name="labelMoyenne">Période</string>
     <string name="ajouterNoteTextViewVide"></string>
-    <string name="labelAnnee">Choix de l\'année</string>
+    <string name="labelAnnee">Année</string>
     <!-- ajouter_matiere  -->
     <string name="ajouterMatiereTitre">Ajout d\'une matière</string>
     <string name="labelMatiereNom">Nom de la matière</string>

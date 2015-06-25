@@ -3,6 +3,11 @@ package com.project.baptiste.mesnoteas;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,7 +29,7 @@ import java.util.List;
 /**
  * Created by Baptiste on 15/06/2015.
  */
-public class AjouterMoyenneActivity extends Activity {
+public class AjouterMoyenneActivity extends AppCompatActivity {
     private FormEditText nomMoyenne;
     private List<IObjet> moyennes;
     private List<String> moyenneString;
@@ -33,16 +38,46 @@ public class AjouterMoyenneActivity extends Activity {
     private IMoyenne moyenne;
     private List<IObjet> annees;
     private Spinner anneeSpinner;
-    private Button ajouterButton;
+    private boolean estSelect = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajouter_moyenne);
         initField();
+        initToolbar();
         initVar();
         initAnneeSpinner();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater myMenu = getMenuInflater();
+        myMenu.inflate(R.menu.my_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.addOne){
+            ajouterMoyenne();
+        }
+        if (item.getItemId() == android.R.id.home) {
+            retourMoyenneButton();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterMoyenne);
+        toolbar.setTitle("Ajout Période");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -58,13 +93,14 @@ public class AjouterMoyenneActivity extends Activity {
                     moyennes.clear();
                     moyennes = runBDD.getAnneeMoyenneBdd().getListObjetWithId(annee.getId());
                     runBDD.close();
-                    ajouterButton.setEnabled(true);
                     IMoyenne m;
                     for(IObjet o : moyennes){
                         m = (IMoyenne) o;
                         moyenneString.add(m.getNomMoyenne());
                     }
+                    estSelect = true;
                 }
+                else estSelect = false;
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -95,12 +131,10 @@ public class AjouterMoyenneActivity extends Activity {
     }
 
     private void initField() {
-        ajouterButton = (Button) findViewById(R.id.ajouterMoyenneBouton);
-        ajouterButton.setEnabled(false);
         nomMoyenne = (FormEditText) findViewById(R.id.nom_moyenneField);
     }
 
-    public void ajouterMoyenne(View view){
+    public void ajouterMoyenne(){
         String nomAnnee = anneeSpinner.getSelectedItem().toString();
         String nomMoyenne = this.nomMoyenne.getText().toString();
         runBDD.open();
@@ -110,17 +144,13 @@ public class AjouterMoyenneActivity extends Activity {
             Toast.makeText(getApplicationContext(),
                     "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
         }
-        //if(moyenneString.contains(nomMoyenne)){
-         //   Toast.makeText(getApplicationContext(),
-        //            "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
-        //}
         else{
             boolean allValid = true;
             FormEditText[] formEditTexts = {this.nomMoyenne};
             for(FormEditText f : formEditTexts){
                 allValid = f.testValidity() && allValid;
             }
-            if (allValid) {
+            if (allValid && estSelect) {
                 runBDD.open();
                 IAnnee annee = (IAnnee) runBDD.getAnneeBdd().getWithName(nomAnnee);
                 moyenne = annee.creerMoyenne();
@@ -134,7 +164,7 @@ public class AjouterMoyenneActivity extends Activity {
         }
     }
 
-    public void retourMoyenneButton(View view){
+    public void retourMoyenneButton(){
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
     }
