@@ -13,8 +13,8 @@
     <string name="accueilButtonAjouterMatiere">Ajout matière</string>
     <string name="labelMatiereListViewAccueil">Matière</string>
     <string name="labelNoteListViewAccueil">Note</string>
-    <string name="labelCoefListViewAccueil">Coeff</string>
-    <string name="labelMoyenneListViewAccueil">Moyenne</string>
+    <string name="labelCoefListViewAccueil">Coef</string>
+    <string name="labelMoyenneListViewAccueil">Moyen.</string>
     <string name="labelMoyennePeriode">Moyenne période :</string>
     <string name="labelMoyenneAnnee">Moyenne année :</string>
     <!-- ajouter_note  -->
@@ -58,5 +58,6 @@
 
 
     <string name="add">Ajouter</string>
+    <string name="delete">delete</string>
 
 </resources>

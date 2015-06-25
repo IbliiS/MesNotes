@@ -75,14 +75,14 @@
         android:weightSum="99">
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="33"
             android:id="@+id/ajouterNotespinnerAnnee"
             android:gravity="left" />
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="33"
             android:id="@+id/ajouterNotespinnerMoyenne"
@@ -90,7 +90,7 @@
            />
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="33"
             android:id="@+id/spinner"

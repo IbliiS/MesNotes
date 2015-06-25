@@ -44,7 +44,7 @@ public class InitSpinnerAndList{
         this.anneeSpinner = anneeSpinner;
         this.matiereSpinner = matiereSpinner;
         utilitaire = new Utilitaire();
-        annees = utilitaire.copyList(runBDD.getAnneeBdd().getAll());
+        annees = runBDD.getAnneeBdd().getAll();
         initAnneeSpinner();
     }
 
@@ -155,6 +155,15 @@ public class InitSpinnerAndList{
                 notes.add(n);
             }
             runBDD.close();
+        }
+    }
+
+    public void supprimerNotes(List<IObjet> notes){
+        runBDD.open();
+        INote n;
+        for(IObjet o : notes){
+            n = (INote) o;
+            runBDD.getMatiereNoteBdd().removeOtherObjectWithID(n.getId());
         }
     }
 

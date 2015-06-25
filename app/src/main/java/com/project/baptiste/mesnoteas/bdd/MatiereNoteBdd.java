@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteStatement;
 import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetAssoBdd;
 import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.general.Matiere;
+import com.project.baptiste.mesnoteas.general.Moyenne;
 import com.project.baptiste.mesnoteas.general.Note;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
+import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
@@ -76,7 +78,7 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
 
     /**
      * Retourne la liste de note d'une matiere
-     * @param i
+     * @param i id de la matiere
      * @return liste de note
      */
     @Override
@@ -89,6 +91,7 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
     public List<IObjet> cursorToObject(Cursor c) {
         List<IObjet> notes = new ArrayList<>();
         if(c.getCount() == 0){
+            c.close();
             return notes;
         }
         if(c.moveToFirst()){
@@ -104,19 +107,11 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
                 c.moveToNext();
             }
         }
+        c.close();
         return  notes;
     }
 
-    @Override
-    public IObjet getOtherObjetWithId(int id) {
 
-        return null;
-    }
-
-    @Override
-    public IObjet cursorToOtherObject(Cursor c) {
-        return null;
-    }
 
 
     @Override
@@ -185,8 +180,52 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
             }
             matieresNotes.remove(matiereADelete);
         }
-        //runBDD.getMatiereBdd().removeWithID(id);
+        runBDD.getMoyenneMatiereBdd().removeOtherObjectWithID(id);
+        runBDD.getMatiereBdd().removeWithID(id);
         return runBDD.getBdd().delete(TABLE_MATIERENOTE, COL_REFMATIERE + " = " + id, null);
+    }
+
+    /**
+     * Récuperer une matière depuis une note
+     * @param id l'id de la note
+     * @return la matière
+     */
+    @Override
+    public IObjet getOtherObjetWithId(int id) {
+        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_MATIERENOTE + " WHERE "+ COL_REFNOTE + "=" + id, null);
+        return cursorToOtherObject(c);
+    }
+
+    @Override
+    public IObjet cursorToOtherObject(Cursor c) {
+        IMatiere matiere = new Matiere();
+        if(c.getCount()==0){
+            c.close();
+            return matiere;
+        }
+        c.moveToFirst();
+        int idMatiere;
+        idMatiere = c.getInt(NUM_COL_REFMATIERE);
+        matiere = (IMatiere) runBDD.getMatiereBdd().getWithId(idMatiere);
+        matiere.setNotes(getListObjetWithId(matiere.getId()));
+        c.close();
+        return matiere;
+    }
+
+    /**
+     * Suppression de la note avec son id
+     * @param id de la Note
+     * @return id de a note supprimée
+     */
+    @Override
+    public int removeOtherObjectWithID(int id){
+        runBDD.open();
+        INote noteADelete = (INote) runBDD.getNoteBdd().getWithId(id);
+        IMatiere matiere = (IMatiere) getOtherObjetWithId(noteADelete.getId());
+        IMatiere m = (IMatiere) matieresNotes.get(matieresNotes.indexOf(matiere));
+        m.getNotes().remove(noteADelete);
+        runBDD.getNoteBdd().removeWithID(id);
+        return runBDD.getBdd().delete(TABLE_MATIERENOTE, COL_REFNOTE + " = " + id, null);
     }
 
 }

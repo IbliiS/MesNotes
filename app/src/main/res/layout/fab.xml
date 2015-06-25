@@ -22,33 +22,37 @@
         android:id="@+id/action_annee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        fab:fab_colorNormal="@color/purple"
+        fab:fab_colorNormal="@color/annee_color"
         fab:fab_title="Année"
-        fab:fab_colorPressed="@color/purple_pressed"/>
+        fab:fab_icon="@drawable/ic_annee"
+        fab:fab_colorPressed="@color/annee_colorPressed"/>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/action_periode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        fab:fab_colorNormal="@color/greenlight"
+        fab:fab_colorNormal="@color/moyenne_color"
         fab:fab_title="Période"
-        fab:fab_colorPressed="@color/greenlight_pressed"/>
+        fab:fab_icon="@drawable/ic_periode"
+        fab:fab_colorPressed="@color/moyenne_colorPressed"/>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/action_matiere"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        fab:fab_colorNormal="@color/bluelight"
+        fab:fab_colorNormal="@color/matiere_color"
         fab:fab_title="Matière"
-        fab:fab_colorPressed="@color/bluelight_pressed"/>
+        fab:fab_icon="@drawable/ic_matiere"
+        fab:fab_colorPressed="@color/matiere_colorPressed"/>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/action_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        fab:fab_colorNormal="@color/amber"
+        fab:fab_colorNormal="@color/note_color"
         fab:fab_title="Note"
-        fab:fab_colorPressed="@color/amber_pressed"/>
+        fab:fab_icon="@drawable/ic_note"
+        fab:fab_colorPressed="@color/note_colorPressed"/>
 
 
 </com.getbase.floatingactionbutton.FloatingActionsMenu>

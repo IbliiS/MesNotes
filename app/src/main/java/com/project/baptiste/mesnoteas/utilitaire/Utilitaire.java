@@ -29,6 +29,9 @@ public class Utilitaire {
      * @return le string coupé
      */
     public String coupeMoyenne(Double d){
+        if(d == -1){
+            return "Pas de note";
+        }
         String moy;
         String nombre =String.valueOf(d);
         moy = nombre.concat("000");

@@ -1,28 +1,25 @@
 package com.project.baptiste.mesnoteas;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
-import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
-import com.project.baptiste.mesnoteas.general.interfaces.INote;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.listAdapter.InitSpinnerAndList;
 import com.project.baptiste.mesnoteas.listAdapter.NoteListViewAdapter;
@@ -32,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AccueilActivity extends Activity {
+public class AccueilActivity extends AppCompatActivity {
     private RunBDD runBDD;
     private List<IObjet> notes;
     private List<IObjet> matieres;
@@ -46,18 +43,43 @@ public class AccueilActivity extends Activity {
     private TextView moyennePeriodeLabel;
     private Utilitaire utilitaire;
     private TextView labelMoyenneAnnee;
+    private int countSelectItem = 0;
+    private List<IObjet> list_selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accueil);
         runBDD = RunBDD.getInstance(this);
+        initToolbar();
         initVariable();
         initMoyennePeriodeTextView("-- Toutes --");
         initFab();
         beginSpinner();
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_mes_notes, menu);
+            return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAccueil);
+        toolbar.setLogo(R.drawable.ic_accueil);
+        toolbar.setTitle("Mes Notes");
+        setSupportActionBar(toolbar);
+    }
 
     public void initFab(){
         final FloatingActionButton action_note = (FloatingActionButton) findViewById(R.id.action_note);
@@ -116,6 +138,7 @@ public class AccueilActivity extends Activity {
     }
 
     public void initVariable(){
+        list_selected = new ArrayList<>();
         utilitaire = new Utilitaire();
         labelMoyenneAnnee = (TextView) findViewById(R.id.labelMoyenneAnnee);
         moyennePeriodeLabel = (TextView) findViewById(R.id.labelMoyennePeriode);
@@ -132,17 +155,15 @@ public class AccueilActivity extends Activity {
         initAnneeSpinner2();
     }
 
-
     public void initAnneeSpinner2(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, initSpinnerAndList.getAnneeString());
+        List<String> l = initSpinnerAndList.getAnneeString();
+        if(l.size() > 1){
+            l.remove(0);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, l);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         anneeSpinner.setAdapter(adapter);
-        if(initSpinnerAndList.getAnneeString().size() == 1){
-            anneeSpinner.setSelection(0);
-        }
-        else {
-            anneeSpinner.setSelection(1);
-        }
+        anneeSpinner.setSelection(0);
         final String selectionner = "-- Selectionner --";
         anneeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -218,8 +239,16 @@ public class AccueilActivity extends Activity {
                 String item_selected = matiereSpinner.getSelectedItem().toString();
                 if (!(item_selected.equals(selectionner))) {
                     matieres = initSpinnerAndList.initMatiereParMatiere(item_selected);
-                    initListView();
                 }
+                else{
+                    if(spinner.getSelectedItem().equals(selectionner)){
+                        matieres = initSpinnerAndList.initMatieresParAnnee(anneeSpinner.getSelectedItem().toString());
+                    }
+                    else {
+                        matieres = initSpinnerAndList.initMatieresParMoyenne(spinner.getSelectedItem().toString());
+                    }
+                }
+                initListView();
             }
 
             @Override
@@ -237,7 +266,6 @@ public class AccueilActivity extends Activity {
             runBDD.open();
             IMoyenne m = (IMoyenne) runBDD.getMoyenneBdd().getWithName(item_selected);
             runBDD.close();
-            //moyennePeriodeField.setText(utilitaire.coupeMoyenne(m.getMoyenne()));
             moyennePeriodeLabel.setText("Moyenne "+item_selected+ " : " +utilitaire.coupeMoyenne(m.getMoyenne()));
         }
     }
@@ -251,7 +279,6 @@ public class AccueilActivity extends Activity {
             IAnnee a = (IAnnee) runBDD.getAnneeBdd().getWithName(item_selected);
             runBDD.close();
             if(  !(a.getNomAnnee().equals("")) ) {
-                //fieldMoyenneAnnee.setText(utilitaire.coupeMoyenne(a.getMoyenne()));
                 labelMoyenneAnnee.setText("Moyenne " + item_selected + " : " + utilitaire.coupeMoyenne(a.getMoyenne()));
             }
         }
@@ -262,21 +289,65 @@ public class AccueilActivity extends Activity {
         NoteListViewAdapter noteListViewAdapter = new NoteListViewAdapter(this,notes,matieres);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(noteListViewAdapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                // Here you can do something when items are selected/de-selected,
+                // such as update the title in the CAB
+                if(list_selected.contains(notes.get(position))){
+                    countSelectItem --;
+                    list_selected.remove(notes.get(position));
+                }
+                else {
+                    countSelectItem ++;
+                    list_selected.add(notes.get(position));
+                }
+                mode.setTitle(countSelectItem + " Note(s) select.");
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // Inflate the menu for the CAB
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.menu_suppress, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                // Here you can perform updates to the CAB due to
+                // an invalidate() request
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                // Respond to clicks on the actions in the CAB
+                switch (item.getItemId()){
+                    case R.id.suppressItem:
+                        initSpinnerAndList.supprimerNotes(list_selected);
+                        Toast.makeText(getBaseContext(), countSelectItem + " note(s) supprimée(s)", Toast.LENGTH_LONG).show();
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                // Here you can make any necessary updates to the activity when
+                // the CAB is removed. By default, selected items are deselected/unchecked.
+                countSelectItem = 0;
+                notes = initSpinnerAndList.getNotes();
+                list_selected.clear();
+                initListView();
+                initMoyenneAnneeTextView(anneeSpinner.getSelectedItem().toString());
+                initMoyennePeriodeTextView(spinner.getSelectedItem().toString());
+            }
+        });
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_mes_notes, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -64,6 +64,7 @@ public class AjouterAnneeActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterAnnee);
         toolbar.setTitle("Ajout Année");
+        toolbar.setLogo(R.drawable.ic_annee);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -5,33 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:theme="@style/AppTheme"
+    android:theme="@style/AppThemeAccueil"
     >
 
-    <!--Titre-->
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:popupTheme="@style/AppThemeAccueilToolbar"
+        android:theme="@style/AppThemeAccueilToolbar"
+        android:id="@+id/toolbarAccueil"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/blue"
-        android:id="@+id/titleLayout"
-        >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/accueilTitre"
-            android:id="@+id/accueilTitre"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/white"
-            />
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        />
 
     <LinearLayout
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/titleLayout"
+        android:layout_below="@+id/toolbarAccueil"
         android:id="@+id/layoutLabSpin"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -40,38 +29,43 @@
         >
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="20sp"
             android:text="@string/labelAnneeAccueil"
             android:id="@+id/labelAnneeAccueil"
             android:gravity="left"
             android:layout_weight="33"
             android:layout_marginLeft="20dp"
             android:textStyle="bold|italic"
+            android:textColor="@color/black"
             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="20sp"
             android:text="@string/labelMoyenneAccueil"
             android:id="@+id/labelMoyenneAccueil"
             android:layout_weight="33"
             android:gravity="center"
             android:textStyle="bold|italic"
+            android:textColor="@color/black"
+
             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/labelMatiereAccueil"
             android:id="@+id/labelMatiereAccueil"
             android:layout_weight="33"
             android:gravity="right"
+            android:textSize="20sp"
             android:layout_marginRight="20dp"
             android:textStyle="bold|italic"
+            android:textColor="@color/black"
+
             />
     </LinearLayout>
 
@@ -117,9 +111,9 @@
         android:orientation="horizontal"
         android:layout_weight="40"
         android:weightSum="110"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         >
 
         <TextView
@@ -131,6 +125,7 @@
             android:layout_gravity="bottom"
             android:gravity="left"
             android:textColor="@color/black"
+            android:textSize="20sp"
             />
         <TextView
             android:layout_width="match_parent"
@@ -141,6 +136,8 @@
             android:layout_gravity="bottom"
             android:gravity="center"
             android:textColor="@color/black"
+            android:textSize="20sp"
+
             />
 
         <TextView
@@ -148,10 +145,11 @@
             android:layout_height="wrap_content"
             android:text="@string/labelCoefListViewAccueil"
             android:id="@+id/labelCoefListViewAccueil"
-            android:layout_weight="30"
+            android:layout_weight="31"
             android:layout_gravity="bottom"
             android:gravity="center"
             android:textColor="@color/black"
+            android:textSize="20sp"
             />
 
         <TextView
@@ -159,10 +157,11 @@
             android:layout_height="wrap_content"
             android:text="@string/labelMoyenneListViewAccueil"
             android:id="@+id/labelMoyenneListViewAccueil"
-            android:layout_weight="30"
+            android:layout_weight="29"
             android:layout_gravity="bottom"
             android:gravity="right"
             android:textColor="@color/black"
+            android:textSize="20sp"
             />
 
     </LinearLayout>
@@ -173,6 +172,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/listView"
+        android:divider="@color/white"
         />
 
 
@@ -182,6 +182,7 @@
         android:layout_height="wrap_content"
         android:text="@string/labelMoyenneAnnee"
         android:id="@+id/labelMoyenneAnnee"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
         android:textColor="@color/black"
         android:textStyle="italic"

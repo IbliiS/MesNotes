@@ -85,6 +85,7 @@ public class AjouterNoteActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterNote);
         toolbar.setTitle("Ajout Note");
+        toolbar.setLogo(R.drawable.ic_note);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -238,7 +239,6 @@ public class AjouterNoteActivity extends AppCompatActivity {
             note.setCoef(Integer.valueOf(coefField.getText().toString()));
             note.setId((int) noteBdd.insert(note));
             runBDD.getMatiereNoteBdd().insert(note,matiere);
-            //IMoyenne moyenne = (IMoyenne) runBDD.getMoyenneMatiereBdd().getOtherObjetWithId(matiere.getId());
             runBDD.close();
             startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
             finish();

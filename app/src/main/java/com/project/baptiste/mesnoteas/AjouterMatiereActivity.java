@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,6 +24,8 @@ import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.listAdapter.InitSpinnerAndList;
+import com.project.baptiste.mesnoteas.listAdapter.MatiereListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +44,9 @@ public class AjouterMatiereActivity extends AppCompatActivity {
     private List<IObjet> moyennes;
     private List<String> moyennesString;
     private boolean[] tousValides = {false,false};
+    private int countSelectItem = 0;
+    private List<IObjet> list_selected = new ArrayList<>();
+    private List<IObjet> listMatieres;
 
 
     @Override
@@ -47,12 +55,79 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         setContentView(R.layout.ajouter_matiere);
         runBDD = RunBDD.getInstance(this);
         matiereBdd = runBDD.getMatiereBdd();
+        listMatieres = runBDD.getMatiereNoteBdd().getAll();
         initToolbar();
+        initListView();
         initMatieres();
         initMoyennes();
         initField();
         initSpinnerMoyenne();
 
+    }
+
+    private void initListView() {
+        MatiereListViewAdapter matiereListViewAdapter = new MatiereListViewAdapter(listMatieres,this);
+        ListView listView = (ListView) findViewById(R.id.listViewMatiere);
+        listView.setAdapter(matiereListViewAdapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                if (list_selected.contains(listMatieres.get(position))) {
+                    countSelectItem--;
+                    list_selected.remove(listMatieres.get(position));
+                } else {
+                    countSelectItem++;
+                    list_selected.add(listMatieres.get(position));
+                }
+                mode.setTitle(countSelectItem + " Matière(s) select.");
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.menu_suppress, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.suppressItem:
+                        supprimerMatiere(list_selected);
+                        Toast.makeText(getBaseContext(), countSelectItem + " matière(s) supprimée(s)", Toast.LENGTH_LONG).show();
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                countSelectItem = 0;
+                listMatieres = runBDD.getMatiereNoteBdd().getAll();
+                list_selected.clear();
+                initListView();
+                initSpinnerMoyenne();
+            }
+        });
+
+    }
+
+    private void supprimerMatiere(List<IObjet> list_selected) {
+        runBDD.open();
+        IMatiere m;
+        for(IObjet o : list_selected){
+            m = (IMatiere) o;
+            runBDD.getMatiereNoteBdd().removeWithID(m.getId());
+        }
+        runBDD.close();
     }
 
     @Override
@@ -80,6 +155,7 @@ public class AjouterMatiereActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterMatiere);
         toolbar.setTitle("Ajout Matière");
+        toolbar.setLogo(R.drawable.ic_matiere);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -176,7 +252,7 @@ public class AjouterMatiereActivity extends AppCompatActivity {
                 matiere.setId((int) matiereBdd.insert(matiere));
                 runBDD.getMoyenneMatiereBdd().insert(matiere, moyenne);
                 runBDD.close();
-                startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
+                startActivity(new Intent(getApplicationContext(), AjouterMatiereActivity.class));
                 finish();
             }
         }

@@ -86,6 +86,7 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
     public List<IObjet> cursorToObject(Cursor c) {
         List<IObjet> moyennes = new ArrayList<>();
         if(c.getCount()==0){
+            c.close();
             return moyennes;
         }
         if(c.moveToFirst()){
@@ -100,6 +101,7 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
                 c.moveToNext();
             }
         }
+        c.close();
         return moyennes;
     }
 
@@ -179,5 +181,10 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
         runBDD.getAnneeBdd().removeWithID(id);
         return runBDD.getBdd().delete(TABLE_ANNEEMOYENNE, COL_REFANNEE + " = " + id, null);
 
+    }
+
+    @Override
+    public int removeOtherObjectWithID(int id) {
+        return 0;
     }
 }

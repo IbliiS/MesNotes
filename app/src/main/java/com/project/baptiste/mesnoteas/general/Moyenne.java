@@ -47,16 +47,24 @@ public class Moyenne implements IMoyenne {
         double r = 0.0;
         int diviseur = 0;
         if(matieres.isEmpty()){
-            return r;
+            moyenne = -1;
+            return moyenne;
         }
         else {
             IMatiere m;
-            for ( IObjet o : matieres) {
+            for (IObjet o : matieres) {
                 m = (IMatiere) o;
-                r += m.resultatMatiere() * m.getCoef();
-                diviseur += m.getCoef();
+                if(m.getNotes().size() !=  0) {
+                    r += m.resultatMatiere() * m.getCoef();
+                    diviseur += m.getCoef();
+                }
             }
-            moyenne = r / diviseur;
+            if(diviseur == 0){
+                moyenne = -1;
+            }
+            else{
+                moyenne = r / diviseur;
+            }
             return moyenne;
         }
     }

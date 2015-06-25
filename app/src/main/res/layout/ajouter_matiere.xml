@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/matiere_color"
         />
 
     <TextView
@@ -35,44 +34,129 @@
         android:id="@+id/ajouterMatiereSpinnerMoyenne"
         android:gravity="left" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/labelMatiereNom"
-        android:id="@+id/labelMatiereNom"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp" />
+        android:orientation="horizontal"
+        android:weightSum="100"
+        >
+        <TextView
+            android:layout_weight="50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/labelMatiereNom"
+            android:id="@+id/labelMatiereNom"
+            android:gravity="left"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp" />
 
-    <com.andreabaccega.widget.FormEditText
-        android:id="@+id/nom_matiereField"
-        android:layout_width="128dp"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10"
-        android:layout_marginLeft="20dp"
-        verificator:testType="regexp"
-        verificator:customRegexp="^[a-zA-Z][a-zA-Z0-9 ]{1,30}$"
-        verificator:testErrorString="@string/nom_matiereField" />
+        <TextView
+            android:layout_weight="50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/labelMatiereCoef"
+            android:id="@+id/labelMatiereCoef"
+            android:gravity="right"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/labelMatiereCoef"
-        android:id="@+id/labelMatiereCoef"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp" />
+    </LinearLayout>
 
-    <com.andreabaccega.widget.FormEditText
-        android:id="@+id/coef_matiereField"
-        android:layout_width="126dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
+        android:orientation="horizontal"
+        android:weightSum="100"
+
+        >
+        <com.andreabaccega.widget.FormEditText
+            android:layout_weight="1"
+            android:id="@+id/nom_matiereField"
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:layout_marginLeft="20dp"
+            verificator:testType="regexp"
+            verificator:customRegexp="^[a-zA-Z][a-zA-Z0-9 ]{1,30}$"
+            verificator:testErrorString="@string/nom_matiereField" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="79"
+            />
+
+
+
+        <com.andreabaccega.widget.FormEditText
+            android:layout_weight="20"
+            android:id="@+id/coef_matiereField"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:layout_marginRight="20dp"
+            verificator:testType="regexp"
+            verificator:customRegexp="^[0-9]{1,2}$"
+            verificator:testErrorString="@string/coef_matiereField"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Période"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="30"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Matière"
+            android:layout_weight="30"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Coeff"
+            android:layout_weight="40"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/black"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:layout_marginLeft="20dp"
-        verificator:testType="regexp"
-        verificator:customRegexp="^[0-9]{1,2}$"
-        verificator:testErrorString="@string/coef_matiereField"/>
+        android:layout_marginRight="20dp"
+        android:id="@+id/listViewMatiere"
+        android:layout_marginTop="10dp"
+        android:divider="@color/white"
+
+        />
 
 </LinearLayout>

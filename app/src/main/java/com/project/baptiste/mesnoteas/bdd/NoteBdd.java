@@ -148,6 +148,7 @@ public class NoteBdd implements IObjetBdd {
 
     public IObjet cursorToObject(Cursor c){
         if (c.getCount() == 0) {
+            c.close();
             return new Note();
         }
         c.moveToFirst();

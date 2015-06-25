@@ -147,14 +147,31 @@ public class AnneeBdd implements IObjetBdd {
         }
         else if(annees.size() == 0 || nbElem != annees.size()){
             annees.clear();
-            annees = runBDD.getAnneeMoyenneBdd().getAll();
+            int cpt = 0;
+            int j = nbElem;
+            for(int i = 1; i<=j;i++){
+                IAnnee annee = new Annee();
+                open();
+                annee = (IAnnee) getWithId(i);
+                if(! (annee.getNomAnnee().equals(""))){
+                    cpt++;
+                    annee.setMoyennes(runBDD.getAnneeMoyenneBdd().getListObjetWithId(annee.getId()));
+                    annees.add(annee);
+                }
+                if(cpt != nbElem){
+                    j++;
+                }
+            }
+
         }
+        close();
         return utilitaire.copyList(annees);
     }
 
     @Override
     public IObjet cursorToObject(Cursor c) {
         if (c.getCount() == 0) {
+            c.close();
             return new Annee();
         }
         c.moveToFirst();

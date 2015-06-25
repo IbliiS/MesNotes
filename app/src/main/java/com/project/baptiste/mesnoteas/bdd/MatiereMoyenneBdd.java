@@ -83,6 +83,7 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
     public List<IObjet> cursorToObject(Cursor c) {
         List<IObjet> matieres = new ArrayList<>();
         if(c.getCount()==0){
+            c.close();
             return matieres;
         }
         if(c.moveToFirst()){
@@ -97,6 +98,7 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
                 c.moveToNext();
             }
         }
+        c.close();
         return matieres;
     }
 
@@ -116,6 +118,7 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
     public IObjet cursorToOtherObject(Cursor c) {
         IMoyenne moyenne = new Moyenne();
         if(c.getCount()==0){
+            c.close();
             return moyenne;
         }
         c.moveToFirst();
@@ -194,6 +197,17 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         runBDD.getMoyenneBdd().removeWithID(id);
         return runBDD.getBdd().delete(TABLE_MATIEREMOYENNE, COL_REFMOYENNE + " = " + id, null);
 
+    }
+
+    @Override
+    public int removeOtherObjectWithID(int id) {
+        runBDD.open();
+        IMatiere matiereADelete = (IMatiere) runBDD.getMatiereBdd().getWithId(id);
+        IMoyenne moyenne = (IMoyenne) getOtherObjetWithId(matiereADelete.getId());
+        IMoyenne m = (IMoyenne) moyennesMatieres.get(moyennesMatieres.indexOf(moyenne));
+        m.getMatieres().remove(matiereADelete);
+        runBDD.getNoteBdd().removeWithID(id);
+        return runBDD.getBdd().delete(TABLE_MATIEREMOYENNE, COL_REFMATIERE + " = " + id, null);
     }
 
 }

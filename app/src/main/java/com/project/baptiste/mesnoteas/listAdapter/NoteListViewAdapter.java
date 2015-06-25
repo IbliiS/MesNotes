@@ -54,7 +54,6 @@ public class NoteListViewAdapter extends BaseAdapter {
                     n = (INote) o;
                     mat = new Matiere();
                     mat.copyMatiere(m);
-                    //mat.getNotes().add(n);
                     listeMatiere.add(mat);
                     nbMatiere++;
                 }
@@ -121,5 +120,7 @@ public class NoteListViewAdapter extends BaseAdapter {
         }
         return view;
     }
+
+
 
 }

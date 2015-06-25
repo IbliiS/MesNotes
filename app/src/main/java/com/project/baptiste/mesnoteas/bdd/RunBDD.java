@@ -50,7 +50,6 @@ public class RunBDD {
         matiereNoteBdd = new MatiereNoteBdd(this);
         moyenneMatiereBdd = new MatiereMoyenneBdd(this);
         anneeMoyenneBdd = new AnneeMoyenneBdd(this);
-
         objetsBdd.add(noteBdd);
         objetsBdd.add(matiereBdd);
         objetsBdd.add(moyenneBdd);
@@ -58,7 +57,7 @@ public class RunBDD {
         objetsBdd.add(matiereNoteBdd);
         objetsBdd.add(moyenneMatiereBdd);
         objetsBdd.add(anneeMoyenneBdd);
-
+        //viderBdd();
         for(ITableBdd o : objetsBdd){
             o.getAll();
         }

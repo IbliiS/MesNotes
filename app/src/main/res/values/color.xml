@@ -10,7 +10,7 @@
     <color name="red_pressed">#FF5252</color>
     <color name="amber">#FF8F00</color>
     <color name="amber_pressed">#FFD54F</color>
-    <color name="greenlight">#76FF03</color>
+    <color name="greenlight">#64DD17</color>
     <color name="greenlight_pressed">#B2FF59</color>
     <color name="black_semi_transparent">#B2000000</color>
     <color name="background">#e5e5e5</color>
@@ -24,13 +24,22 @@
     <color name="bluelight_pressed">#80D8FF</color>
 
 
+
+    <color name="accueil_color">#FFD600</color>
+    <color name="accueil_colorDark">#FFF176</color>
+    <color name="accueil_colorSelected">#FFF59D</color>
     <color name="annee_color">#D500F9</color>
+    <color name="annee_colorPressed">#EA80FC</color>
     <color name="annee_colorDark">#7B1FA2</color>
-    <color name="moyenne_color">#76FF03</color>
+    <color name="moyenne_color">#64DD17</color>
+    <color name="moyenne_colorPressed">#B2FF59</color>
     <color name="moyenne_colorDark">#4CAF50</color>
     <color name="matiere_color">#00B0FF</color>
+    <color name="matiere_colorPressed">#81D4FA</color>
+    <color name="matiere_colorChecked">#4FC3F7</color>
     <color name="matiere_colorDark">#0288D1</color>
     <color name="note_color">#FF8F00</color>
+    <color name="note_colorPressed">#FFD54F</color>
     <color name="note_colorDark">#FF8F00</color>
 
 

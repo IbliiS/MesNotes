@@ -75,6 +75,7 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterMoyenne);
         toolbar.setTitle("Ajout Période");
+        toolbar.setLogo(R.drawable.ic_periode);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -123,7 +124,7 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
     private void initVar() {
         runBDD = RunBDD.getInstance(this);
         annees = new ArrayList<>();
-        annees = runBDD.getAnneeMoyenneBdd().getAll();
+        annees = runBDD.getAnneeBdd().getAll();
         moyenneBdd = runBDD.getMoyenneBdd();
         moyennes= moyenneBdd.getAll();
         moyenneString = new ArrayList<>();

@@ -83,32 +83,14 @@ public class MatiereBdd implements IObjetBdd {
     }
 
     public int removeWithID(int id){
-        /*
-        IMatiere matiereADelete = new Matiere();
-        boolean b = false;
-        IMatiere m;
-        for(IObjet o : matieres){
-            m = (IMatiere) o;
-            if(m.getId() == id){
-                matiereADelete = m;
-                b = true;
-            }
-        }
-        if(b) {
-            matieres.remove(matiereADelete);
-        }
-        return runBDD.getBdd().delete(TABLE_MATIERE, COL_ID + " = " + id, null);
-    */
         IMatiere matiereADelete = (IMatiere) getWithId(id);
         matieres.remove(matiereADelete);
-        runBDD.getMatiereNoteBdd().removeWithID(matiereADelete.getId());
         return runBDD.getBdd().delete(TABLE_MATIERE, COL_ID + " = " + id, null);
     }
 
-    public int removeWithName(String s){
+    public int removeWithName(String s) {
         IMatiere matiereADelete = (IMatiere) getWithName(s);
         matieres.remove(matiereADelete);
-        runBDD.getMatiereNoteBdd().removeWithID(matiereADelete.getId());
         return runBDD.getBdd().delete(TABLE_MATIERE, COL_NOM + " = '" + s + "'", null);
     }
 
@@ -142,6 +124,7 @@ public class MatiereBdd implements IObjetBdd {
 
     public IObjet cursorToObject(Cursor c){
         if (c.getCount() == 0) {
+            c.close();
             return new Matiere();
         }
         c.moveToFirst();

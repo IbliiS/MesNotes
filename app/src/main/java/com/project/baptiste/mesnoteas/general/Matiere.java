@@ -96,7 +96,12 @@ public class Matiere implements IMatiere {
                 diviseur += n.getCoef();
                 r += n.getNote() * n.getCoef();
             }
-            moyenne = r / diviseur;
+            if(diviseur == 0){
+                moyenne = -1;
+            }
+            else {
+                moyenne = r / diviseur;
+            }
             return moyenne;
         }
     }

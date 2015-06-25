@@ -16,11 +16,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".AjouterNoteActivity" />
-        <activity android:name=".AjouterMatiereActivity" />
-        <activity android:name=".AjouterMoyenneActivity" />
-        <activity android:name=".AjouterAnneeActivity" />
+        <activity android:name=".AjouterNoteActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".AjouterMatiereActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".AjouterMoyenneActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".AjouterAnneeActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".FabActivity" />
 
     </application>

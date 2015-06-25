@@ -33,16 +33,26 @@ public class Annee implements IAnnee {
         double r = 0.0;
         int diviseur = 0;
         if(moyennes.isEmpty()){
-            return r;
+            moyenne = -1;
+            return moyenne;
         }
         else{
             IMoyenne m;
             for(IObjet o : moyennes){
                 m = (IMoyenne) o;
-                r += m.resultatMoyenne();
-                diviseur += 1;
+                if( m.getMatieres().size() != 0 ) {
+                    if(m.resultatMoyenne() != -1){
+                        r += m.resultatMoyenne();
+                        diviseur += 1;
+                    }
+                }
             }
-            moyenne = r/diviseur;
+            if(diviseur == 0){
+                moyenne = -1;
+            }
+            else{
+                moyenne = r/diviseur;
+            }
             return moyenne;
         }
     }
