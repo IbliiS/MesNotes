@@ -55,4 +55,60 @@
         verificator:customRegexp="^[a-zA-Z][a-zA-Z0-9 ]{1,30}$"
         verificator:testErrorString="@string/nom_moyenneField" />
 
+
+    <TextView
+        android:layout_marginTop="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mes Périodes"
+        android:gravity="center_horizontal"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Année"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="50"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Période"
+            android:layout_weight="50"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/listViewMoyenne"
+        android:layout_marginTop="10dp"
+        android:divider="@color/white"
+
+        />
+
 </LinearLayout>

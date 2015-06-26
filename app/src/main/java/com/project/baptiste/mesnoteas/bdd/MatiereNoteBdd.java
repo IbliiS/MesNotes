@@ -174,7 +174,7 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
         if(b){
             /** ON SUPPRIME TOUTES LES NOTES DE LA MATIERE **/
             INote n;
-            for(IObjet o : matiereADelete.getNotes()){
+            for(IObjet o : getListObjetWithId(matiereADelete.getId())){
                 n = (INote) o;
                 runBDD.getNoteBdd().removeWithID(n.getId());
             }
@@ -224,7 +224,6 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
         IMatiere matiere = (IMatiere) getOtherObjetWithId(noteADelete.getId());
         IMatiere m = (IMatiere) matieresNotes.get(matieresNotes.indexOf(matiere));
         m.getNotes().remove(noteADelete);
-        runBDD.getNoteBdd().removeWithID(id);
         return runBDD.getBdd().delete(TABLE_MATIERENOTE, COL_REFNOTE + " = " + id, null);
     }
 

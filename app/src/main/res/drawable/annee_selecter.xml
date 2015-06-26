@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Quand on laisse le doigt sur la ligne-->
+    <item
+        android:state_pressed="true"
+        android:drawable="@color/annee_colorPressed"
+        >
+    </item>
+    <!--Quand la ligne est selectionnée-->
+    <item
+        android:state_activated="true"
+        android:drawable="@color/annee_colorChecked"
+        >
+    </item>
+
+</selector>

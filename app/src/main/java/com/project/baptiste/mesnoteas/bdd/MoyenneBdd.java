@@ -101,7 +101,6 @@ public class MoyenneBdd implements IObjetBdd {
 
     @Override
     public int removeWithName(String s){
-        int i =-1;
         IMoyenne moyenneADelete = new Moyenne();
         IMoyenne m;
         boolean b = false;
@@ -113,10 +112,9 @@ public class MoyenneBdd implements IObjetBdd {
             }
         }
         if(b) {
-            i = moyenneADelete.getId();
             moyennes.remove(moyenneADelete);
         }
-        return runBDD.getBdd().delete(TABLE_MOYENNE, COL_ID + " = " + i, null);
+        return runBDD.getBdd().delete(TABLE_MOYENNE, COL_NOM + " = '" + s +"'", null);
     }
 
     @Override

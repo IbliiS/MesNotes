@@ -118,7 +118,7 @@ public class AnneeBdd implements IObjetBdd {
             i = anneeADelete.getId();
             annees.remove(anneeADelete);
         }
-        return runBDD.getBdd().delete(TABLE_ANNEE, COL_ID + " = " + i, null);
+        return runBDD.getBdd().delete(TABLE_ANNEE, COL_NOM + " = '" + s +"'", null);
     }
 
     @Override

@@ -1,27 +1,28 @@
 package com.project.baptiste.mesnoteas;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.andreabaccega.widget.FormEditText;
 import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
-import com.project.baptiste.mesnoteas.general.Moyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
+import com.project.baptiste.mesnoteas.listAdapter.MoyenneListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,8 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
     private List<IObjet> annees;
     private Spinner anneeSpinner;
     private boolean estSelect = false;
+    private int countSelectItem = 0;
+    private List<IObjet> list_selected = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
         initToolbar();
         initVar();
         initAnneeSpinner();
+        initListView();
     }
 
     @Override
@@ -80,6 +84,70 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    private void supprimerMoyenne(List<IObjet> list_selected) {
+        runBDD.open();
+        IMoyenne m;
+        for(IObjet o : list_selected){
+            m = (IMoyenne) o;
+            runBDD.getMoyenneMatiereBdd().removeWithID(m.getId());
+        }
+        runBDD.close();
+    }
+
+    private void initListView() {
+        MoyenneListViewAdapter moyenneListViewAdapter = new MoyenneListViewAdapter(moyennes,this);
+        ListView listView = (ListView) findViewById(R.id.listViewMoyenne);
+        listView.setAdapter(moyenneListViewAdapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                if (list_selected.contains(moyennes.get(position))) {
+                    countSelectItem--;
+                    list_selected.remove(moyennes.get(position));
+                } else {
+                    countSelectItem++;
+                    list_selected.add(moyennes.get(position));
+                }
+                mode.setTitle(countSelectItem + " Moyenne(s) select.");
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.menu_suppress, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.suppressItem:
+                        supprimerMoyenne(list_selected);
+                        Toast.makeText(getBaseContext(), countSelectItem + " moyenne(s) supprimée(s)", Toast.LENGTH_LONG).show();
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                countSelectItem = 0;
+                moyennes = runBDD.getMoyenneBdd().getAll();
+                list_selected.clear();
+                initListView();
+                initAnneeSpinner();
+            }
+        });
     }
 
     public void initAnneeSpinner(){
@@ -126,7 +194,7 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
         annees = new ArrayList<>();
         annees = runBDD.getAnneeBdd().getAll();
         moyenneBdd = runBDD.getMoyenneBdd();
-        moyennes= moyenneBdd.getAll();
+        moyennes = runBDD.getMoyenneBdd().getAll();
         moyenneString = new ArrayList<>();
         anneeSpinner = (Spinner) findViewById(R.id.ajouterMoyenneSpinnerAnnee);
     }
@@ -157,10 +225,15 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
                 moyenne = annee.creerMoyenne();
                 moyenne.setNomMoyenne(String.valueOf(nomMoyenne));
                 moyenne.setId((int) runBDD.getMoyenneBdd().insert(moyenne));
-                runBDD.getAnneeMoyenneBdd().insert(moyenne,annee);
+                runBDD.getAnneeMoyenneBdd().insert(moyenne, annee);
                 moyenneBdd.close();
-                startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
+                startActivity(new Intent(getApplicationContext(), AjouterMoyenneActivity.class));
                 finish();
+                Toast.makeText(getApplicationContext(), "Période ajoutée dans "+nomAnnee, Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Selectionner une année", Toast.LENGTH_LONG).show();
+
             }
         }
     }

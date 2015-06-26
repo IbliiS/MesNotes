@@ -164,6 +164,7 @@ public class InitSpinnerAndList{
         for(IObjet o : notes){
             n = (INote) o;
             runBDD.getMatiereNoteBdd().removeOtherObjectWithID(n.getId());
+            runBDD.getNoteBdd().removeWithID(n.getId());
         }
     }
 

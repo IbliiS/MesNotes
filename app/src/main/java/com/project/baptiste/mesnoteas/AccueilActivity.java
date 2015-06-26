@@ -1,6 +1,10 @@
 package com.project.baptiste.mesnoteas;
 
+import com.echo.holographlibrary.Bar;
+import com.project.baptiste.mesnoteas.R.*;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -46,7 +50,6 @@ public class AccueilActivity extends AppCompatActivity {
     private int countSelectItem = 0;
     private List<IObjet> list_selected;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accueil);
@@ -56,7 +59,6 @@ public class AccueilActivity extends AppCompatActivity {
         initMoyennePeriodeTextView("-- Toutes --");
         initFab();
         beginSpinner();
-
     }
 
     @Override

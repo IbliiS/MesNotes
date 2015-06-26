@@ -147,6 +147,9 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
                     moyenne.setMatieres(getListObjetWithId(i));
                     moyennesMatieres.add(moyenne);
                 }
+                if(cpt != nbMoyennes ){
+                    j++;
+                }
 
             }
         }
@@ -188,17 +191,23 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         if(b){
             /** ON SUPPRIME TOUTES LES MATIERES DE LA MOYENNE **/
             IMatiere mat;
-            for(IObjet o : moyenneADelete.getMatieres()){
+            for(IObjet o : getListObjetWithId(moyenneADelete.getId())){
                 mat = (IMatiere) o;
-                runBDD.getMatiereBdd().removeWithID(mat.getId());
+                runBDD.getMatiereNoteBdd().removeWithID(mat.getId());
             }
             moyennesMatieres.remove(moyenneADelete);
         }
+        runBDD.getAnneeMoyenneBdd().removeOtherObjectWithID(id);
         runBDD.getMoyenneBdd().removeWithID(id);
         return runBDD.getBdd().delete(TABLE_MATIEREMOYENNE, COL_REFMOYENNE + " = " + id, null);
 
     }
 
+    /**
+     * Suppression de la matiere avec son id
+     * @param id de la Matiere
+     * @return id de la matiere supprimée
+     */
     @Override
     public int removeOtherObjectWithID(int id) {
         runBDD.open();
@@ -206,7 +215,6 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         IMoyenne moyenne = (IMoyenne) getOtherObjetWithId(matiereADelete.getId());
         IMoyenne m = (IMoyenne) moyennesMatieres.get(moyennesMatieres.indexOf(moyenne));
         m.getMatieres().remove(matiereADelete);
-        runBDD.getNoteBdd().removeWithID(id);
         return runBDD.getBdd().delete(TABLE_MATIEREMOYENNE, COL_REFMATIERE + " = " + id, null);
     }
 

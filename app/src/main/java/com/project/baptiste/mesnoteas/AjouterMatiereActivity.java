@@ -1,6 +1,5 @@
 package com.project.baptiste.mesnoteas;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -24,7 +22,6 @@ import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
-import com.project.baptiste.mesnoteas.listAdapter.InitSpinnerAndList;
 import com.project.baptiste.mesnoteas.listAdapter.MatiereListViewAdapter;
 
 import java.util.ArrayList;
@@ -37,12 +34,10 @@ public class AjouterMatiereActivity extends AppCompatActivity {
     private RunBDD runBDD;
     private FormEditText nomMatiereField;
     private FormEditText coefMatiereField;
-    private List<String> matieres;
     private IMatiere matiere;
     private IObjetBdd matiereBdd;
     private Spinner ajouterMatiereSpinnerMoyenne;
-    private List<IObjet> moyennes;
-    private List<String> moyennesString;
+    private List<IObjet> moyennes = new ArrayList<>();
     private boolean[] tousValides = {false,false};
     private int countSelectItem = 0;
     private List<IObjet> list_selected = new ArrayList<>();
@@ -58,11 +53,31 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         listMatieres = runBDD.getMatiereNoteBdd().getAll();
         initToolbar();
         initListView();
-        initMatieres();
-        initMoyennes();
         initField();
         initSpinnerMoyenne();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater myMenu = getMenuInflater();
+        myMenu.inflate(R.menu.my_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.addOne){
+            ajouterMatiere();
+        }
+        if (item.getItemId() == android.R.id.home) {
+            retourMatiereButton();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initListView() {
@@ -117,7 +132,6 @@ public class AjouterMatiereActivity extends AppCompatActivity {
                 initSpinnerMoyenne();
             }
         });
-
     }
 
     private void supprimerMatiere(List<IObjet> list_selected) {
@@ -130,28 +144,6 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         runBDD.close();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater myMenu = getMenuInflater();
-        myMenu.inflate(R.menu.my_menu, menu);
-        return true;
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.addOne){
-            ajouterMatiere();
-        }
-        if (item.getItemId() == android.R.id.home) {
-            retourMatiereButton();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAjouterMatiere);
         toolbar.setTitle("Ajout Matière");
@@ -159,12 +151,9 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
     }
 
     private void initSpinnerMoyenne() {
-        moyennes = new ArrayList<>();
         moyennes = runBDD.getMoyenneBdd().getAll();
         final String selectionner = "-- Selectionner une période --";
         ajouterMatiereSpinnerMoyenne = (Spinner) findViewById(R.id.ajouterMatiereSpinnerMoyenne);
@@ -182,7 +171,6 @@ public class AjouterMatiereActivity extends AppCompatActivity {
                 return;
             }
         });
-
         List<String> exemple = new ArrayList<String>();
         exemple.add(selectionner);
         IMoyenne m;
@@ -200,35 +188,15 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         nomMatiereField = (FormEditText) findViewById(R.id.nom_matiereField);
         coefMatiereField = (FormEditText) findViewById(R.id.coef_matiereField);
 
-
-    }
-
-    public void initMatieres(){
-        matieres = new ArrayList<>();
-        List<IObjet> matiereList = matiereBdd.getAll();
-        IMatiere m;
-        for(IObjet o : matiereList){
-            m = (IMatiere) o;
-            matieres.add(m.getNomMatiere());
-        }
-    }
-
-    public void initMoyennes(){
-        moyennesString = new ArrayList<>();
-        List<IObjet> moyenneList = runBDD.getMoyenneBdd().getAll();
-        IMoyenne m;
-        for(IObjet o : moyenneList){
-            m = (IMoyenne) o;
-            moyennesString.add(m.getNomMoyenne());
-        }
     }
 
     public void verifMatiere(){
         String nomMatiere = nomMatiereField.getText().toString();
-        // LA MATIERE EXISTE DEJA
-        if(matieres.contains(nomMatiere)){
-            Toast.makeText(getApplicationContext(),
-                    "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
+        runBDD.open();
+        IMatiere m = (IMatiere) runBDD.getMatiereBdd().getWithName(nomMatiere);
+        runBDD.close();
+        if( !(m.getNomMatiere().equals("")) ){
+            Toast.makeText(getApplicationContext(), "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
         }
         else tousValides[0]=true;
     }
@@ -249,16 +217,20 @@ public class AjouterMatiereActivity extends AppCompatActivity {
                 matiere = moyenne.creerMatiere();
                 matiere.setNomMatiere(String.valueOf(nomMatiereField.getText().toString()));
                 matiere.setCoef(Integer.valueOf(coefMatiereField.getText().toString()));
-                matiere.setId((int) matiereBdd.insert(matiere));
+                matiere.setId((int) runBDD.getMatiereBdd().insert(matiere));
                 runBDD.getMoyenneMatiereBdd().insert(matiere, moyenne);
                 runBDD.close();
                 startActivity(new Intent(getApplicationContext(), AjouterMatiereActivity.class));
                 finish();
+                Toast.makeText(getApplicationContext(), "Matière ajoutée dans " +nomMoyenne, Toast.LENGTH_LONG).show();
             }
         }
+        else{
+            Toast.makeText(getApplicationContext(), "Selectionner une période", Toast.LENGTH_LONG).show();
+
+        }
+
     }
-
-
 
     public void retourMatiereButton(){
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));

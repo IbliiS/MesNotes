@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.andreabaccega.widget.FormEditText;
 import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetAssoBdd;
@@ -238,10 +239,14 @@ public class AjouterNoteActivity extends AppCompatActivity {
             note.setNote(Double.valueOf(noteField.getText().toString()));
             note.setCoef(Integer.valueOf(coefField.getText().toString()));
             note.setId((int) noteBdd.insert(note));
-            runBDD.getMatiereNoteBdd().insert(note,matiere);
+            runBDD.getMatiereNoteBdd().insert(note, matiere);
             runBDD.close();
-            startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
+            startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
             finish();
+            Toast.makeText(getApplicationContext(), "Note ajoutée dans " +matiere.getNomMatiere() , Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Selectionner une matière", Toast.LENGTH_LONG).show();
         }
     }
 

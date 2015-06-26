@@ -105,14 +105,31 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
         return moyennes;
     }
 
+    /**
+     * Récupérer une année depuis une moyenne
+     * @param id de la moyenne
+     * @return l'année
+     */
     @Override
     public IObjet getOtherObjetWithId(int id) {
-        return null;
+        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_ANNEEMOYENNE + " WHERE "+ COL_REFMOYENNE + "=" + id, null);
+        return cursorToOtherObject(c);
     }
 
     @Override
     public IObjet cursorToOtherObject(Cursor c) {
-        return null;
+        IAnnee annee = new Annee();
+        if(c.getCount()==0){
+            c.close();
+            return annee;
+        }
+        c.moveToFirst();
+        int idAnnee;
+        idAnnee = c.getInt(NUM_COL_REFANNEE);
+        annee = (IAnnee) runBDD.getAnneeBdd().getWithId(idAnnee);
+        annee.setMoyennes(getListObjetWithId(annee.getId()));
+        c.close();
+        return annee;
     }
 
     @Override
@@ -132,10 +149,50 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
                     annee.setMoyennes(getListObjetWithId(i));
                     anneesMoyennes.add(annee);
                 }
+                if(cpt != nbAnnees ){
+                    j++;
+                }
             }
         }
         close();
+//        open();
+//        Cursor c = runBDD.getBdd().rawQuery("SELECT * FROM " + TABLE_ANNEEMOYENNE, null);
+//        cursorToAllObject(c);
+//        close();
         return utilitaire.copyList(anneesMoyennes);
+    }
+
+    public void cursorToAllObject(Cursor c){
+        anneesMoyennes.clear();
+        List<IObjet> moyennes = new ArrayList<>();
+        IAnnee annee = new Annee();
+        if(c.getCount()==0){
+            c.close();
+        }
+        else {
+            if(c.moveToFirst()) {
+                IMoyenne moyenne;
+                int idMoyenne;
+                int idAnnee;
+                moyenne = new Moyenne();
+                while (!c.isAfterLast()) {
+                    idAnnee = c.getInt(NUM_COL_REFANNEE);
+                    idMoyenne = c.getInt(NUM_COL_REFMOYENNE);
+                    annee = (IAnnee) runBDD.getAnneeBdd().getWithId(idAnnee);
+                    moyenne = (IMoyenne) runBDD.getMoyenneBdd().getWithId(idMoyenne);
+                    if(anneesMoyennes.contains(annee)){
+                        ( (IAnnee) anneesMoyennes.get(anneesMoyennes.indexOf(annee)) ).getMoyennes().add(moyenne);
+                    }
+                    else{
+                        annee.getMoyennes().add(moyenne);
+                        anneesMoyennes.add(annee);
+
+                    }
+                    c.moveToNext();
+                }
+            }
+        }
+        c.close();
     }
 
     @Override
@@ -172,9 +229,9 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
         if(b){
             /** ON SUPPRIME TOUTES LES MOYENNE DE L'ANNEE **/
             IMoyenne moy;
-            for(IObjet o : anneeADelete.getMoyennes()){
+            for(IObjet o : getListObjetWithId(anneeADelete.getId())){
                 moy = (IMoyenne) o;
-                runBDD.getMoyenneBdd().removeWithID(moy.getId());
+                runBDD.getMoyenneMatiereBdd().removeWithID(moy.getId());
             }
             anneesMoyennes.remove(anneeADelete);
         }
@@ -183,8 +240,17 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
 
     }
 
+    /**
+     * Suppression de la moyenne avec son id
+     * @param id de la moyenne
+     * @return id de la moyenne supprimée
+     */
     @Override
     public int removeOtherObjectWithID(int id) {
-        return 0;
+        IMoyenne moyenneADelete = (IMoyenne) runBDD.getMoyenneBdd().getWithId(id);
+        IAnnee annee = (IAnnee) getOtherObjetWithId(moyenneADelete.getId());
+        IAnnee a = (IAnnee) anneesMoyennes.get(anneesMoyennes.indexOf(annee));
+        a.getMoyennes().remove(moyenneADelete);
+        return runBDD.getBdd().delete(TABLE_ANNEEMOYENNE, COL_REFMOYENNE + " = " + id, null);
     }
 }

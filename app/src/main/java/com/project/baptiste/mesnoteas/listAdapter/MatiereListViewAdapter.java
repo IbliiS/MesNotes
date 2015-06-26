@@ -12,7 +12,6 @@ import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
-import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,6 @@ public class MatiereListViewAdapter extends BaseAdapter{
     LayoutInflater inflater;
     Context context;
     boolean pasDeMatieres = true;
-    Utilitaire utilitaire = new Utilitaire();
     RunBDD runBDD;
 
     public MatiereListViewAdapter(List<IObjet> matieres, Context context) {
