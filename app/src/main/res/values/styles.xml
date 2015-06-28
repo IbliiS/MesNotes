@@ -82,6 +82,17 @@
         <item name="android:background">@color/note_color</item>
     </style>
 
+    <style name="AppThemeGraphique" parent="AppTheme">
+        <item name="colorAccent">@color/graphique_color</item>
+    </style>
+
+    <style name="AppThemeGraphiqueToolbar" parent="AppTheme">
+        <item name="colorPrimary">@color/graphique_color</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:background">@color/graphique_color</item>
+    </style>
+
 
     <style name="menu_labels_style">
         <item name="android:background">@drawable/fab_label_background</item>

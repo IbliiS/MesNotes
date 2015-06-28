@@ -138,7 +138,6 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
                         return false;
                 }
             }
-
             @Override
             public void onDestroyActionMode(ActionMode mode) {
                 countSelectItem = 0;

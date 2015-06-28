@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:theme="@style/AppThemeGraphique"
+    >
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:popupTheme="@style/AppThemeGraphiqueToolbar"
+        android:theme="@style/AppThemeGraphiqueToolbar"
+        android:id="@+id/toolbarGraphique"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/graphiqueLabelPeriode"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/toolbarGraphique"
+        android:id="@+id/graphiqueLabelMoyenne"
+        />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/graphiqueFrame1"
+        android:layout_above="@+id/graphiquePeriode">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/graphiqueNoteMax"
+            android:text="20"
+            android:layout_marginLeft="15dp"
+            android:textStyle="bold"
+            />
+
+    </FrameLayout>
+
+    <com.echo.holographlibrary.LineGraph
+        android:layout_below="@+id/graphiqueLabelMoyenne"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:id="@+id/graphiquePeriode" />
+
+    <FrameLayout
+        android:layout_below="@+id/graphiquePeriode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/graphiqueFrame2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"
+            />
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/graphiquePeriode"
+        android:id="@+id/graphiqueLabelMatiere"
+        android:layout_marginBottom="20dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/graphiqueLabelMatieres"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center|top"
+            android:layout_weight="30"
+            />
+
+        <Spinner
+            android:layout_weight="70"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/graphiqueSpinner"
+            android:layout_marginRight="20dp"
+            >
+        </Spinner>
+
+
+    </LinearLayout>
+
+
+    <com.echo.holographlibrary.BarGraph
+        android:layout_below="@+id/graphiqueLabelMatiere"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/graphiqueMatiere" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/graphiqueFrame3"
+        android:layout_above="@+id/graphiqueMatiere"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/graphiqueNoteMaxMatiere"
+            android:text="20"
+            android:layout_marginLeft="15dp"
+            android:textStyle="bold"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/graphiqueFrame3"
+        android:layout_marginTop="180dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"
+            />
+
+    </FrameLayout>
+
+</RelativeLayout>

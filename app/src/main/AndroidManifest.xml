@@ -22,6 +22,7 @@
         <activity android:name=".AjouterMatiereActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".AjouterMoyenneActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".AjouterAnneeActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".GraphiqueActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".FabActivity" />
 
     </application>

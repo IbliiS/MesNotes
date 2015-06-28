@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import java.util.List;
 
 
 public class AccueilActivity extends AppCompatActivity {
+    private final String Key_Extrat = "annee";
     private RunBDD runBDD;
     private List<IObjet> notes;
     private List<IObjet> matieres;
@@ -49,17 +51,22 @@ public class AccueilActivity extends AppCompatActivity {
     private TextView labelMoyenneAnnee;
     private int countSelectItem = 0;
     private List<IObjet> list_selected;
+    Button buttonGraphique;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accueil);
+        buttonGraphique = (Button) findViewById(id.accueilGraphiqueButton);
+        buttonGraphique.setEnabled(false);
         runBDD = RunBDD.getInstance(this);
         initToolbar();
         initVariable();
         initMoyennePeriodeTextView("-- Toutes --");
         initFab();
         beginSpinner();
+        initButtonGraphique();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -180,10 +187,12 @@ public class AccueilActivity extends AppCompatActivity {
                     matiereSpinner = initSpinnerAndList.getMatiereSpinner();
                     initMoyenneSpinner2();
                     initMatiereSpinner2();
+                    buttonGraphique.setEnabled(true);
                 } else {
                     initListView();
                     spinner.setEnabled(false);
                     matiereSpinner.setEnabled(false);
+                    buttonGraphique.setEnabled(false);
                 }
                 initMoyenneAnneeTextView(item_selected);
             }
@@ -295,8 +304,7 @@ public class AccueilActivity extends AppCompatActivity {
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                // Here you can do something when items are selected/de-selected,
-                // such as update the title in the CAB
+
                 if(list_selected.contains(notes.get(position))){
                     countSelectItem --;
                     list_selected.remove(notes.get(position));
@@ -306,24 +314,17 @@ public class AccueilActivity extends AppCompatActivity {
                     list_selected.add(notes.get(position));
                 }
                 mode.setTitle(countSelectItem + " Note(s) select.");
-
             }
-
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                // Inflate the menu for the CAB
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.menu_suppress, menu);
                 return true;
             }
-
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                // Here you can perform updates to the CAB due to
-                // an invalidate() request
                 return false;
             }
-
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 // Respond to clicks on the actions in the CAB
@@ -337,11 +338,8 @@ public class AccueilActivity extends AppCompatActivity {
                         return false;
                 }
             }
-
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                // Here you can make any necessary updates to the activity when
-                // the CAB is removed. By default, selected items are deselected/unchecked.
                 countSelectItem = 0;
                 notes = initSpinnerAndList.getNotes();
                 list_selected.clear();
@@ -352,4 +350,15 @@ public class AccueilActivity extends AppCompatActivity {
         });
     }
 
+    private void initButtonGraphique() {
+        buttonGraphique.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                String selectedAnnee = anneeSpinner.getSelectedItem().toString();
+                Intent intent = new Intent(AccueilActivity.this, GraphiqueActivity.class);
+                intent.putExtra(Key_Extrat, selectedAnnee);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 }
