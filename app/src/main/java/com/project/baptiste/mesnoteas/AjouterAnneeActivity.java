@@ -189,4 +189,11 @@ public class AjouterAnneeActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
+        finish();
+        super.onBackPressed();
+    }
 }

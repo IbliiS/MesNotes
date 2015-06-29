@@ -1,13 +1,19 @@
 package com.project.baptiste.mesnoteas;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -20,6 +26,7 @@ import com.echo.holographlibrary.Line;
 import com.echo.holographlibrary.LineGraph;
 import com.echo.holographlibrary.LinePoint;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
+import com.project.baptiste.mesnoteas.fragment.DialogGraphiqueFragment;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
@@ -28,6 +35,7 @@ import com.project.baptiste.mesnoteas.graphique.BarGraphique;
 import com.project.baptiste.mesnoteas.graphique.LineGraphique;
 import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +53,16 @@ public class GraphiqueActivity extends AppCompatActivity {
     private Utilitaire utilitaire = new Utilitaire();
     private Spinner periodeSpinner;
     private BarGraphique bg;
+    private FragmentActivity myContext;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graphique);
         runBDD = RunBDD.getInstance(this);
+        myContext=(FragmentActivity) this;
         periodeSpinner = (Spinner) findViewById(R.id.graphiqueSpinner);
         Intent intent = getIntent();
         if (intent != null) {
@@ -60,6 +72,7 @@ public class GraphiqueActivity extends AppCompatActivity {
         annee = (IAnnee) runBDD.getAnneeBdd().getWithName(selected_annee);
         runBDD.close();
         initMoyennes();
+        showAlertDialog();
         initToolbar();
         initLineChart();
         initSpinnerPeriode();
@@ -86,11 +99,21 @@ public class GraphiqueActivity extends AppCompatActivity {
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarGraphique);
-        toolbar.setLogo(R.drawable.ic_graphique);
+        toolbar.setLogo(R.drawable.ic_graphique_3);
         toolbar.setTitle("Graphiques");
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    private void showAlertDialog(){
+        if(moyennes.size()==0){
+            //afficher dialog
+            myContext.getSupportFragmentManager();
+            DialogGraphiqueFragment dialogGraphiqueFragment = new DialogGraphiqueFragment();
+            dialogGraphiqueFragment.show(myContext.getFragmentManager(),null);
+        }
     }
 
     private void initMoyennes(){
@@ -176,5 +199,12 @@ public class GraphiqueActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         periodeSpinner.setAdapter(adapter);
         periodeSpinner.setSelection(0);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
+        finish();
+        super.onBackPressed();
     }
 }

@@ -6,6 +6,12 @@
     android:theme="@style/AppThemeGraphique"
     >
 
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusBarHeight"
+        android:background="@color/graphique_colorDark"
+        android:elevation="@dimen/statusBarElevation"/>
+
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:popupTheme="@style/AppThemeGraphiqueToolbar"
@@ -14,7 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
+        android:elevation="@dimen/toolbarElevation"
+        android:layout_marginTop="@dimen/appBarTopMargin"
         />
+
+    <!--POUR LA STATUS BAR COLOR-->
+
+    <!--android:elevation="@dimen/toolbarElevation"-->
+    <!--android:layout_marginTop="@dimen/appBarTopMargin"-->
 
     <TextView
         android:layout_width="match_parent"

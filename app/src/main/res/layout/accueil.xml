@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:theme="@style/AppThemeAccueil"
-    >
+    android:theme="@style/AppThemeAccueil">
+
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusBarHeight"
+        android:background="@color/accueil_colorDark"
+        android:elevation="@dimen/statusBarElevation"/>
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,6 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
+        android:elevation="@dimen/toolbarElevation"
+        android:layout_marginTop="@dimen/appBarTopMargin"
         />
 
     <LinearLayout
@@ -197,17 +204,7 @@
         android:layout_marginLeft="30dp"
         android:textColor="@color/black"
         android:textStyle="italic"
-        />
 
-    <Button
-        android:id="@+id/accueilGraphiqueButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/labelMoyennePeriode"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
-        android:onClick="afficherGraphique"
-        android:text="@string/accueilGraphButton"
         />
 
 
@@ -215,8 +212,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listViewLayout"
+
         >
         <include layout="@layout/fab" android:id="@+id/idFab"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonFloatGraphique"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/graphique_color"
+            fab:fab_colorPressed="@color/red_pressed"
+            fab:fab_size="mini"
+            android:layout_marginLeft="16dp"
+            android:layout_gravity="bottom|left"
+            android:layout_marginBottom="16dp"
+            fab:fab_icon="@drawable/ic_graphique_2"
+            />
+
     </FrameLayout>
 
 

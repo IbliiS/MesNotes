@@ -256,4 +256,11 @@ public class AjouterNoteActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
+        finish();
+        super.onBackPressed();
+    }
+
 }

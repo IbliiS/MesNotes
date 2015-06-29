@@ -9,6 +9,13 @@
     android:theme="@style/AppThemeAnnee"
     >
 
+    <!--STATUS BAR-->
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusBarHeight"
+        android:background="@color/annee_colorDark"
+        android:elevation="@dimen/statusBarElevation"/>
+
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:popupTheme="@style/AppThemeAnneeToolbar"
@@ -18,6 +25,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/annee_color"
+        android:elevation="@dimen/toolbarElevation"
         />
 
 

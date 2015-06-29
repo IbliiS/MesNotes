@@ -8,6 +8,11 @@
     android:theme="@style/AppThemeMoyenne"
     >
 
+    <View xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/statusBarHeight"
+        android:background="@color/moyenne_colorDark"
+        android:elevation="@dimen/statusBarElevation"/>
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,6 +23,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/moyenne_color"
+        android:elevation="@dimen/toolbarElevation"
         />
 
     <TextView

@@ -1,10 +1,8 @@
 package com.project.baptiste.mesnoteas;
 
-import com.echo.holographlibrary.Bar;
-import com.project.baptiste.mesnoteas.R.*;
-import android.annotation.TargetApi;
+import com.gc.materialdesign.views.ButtonFloatSmall;
+
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.R.*;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
@@ -52,12 +51,13 @@ public class AccueilActivity extends AppCompatActivity {
     private int countSelectItem = 0;
     private List<IObjet> list_selected;
     Button buttonGraphique;
+    private FloatingActionButton graphButton;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accueil);
-        buttonGraphique = (Button) findViewById(id.accueilGraphiqueButton);
-        buttonGraphique.setEnabled(false);
+        graphButton = (FloatingActionButton) findViewById(R.id.buttonFloatGraphique);
+        graphButton.setEnabled(false);
         runBDD = RunBDD.getInstance(this);
         initToolbar();
         initVariable();
@@ -70,8 +70,8 @@ public class AccueilActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-            getMenuInflater().inflate(R.menu.menu_mes_notes, menu);
-            return true;
+        getMenuInflater().inflate(R.menu.menu_mes_notes, menu);
+        return true;
     }
 
     @Override
@@ -128,6 +128,8 @@ public class AccueilActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     public void beginSpinner(){
         if(begin){
@@ -187,12 +189,14 @@ public class AccueilActivity extends AppCompatActivity {
                     matiereSpinner = initSpinnerAndList.getMatiereSpinner();
                     initMoyenneSpinner2();
                     initMatiereSpinner2();
-                    buttonGraphique.setEnabled(true);
+                    graphButton.setEnabled(true);
+                   // buttonGraphique.setEnabled(true);
                 } else {
                     initListView();
                     spinner.setEnabled(false);
                     matiereSpinner.setEnabled(false);
-                    buttonGraphique.setEnabled(false);
+//                    buttonGraphique.setEnabled(false);
+                    graphButton.setEnabled(false);
                 }
                 initMoyenneAnneeTextView(item_selected);
             }
@@ -351,7 +355,7 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     private void initButtonGraphique() {
-        buttonGraphique.setOnClickListener(new Button.OnClickListener() {
+        graphButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 String selectedAnnee = anneeSpinner.getSelectedItem().toString();
                 Intent intent = new Intent(AccueilActivity.this, GraphiqueActivity.class);

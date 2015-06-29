@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class LineGraphique {
     private final String VERT = "#64DD17";
-    private final String GRIS = "#E0E0E0";
+    private final String GRIS = "#BDBDBD";
     private final String ROUGE = "#FF5252";
     private final String ORANGE = "#FF8F00";
     private final String VIOLET = "#E040FB";

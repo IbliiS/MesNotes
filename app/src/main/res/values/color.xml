@@ -7,7 +7,7 @@
     <color name="purple_pressed">#EA80FC</color>
     <color name="pink">#EC407A</color>
     <color name="red">#C62828</color>
-    <color name="red_pressed">#FF5252</color>
+    <color name="red_pressed">#E57373</color>
     <color name="amber">#FF8F00</color>
     <color name="amber_pressed">#FFD54F</color>
     <color name="greenlight">#64DD17</color>
@@ -22,11 +22,13 @@
     <color name="black">#000000</color>
     <color name="bluelight">#00B0FF</color>
     <color name="bluelight_pressed">#80D8FF</color>
+    <color name="marron">#795548</color>
+    <color name="marron_pressed">#8D6E63</color>
 
 
 
-    <color name="accueil_color">#FFD600</color>
-    <color name="accueil_colorDark">#FFF176</color>
+    <color name="accueil_color">#FFEB3B</color>
+    <color name="accueil_colorDark">#FFD600</color>
     <color name="accueil_colorSelected">#FFF59D</color>
     <color name="annee_color">#D500F9</color>
     <color name="annee_colorPressed">#EA80FC</color>
@@ -42,8 +44,11 @@
     <color name="matiere_colorDark">#0288D1</color>
     <color name="note_color">#FF8F00</color>
     <color name="note_colorPressed">#FFD54F</color>
-    <color name="note_colorDark">#FF8F00</color>
+    <color name="note_colorDark">#F57C00</color>
     <color name="graphique_color">#F44336</color>
+    <color name="graphique_colorDark">#B71C1C</color>
+
+    <!--Graphique button-->
 
 
 

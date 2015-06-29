@@ -138,6 +138,7 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
                         return false;
                 }
             }
+
             @Override
             public void onDestroyActionMode(ActionMode mode) {
                 countSelectItem = 0;
@@ -240,5 +241,12 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
     public void retourMoyenneButton(){
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
+        finish();
+        super.onBackPressed();
     }
 }
