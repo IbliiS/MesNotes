@@ -29,17 +29,39 @@
     <!--android:elevation="@dimen/toolbarElevation"-->
     <!--android:layout_marginTop="@dimen/appBarTopMargin"-->
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/graphiqueLabelPeriode"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:gravity="center"
+        android:orientation="horizontal"
         android:layout_marginTop="15dp"
+        android:layout_marginBottom="20dp"
         android:layout_below="@+id/toolbarGraphique"
-        android:id="@+id/graphiqueLabelMoyenne"
-        />
+        android:id="@+id/graphiqueLayoutMoyenne"
+        android:weightSum="100"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/graphiqueLabelPeriode"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:id="@+id/graphiqueLabelMoyenne"
+            android:layout_weight="30"
+            />
+
+        <Spinner
+            android:layout_weight="70"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/graphiqueSpinnerMoyenne"
+            android:layout_marginRight="20dp"
+            >
+        </Spinner>
+
+    </LinearLayout>
+
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -59,7 +81,7 @@
     </FrameLayout>
 
     <com.echo.holographlibrary.LineGraph
-        android:layout_below="@+id/graphiqueLabelMoyenne"
+        android:layout_below="@+id/graphiqueLayoutMoyenne"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_width="match_parent"
@@ -122,7 +144,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:id="@+id/graphiqueMatiere" />
 
     <FrameLayout
@@ -147,6 +169,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/graphiqueFrame3"
+        android:id="@+id/graphiqueFrame4"
         android:layout_marginTop="180dp"
         >
         <TextView

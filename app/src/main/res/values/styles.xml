@@ -22,7 +22,7 @@
     <style name="AppThemeAccueilToolbar" parent="AppTheme">
         <!-- Couleur de CAB -->
         <item name="android:actionModeBackground">@color/accueil_color</item>
-        <item name="colorPrimary">@color/accueil_color</item>
+        <item name="colorPrimary">@color/accueil_colorDark</item>
         <item name="colorPrimaryDark">@color/accueil_colorDark</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
