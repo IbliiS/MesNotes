@@ -2,6 +2,8 @@ package com.project.baptiste.mesnoteas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
@@ -17,12 +19,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.R.*;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
+import com.project.baptiste.mesnoteas.fragment.DialogModification;
+import com.project.baptiste.mesnoteas.fragment.DialogModificationNote;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
+import com.project.baptiste.mesnoteas.general.interfaces.INote;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.listAdapter.InitSpinnerAndList;
 import com.project.baptiste.mesnoteas.listAdapter.NoteListViewAdapter;
@@ -32,9 +36,11 @@ import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class AccueilActivity extends AppCompatActivity {
+    private final String Key_Modifier_Note = "note";
     private final String Key_Extrat_TypeGraph = "typeGraph";
     private final String HOLOGRAPH = "HoloGraph";
     private final String MPCHART = "MpChart";
@@ -56,10 +62,13 @@ public class AccueilActivity extends AppCompatActivity {
     private List<IObjet> list_selected;
     private FloatingActionsMenu fabGraph;
     private FloatingActionsMenu fabMenu;
+    private FragmentActivity myContext;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accueil);
+        myContext = this;
         fabMenu = (FloatingActionsMenu) findViewById(R.id.idFab);
         fabGraph = (FloatingActionsMenu) findViewById(R.id.multiple_actions_left);
         fabGraph.setEnabled(false);
@@ -209,7 +218,6 @@ public class AccueilActivity extends AppCompatActivity {
         MySpinner ms = new MySpinnerWhite();
         spinner = ms.creerSpinner(spinner,moyennes,toutes,this,true);
         spinner.setSelection(0);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -219,7 +227,6 @@ public class AccueilActivity extends AppCompatActivity {
                         matieres = initSpinnerAndList.initMatieresParAnnee(anneeSpinner.getSelectedItem().toString());
 
                     }
-
                 } else {
                     if (matieres.size() != 0) {
                         matieres = initSpinnerAndList.initMatieresParMoyenne(item_selected);
@@ -229,7 +236,6 @@ public class AccueilActivity extends AppCompatActivity {
                 initMatiereSpinner2();
                 initListView();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 return;
@@ -259,7 +265,6 @@ public class AccueilActivity extends AppCompatActivity {
                 }
                 initListView();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 return;
@@ -340,7 +345,6 @@ public class AccueilActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-
                 countSelectItem = 0;
                 notes = initSpinnerAndList.getNotes();
                 list_selected.clear();
@@ -376,8 +380,32 @@ public class AccueilActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myContext.getSupportFragmentManager();
+                DialogModification d = new DialogModificationNote();
+                d.setRefresh(new Refresh());
+                d.setData(notes.get(position));
+                d.setRunBDD(runBDD);
+                d.show(myContext.getFragmentManager(), null);
+            }
+        });
     }
 
+    public class Refresh{
+        public void refresh(){
+            initListView();
+        }
+
+        public void modifier(INote note){
+            Intent intent = new Intent(AccueilActivity.this, AjouterNoteActivity.class);
+            intent.putExtra(Key_Modifier_Note, Integer.toString(note.getId()));
+            startActivity(intent);
+            finish();
+
+        }
+    }
     private void initButtonGraphique() {
         FloatingActionButton graphButton  = (FloatingActionButton) findViewById(R.id.buttonFloatGraphiqueHolo);
         graphButton.setOnClickListener(new Button.OnClickListener() {

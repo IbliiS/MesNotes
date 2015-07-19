@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '23.0.0 rc2'
+    buildToolsVersion '23.0.0 rc3'
 
     defaultConfig {
         applicationId "com.project.baptiste.mesnoteas"
@@ -33,4 +33,7 @@ dependencies {
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
+    compile 'com.marvinlabs:android-floatinglabel-widgets:1.0.+@aar'
+
+
 }

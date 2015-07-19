@@ -33,6 +33,7 @@ import java.util.List;
  * Created by Baptiste on 12/06/2015.
  */
 public class AjouterNoteActivity extends AppCompatActivity {
+    private final String Key_Modifier_Note = "note";
     private RunBDD runBDD;
     private FormEditText noteField;
     private FormEditText coefField;
@@ -49,6 +50,7 @@ public class AjouterNoteActivity extends AppCompatActivity {
     private Spinner anneeSpinner;
     private InitSpinnerAndList initSpinnerAndList;
     private boolean estSelect = false;
+    private INote noteADelete;
 
 
 
@@ -59,6 +61,19 @@ public class AjouterNoteActivity extends AppCompatActivity {
         initVariable();
         initToolbar();
         initField();
+        initIntent();
+    }
+
+    private void initIntent() {
+        Intent intent = getIntent();
+        if(intent != null && (intent.getStringExtra(Key_Modifier_Note)!=null) ){
+            runBDD.open();
+            int id = Integer.parseInt(intent.getStringExtra(Key_Modifier_Note));
+            noteADelete = (INote) runBDD.getNoteBdd().getWithId(id);
+            runBDD.close();
+            noteField.setText(Double.toString(noteADelete.getNote()));
+            coefField.setText(Integer.toString(noteADelete.getCoef()));
+        }
     }
 
     @Override
@@ -239,11 +254,18 @@ public class AjouterNoteActivity extends AppCompatActivity {
             note = matiere.creerNote();
             note.setNote(Double.valueOf(noteField.getText().toString()));
             note.setCoef(Integer.valueOf(coefField.getText().toString()));
+            /** Si c'est une modification **/
+            if(noteADelete != null){
+                runBDD.getMatiereNoteBdd().removeOtherObjectWithID(noteADelete.getId());
+            }
+
             note.setId((int) noteBdd.insert(note));
             runBDD.getMatiereNoteBdd().insert(note, matiere);
             runBDD.close();
-            startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
-            finish();
+//            startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
+//            finish();
+            noteField.setText("");
+            coefField.setText("");
             Toast.makeText(getApplicationContext(), "Note ajoutée dans " +matiere.getNomMatiere() , Toast.LENGTH_LONG).show();
         }
         else{

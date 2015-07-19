@@ -29,6 +29,8 @@
         />
 
 
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +40,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp" />
 
+
     <com.andreabaccega.widget.FormEditText
+        verificator:flw_labelText="Simple text input"
         android:id="@+id/nom_anneeField"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
