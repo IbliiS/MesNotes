@@ -27,8 +27,9 @@
 
 
 
-    <color name="accueil_color">#FFEB3B</color>
-    <color name="accueil_colorDark">#FFD600</color>
+    <!--<color name="accueil_color">#FFEB3B</color>-->
+    <color name="accueil_color">#FFC400</color>
+    <color name="accueil_colorDark">#FFC400</color>
     <color name="accueil_colorSelected">#FFF59D</color>
     <color name="annee_color">#D500F9</color>
     <color name="annee_colorPressed">#EA80FC</color>

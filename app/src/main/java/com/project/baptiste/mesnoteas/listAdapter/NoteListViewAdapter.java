@@ -114,7 +114,7 @@ public class NoteListViewAdapter extends BaseAdapter {
             INote n = (INote) notes.get(position);
             String moy = utilitaire.coupeMoyenne(m.getMoyenne());
             holder.matiere.setText(m.getNomMatiere());
-            holder.note.setText(String.valueOf(n.getNote()));
+            holder.note.setText(utilitaire.coupeMoyenne(n.getNote()));
             holder.coeff.setText(String.valueOf(n.getCoef()));
             holder.moyenne.setText(moy);
         }

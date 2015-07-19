@@ -23,6 +23,9 @@ import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.listAdapter.MatiereListViewAdapter;
+import com.project.baptiste.mesnoteas.spinner.MySpinner;
+import com.project.baptiste.mesnoteas.spinner.MySpinnerBlack;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +38,13 @@ public class AjouterMatiereActivity extends AppCompatActivity {
     private FormEditText nomMatiereField;
     private FormEditText coefMatiereField;
     private IMatiere matiere;
-    private IObjetBdd matiereBdd;
     private Spinner ajouterMatiereSpinnerMoyenne;
     private List<IObjet> moyennes = new ArrayList<>();
     private boolean[] tousValides = {false,false};
     private int countSelectItem = 0;
     private List<IObjet> list_selected = new ArrayList<>();
     private List<IObjet> listMatieres;
+    private Utilitaire utilitaire = new Utilitaire();
 
 
     @Override
@@ -49,8 +52,7 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajouter_matiere);
         runBDD = RunBDD.getInstance(this);
-        matiereBdd = runBDD.getMatiereBdd();
-        listMatieres = runBDD.getMatiereNoteBdd().getAll();
+        listMatieres = runBDD.getMatiereBdd().getAll();
         initToolbar();
         initListView();
         initField();
@@ -157,12 +159,16 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         moyennes = runBDD.getMoyenneBdd().getAll();
         final String selectionner = "-- Selectionner une période --";
         ajouterMatiereSpinnerMoyenne = (Spinner) findViewById(R.id.ajouterMatiereSpinnerMoyenne);
+        MySpinner ms = new MySpinnerBlack();
+        ajouterMatiereSpinnerMoyenne = ms.creerSpinner(ajouterMatiereSpinnerMoyenne,utilitaire.copyList(moyennes),selectionner,this,moyennes.size() == 0);
+        ajouterMatiereSpinnerMoyenne.setSelection(0);
+
         ajouterMatiereSpinnerMoyenne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item_selected = ajouterMatiereSpinnerMoyenne.getSelectedItem().toString();
                 if (!(item_selected.equals(selectionner))) {
-                    tousValides[1]=true;
+                    tousValides[1] = true;
                 }
             }
 
@@ -171,17 +177,6 @@ public class AjouterMatiereActivity extends AppCompatActivity {
                 return;
             }
         });
-        List<String> exemple = new ArrayList<String>();
-        exemple.add(selectionner);
-        IMoyenne m;
-        for(IObjet o : moyennes){
-            m = (IMoyenne) o;
-            exemple.add(m.getNomMoyenne());
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ajouterMatiereSpinnerMoyenne.setAdapter(adapter);
-        ajouterMatiereSpinnerMoyenne.setSelection(0);
     }
 
     public void initField(){
@@ -206,6 +201,9 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         verifMatiere();
         if( tousValides[0] && tousValides[1]){
             boolean allValid = true;
+            if(coefMatiereField.getText().toString().equals("")){
+                coefMatiereField.setText("1");
+            }
             FormEditText[] formEditTexts = {nomMatiereField, coefMatiereField};
             for(FormEditText f : formEditTexts){
                 allValid = f.testValidity() && allValid; // IMPORTANT Vérifie les regexp

@@ -224,10 +224,11 @@ public class AjouterNoteActivity extends AppCompatActivity {
     }
 
 
-
-    // BOUTON AJOUTER NOTE
     public void ajouterNote(){
         boolean allValid = true;
+        if(coefField.getText().toString().equals("")){
+            coefField.setText("1");
+        }
         FormEditText[] formEditTexts = {noteField, coefField};
         for(FormEditText f : formEditTexts){
             allValid = f.testValidity() && allValid; // IMPORTANT Vérifie les regexp

@@ -34,7 +34,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="20dp"
         android:layout_below="@+id/toolbarGraphique"
         android:id="@+id/graphiqueLayoutMoyenne"
         android:weightSum="100"
@@ -67,29 +66,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/graphiqueFrame1"
-        android:layout_above="@+id/graphiquePeriode">
+        android:layout_above="@+id/lineLayout">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/graphiqueNoteMax"
             android:text="20"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:textStyle="bold"
             />
 
     </FrameLayout>
 
-    <com.echo.holographlibrary.LineGraph
-        android:layout_below="@+id/graphiqueLayoutMoyenne"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:id="@+id/graphiquePeriode" />
+        android:layout_height="200dp"
+        android:layout_below="@+id/graphiqueLayoutMoyenne"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/lineLayout"
+        >
+
+        <!--Graphique période-->
+
+    </RelativeLayout>
+
+
 
     <FrameLayout
-        android:layout_below="@+id/graphiquePeriode"
+        android:layout_below="@+id/lineLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/graphiqueFrame2">
@@ -98,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="6dp"
             android:textStyle="bold"
             />
 
@@ -111,9 +117,8 @@
         android:weightSum="100"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/graphiquePeriode"
+        android:layout_below="@+id/lineLayout"
         android:id="@+id/graphiqueLabelMatiere"
-        android:layout_marginBottom="20dp"
         >
 
         <TextView
@@ -139,19 +144,25 @@
     </LinearLayout>
 
 
-    <com.echo.holographlibrary.BarGraph
-        android:layout_below="@+id/graphiqueLabelMatiere"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:id="@+id/graphiqueMatiere" />
+        android:layout_height="200dp"
+        android:layout_below="@+id/graphiqueLabelMatiere"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/barLayout"
+        >
+
+    <!--Graphique matieres-->
+
+
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/graphiqueFrame3"
-        android:layout_above="@+id/graphiqueMatiere"
+        android:layout_above="@+id/barLayout"
         >
 
         <TextView
@@ -159,7 +170,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/graphiqueNoteMaxMatiere"
             android:text="20"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:textStyle="bold"
             />
 
@@ -176,7 +187,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="6dp"
             android:textStyle="bold"
             />
 

@@ -36,10 +36,26 @@ public class Utilitaire {
         String nombre =String.valueOf(d);
         moy = nombre.concat("000");
         if(d>10){
-            moy = moy.substring(0,5);
+            int tronc = Integer.parseInt(String.valueOf(moy.charAt(5)));
+            if(tronc > 4){
+                moy  = moy.substring(0,4);
+                tronc += 1;
+                moy = moy.concat(String.valueOf(String.valueOf(tronc).charAt(0)));
+            }
+            else{
+                moy = moy.substring(0,5);
+            }
         }
         else {
-            moy = moy.substring(0,4);
+            int tronc = Integer.parseInt(String.valueOf(moy.charAt(4)));
+            if(tronc > 4){
+                moy = moy.substring(0,3);
+                tronc += 1;
+                moy = moy.concat(String.valueOf(String.valueOf(tronc).charAt(0)));
+            }
+            else{
+                moy = moy.substring(0,4);
+            }
 
         }
 

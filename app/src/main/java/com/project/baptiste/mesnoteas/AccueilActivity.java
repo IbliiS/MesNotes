@@ -1,7 +1,5 @@
 package com.project.baptiste.mesnoteas;
 
-import com.gc.materialdesign.views.ButtonFloatSmall;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,12 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.R.*;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.listAdapter.InitSpinnerAndList;
 import com.project.baptiste.mesnoteas.listAdapter.NoteListViewAdapter;
+import com.project.baptiste.mesnoteas.spinner.MySpinner;
+import com.project.baptiste.mesnoteas.spinner.MySpinnerWhite;
 import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ import java.util.List;
 
 
 public class AccueilActivity extends AppCompatActivity {
+    private final String Key_Extrat_TypeGraph = "typeGraph";
+    private final String HOLOGRAPH = "HoloGraph";
+    private final String MPCHART = "MpChart";
     private final String Key_Extrat = "annee";
     private RunBDD runBDD;
     private List<IObjet> notes;
@@ -50,14 +54,15 @@ public class AccueilActivity extends AppCompatActivity {
     private TextView labelMoyenneAnnee;
     private int countSelectItem = 0;
     private List<IObjet> list_selected;
-    Button buttonGraphique;
-    private FloatingActionButton graphButton;
+    private FloatingActionsMenu fabGraph;
+    private FloatingActionsMenu fabMenu;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accueil);
-        graphButton = (FloatingActionButton) findViewById(R.id.buttonFloatGraphique);
-        graphButton.setEnabled(false);
+        fabMenu = (FloatingActionsMenu) findViewById(R.id.idFab);
+        fabGraph = (FloatingActionsMenu) findViewById(R.id.multiple_actions_left);
+        fabGraph.setEnabled(false);
         runBDD = RunBDD.getInstance(this);
         initToolbar();
         initVariable();
@@ -66,7 +71,6 @@ public class AccueilActivity extends AppCompatActivity {
         beginSpinner();
         initButtonGraphique();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,6 +87,7 @@ public class AccueilActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAccueil);
         toolbar.setLogo(R.drawable.ic_accueil);
@@ -91,7 +96,7 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     public void initFab(){
-        final FloatingActionButton action_note = (FloatingActionButton) findViewById(R.id.action_note);
+        FloatingActionButton action_note = (FloatingActionButton) findViewById(R.id.action_note);
         action_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,7 +143,7 @@ public class AccueilActivity extends AppCompatActivity {
             final String tous = "-- Selectionner --";
             List<String> exemple = new ArrayList<String>();
             exemple.add(tous);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item_white, exemple);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(adapter);
             spinner.setSelection(0);
@@ -162,20 +167,15 @@ public class AccueilActivity extends AppCompatActivity {
         matiereSpinner = (Spinner) findViewById(R.id.accueilMatiereSpinner);
         initSpinnerAndList = new InitSpinnerAndList(runBDD,spinner,anneeSpinner,matiereSpinner);
         annees = initSpinnerAndList.getAnnees();
-        anneeSpinner = initSpinnerAndList.getAnneeSpinner();
+        //anneeSpinner = initSpinnerAndList.getAnneeSpinner();
         initAnneeSpinner2();
     }
 
     public void initAnneeSpinner2(){
-        List<String> l = initSpinnerAndList.getAnneeString();
-        if(l.size() > 1){
-            l.remove(0);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, l);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        anneeSpinner.setAdapter(adapter);
-        anneeSpinner.setSelection(0);
         final String selectionner = "-- Selectionner --";
+        MySpinner ms = new MySpinnerWhite();
+        anneeSpinner = ms.creerSpinner(anneeSpinner, utilitaire.copyList(annees),selectionner, this, annees.size()==0);
+        anneeSpinner.setSelection(0);
         anneeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -184,19 +184,15 @@ public class AccueilActivity extends AppCompatActivity {
                     spinner.setEnabled(true);
                     matiereSpinner.setEnabled(true);
                     moyennes = initSpinnerAndList.initMoyenne(item_selected);
-                    spinner = initSpinnerAndList.getMoyenneSpinner();
                     matieres = initSpinnerAndList.initMatieresParAnnee(item_selected);
-                    matiereSpinner = initSpinnerAndList.getMatiereSpinner();
                     initMoyenneSpinner2();
                     initMatiereSpinner2();
-                    graphButton.setEnabled(true);
-                   // buttonGraphique.setEnabled(true);
+                    fabGraph.setEnabled(true);
                 } else {
                     initListView();
                     spinner.setEnabled(false);
                     matiereSpinner.setEnabled(false);
-//                    buttonGraphique.setEnabled(false);
-                    graphButton.setEnabled(false);
+                    fabGraph.setEnabled(false);
                 }
                 initMoyenneAnneeTextView(item_selected);
             }
@@ -209,11 +205,11 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     public void initMoyenneSpinner2(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, initSpinnerAndList.getMoyenneString());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(0);
         final String toutes = "-- Toutes --";
+        MySpinner ms = new MySpinnerWhite();
+        spinner = ms.creerSpinner(spinner,moyennes,toutes,this,true);
+        spinner.setSelection(0);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -230,7 +226,6 @@ public class AccueilActivity extends AppCompatActivity {
                     }
                 }
                 initMoyennePeriodeTextView(item_selected);
-                matiereSpinner = initSpinnerAndList.getMatiereSpinner();
                 initMatiereSpinner2();
                 initListView();
             }
@@ -243,11 +238,10 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     public void initMatiereSpinner2(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, initSpinnerAndList.getMatiereString());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        matiereSpinner.setAdapter(adapter);
-        matiereSpinner.setSelection(0);
         final String selectionner = "-- Toutes --";
+        MySpinner ms = new MySpinnerWhite();
+        matiereSpinner = ms.creerSpinner(matiereSpinner,matieres,selectionner,this,true);
+        matiereSpinner.setSelection(0);
         matiereSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -281,7 +275,7 @@ public class AccueilActivity extends AppCompatActivity {
             runBDD.open();
             IMoyenne m = (IMoyenne) runBDD.getMoyenneBdd().getWithName(item_selected);
             runBDD.close();
-            moyennePeriodeLabel.setText("Moyenne "+item_selected+ " : " +utilitaire.coupeMoyenne(m.getMoyenne()));
+            moyennePeriodeLabel.setText("Moyenne " + item_selected + " : " + utilitaire.coupeMoyenne(m.getMoyenne()));
         }
     }
 
@@ -308,31 +302,32 @@ public class AccueilActivity extends AppCompatActivity {
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-
-                if(list_selected.contains(notes.get(position))){
-                    countSelectItem --;
+                if (list_selected.contains(notes.get(position))) {
+                    countSelectItem--;
                     list_selected.remove(notes.get(position));
-                }
-                else {
-                    countSelectItem ++;
+                } else {
+                    countSelectItem++;
                     list_selected.add(notes.get(position));
                 }
                 mode.setTitle(countSelectItem + " Note(s) select.");
             }
+
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.menu_suppress, menu);
                 return true;
             }
+
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 return false;
             }
+
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 // Respond to clicks on the actions in the CAB
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.suppressItem:
                         initSpinnerAndList.supprimerNotes(list_selected);
                         Toast.makeText(getBaseContext(), countSelectItem + " note(s) supprimée(s)", Toast.LENGTH_LONG).show();
@@ -342,8 +337,10 @@ public class AccueilActivity extends AppCompatActivity {
                         return false;
                 }
             }
+
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+
                 countSelectItem = 0;
                 notes = initSpinnerAndList.getNotes();
                 list_selected.clear();
@@ -352,17 +349,59 @@ public class AccueilActivity extends AppCompatActivity {
                 initMoyennePeriodeTextView(spinner.getSelectedItem().toString());
             }
         });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int mLastFirstVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (mLastFirstVisibleItem < firstVisibleItem) {
+                    fabGraph.setVisibility(View.INVISIBLE);
+                    fabMenu.setVisibility(View.INVISIBLE);
+                }
+                if (mLastFirstVisibleItem > firstVisibleItem) {
+                    fabGraph.setVisibility(View.VISIBLE);
+                    fabMenu.setVisibility(View.VISIBLE);
+                }
+                mLastFirstVisibleItem = firstVisibleItem;
+                if (mLastFirstVisibleItem == 0) {
+                    fabGraph.setVisibility(View.VISIBLE);
+                    fabMenu.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
     private void initButtonGraphique() {
+        FloatingActionButton graphButton  = (FloatingActionButton) findViewById(R.id.buttonFloatGraphiqueHolo);
         graphButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 String selectedAnnee = anneeSpinner.getSelectedItem().toString();
                 Intent intent = new Intent(AccueilActivity.this, GraphiqueActivity.class);
+                intent.putExtra(Key_Extrat_TypeGraph, HOLOGRAPH);
                 intent.putExtra(Key_Extrat, selectedAnnee);
                 startActivity(intent);
                 finish();
             }
         });
+
+        FloatingActionButton buttonFloatGraphiqueMPAChart = (FloatingActionButton) findViewById(R.id.buttonFloatGraphiqueMPAChart);
+        buttonFloatGraphiqueMPAChart.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                String selectedAnnee = anneeSpinner.getSelectedItem().toString();
+                Intent intent = new Intent(AccueilActivity.this, GraphiqueActivity.class);
+                intent.putExtra(Key_Extrat_TypeGraph, MPCHART);
+                intent.putExtra(Key_Extrat, selectedAnnee);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 }

@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/statusBarHeight"
         android:background="@color/accueil_colorDark"
-        android:elevation="@dimen/statusBarElevation"/>
+        android:elevation="0dp"
+        />
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,104 +22,153 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:elevation="@dimen/toolbarElevation"
+        materialdesign:elevation="0dp"
+        android:elevation="0dp"
+        android:outlineProvider="background"
         android:layout_marginTop="@dimen/appBarTopMargin"
-        />
+        >
+
+    </android.support.v7.widget.Toolbar>
+
 
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/toolbarAccueil"
-        android:id="@+id/layoutLabSpin"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/toolbarAccueil"
+        android:id="@+id/spinnerLayout"
+        android:background="@color/accueil_color"
+        >
+
+        <LinearLayout
+            android:id="@+id/layoutLabSpin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="99"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/labelAnneeAccueil"
+                android:id="@+id/labelAnneeAccueil"
+                android:gravity="left"
+                android:layout_weight="33"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/labelMoyenneAccueil"
+                android:id="@+id/labelMoyenneAccueil"
+                android:layout_weight="33"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/labelMatiereAccueil"
+                android:id="@+id/labelMatiereAccueil"
+                android:layout_weight="33"
+                android:gravity="right"
+                android:textSize="20sp"
+                android:layout_marginRight="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="99"
+            android:layout_below="@+id/layoutLabSpin">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/accueilAnneeSpinner"
+                android:gravity="center"
+                android:layout_weight="33"
+                />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/accueilSpinner"
+                android:gravity="center"
+                android:layout_weight="33"
+                />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/accueilMatiereSpinner"
+                android:gravity="center"
+                android:layout_weight="33"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/moyennesLayout"
         android:orientation="horizontal"
-        android:weightSum="99"
+        android:weightSum="100"
+        android:layout_below="@+id/spinnerLayout"
+        android:layout_marginTop="20dp"
         >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/labelAnneeAccueil"
-            android:id="@+id/labelAnneeAccueil"
-            android:gravity="left"
-            android:layout_weight="33"
+            android:text="@string/labelMoyenneAnnee"
+            android:id="@+id/labelMoyenneAnnee"
             android:layout_marginLeft="20dp"
-            android:textStyle="bold|italic"
             android:textColor="@color/black"
+            android:textStyle="italic"
+            android:layout_weight="50"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/labelMoyenneAccueil"
-            android:id="@+id/labelMoyenneAccueil"
-            android:layout_weight="33"
-            android:gravity="center"
-            android:textStyle="bold|italic"
-            android:textColor="@color/black"
-
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/labelMatiereAccueil"
-            android:id="@+id/labelMatiereAccueil"
-            android:layout_weight="33"
-            android:gravity="right"
-            android:textSize="20sp"
+            android:text="@string/labelMoyennePeriode"
+            android:id="@+id/labelMoyennePeriode"
             android:layout_marginRight="20dp"
-            android:textStyle="bold|italic"
             android:textColor="@color/black"
-
+            android:textStyle="italic"
+            android:layout_weight="50"
             />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/spinnerLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="99"
-        android:layout_below="@+id/layoutLabSpin">
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/accueilAnneeSpinner"
-            android:gravity="center"
-            android:layout_weight="33"
-            />
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/accueilSpinner"
-            android:gravity="center"
-            android:layout_weight="33"
-            />
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/accueilMatiereSpinner"
-            android:gravity="center"
-            android:layout_weight="33"
-            />
-
-    </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@+id/spinnerLayout"
+        android:layout_below="@+id/moyennesLayout"
         android:id="@+id/labListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="40"
         android:weightSum="110"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         >
@@ -172,40 +222,17 @@
             />
 
     </LinearLayout>
+
     <ListView
         android:layout_below="@+id/labListView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/listView"
         android:divider="@color/white"
         />
 
-
-    <TextView
-        android:layout_below="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/labelMoyenneAnnee"
-        android:id="@+id/labelMoyenneAnnee"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:textColor="@color/black"
-        android:textStyle="italic"
-        />
-
-    <TextView
-        android:layout_below="@+id/labelMoyenneAnnee"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/labelMoyennePeriode"
-        android:id="@+id/labelMoyennePeriode"
-        android:layout_marginLeft="30dp"
-        android:textColor="@color/black"
-        android:textStyle="italic"
-
-        />
 
 
     <FrameLayout
@@ -216,18 +243,49 @@
         >
         <include layout="@layout/fab" android:id="@+id/idFab"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/buttonFloatGraphique"
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/multiple_actions_left"
+            fab:fab_labelsPosition="right"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/graphique_color"
-            fab:fab_colorPressed="@color/red_pressed"
-            fab:fab_size="mini"
+            android:layout_height="fill_parent"
             android:layout_marginLeft="16dp"
             android:layout_gravity="bottom|left"
             android:layout_marginBottom="16dp"
-            fab:fab_icon="@drawable/ic_graphique_2"
-            />
+            fab:fab_addButtonColorNormal="@color/white"
+            fab:fab_addButtonColorPressed="@color/white_pressed"
+            fab:fab_addButtonSize="mini"
+            fab:fab_addButtonPlusIconColor="@color/half_black"
+            fab:fab_addButtonStrokeVisible="false"
+            fab:fab_expandDirection="up"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            android:layout_marginEnd="16dp">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/buttonFloatGraphiqueHolo"
+                fab:fab_icon="@drawable/ic_graphique_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/graphique_color"
+                fab:fab_colorPressed="@color/red_pressed"
+                fab:fab_title="HoloGraph"
+                fab:fab_size="mini"
+                />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/buttonFloatGraphiqueMPAChart"
+                fab:fab_icon="@drawable/ic_graphique_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/graphique_color"
+                fab:fab_colorPressed="@color/red_pressed"
+                fab:fab_title="MPAChart"
+                fab:fab_size="mini"
+                />
+
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
     </FrameLayout>
 

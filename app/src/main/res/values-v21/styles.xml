@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="AppThemeAccueilToolbar" parent="AppTheme">
+                <!-- Couleur de CAB -->
+                <item name="android:actionModeBackground">@color/accueil_color</item>
+                <item name="colorPrimary">@color/accueil_colorDark</item>
+                <item name="colorPrimaryDark">@color/accueil_colorDark</item>
+                <item name="android:textColorPrimary">@color/white</item>
+                <item name="android:textColorSecondary">@color/white</item>
+                <item name="android:background">@color/accueil_color</item>
+                <!-- Support library compatibility -->
+
+        </style>
+
+        <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+                <item name="android:textColorPrimary">@color/black</item>
+                <item name="android:textColorSecondary">@color/black</item>
+                <!-- Fusionne CAB avec ToolBar -->
+                <item name="windowActionModeOverlay">true</item>
+                <item name="android:windowContentOverlay">@null</item>
+                <item name="android:windowTranslucentStatus">true</item>
+
+
+        </style>
+</resources>

@@ -1,8 +1,11 @@
-package com.project.baptiste.mesnoteas.graphique;
+package com.project.baptiste.mesnoteas.graphique.composant;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 
 import com.echo.holographlibrary.Bar;
+import com.echo.holographlibrary.BarGraph;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
@@ -13,21 +16,23 @@ import java.util.List;
 /**
  * Created by Baptiste on 27/06/2015.
  */
-public class BarGraphique {
-    private ArrayList<Bar> bars = new ArrayList<Bar>();
+public class HoloBar implements IBarGraph {
     private List<IObjet> matieres = new ArrayList<>();
     private Utilitaire utilitaire = new Utilitaire();
     private final String ORANGE = "#FF8F00";
     private final String VIOLET = "#E040FB";
     private boolean couleur = false;
+    private BarGraph graph;
 
 
-    public BarGraphique(List<IObjet> matieres) {
+    public HoloBar(List<IObjet> matieres, Context c) {
+        this.graph = new BarGraph(c);
         this.matieres = matieres;
         initBarGraph();
     }
 
     public void initBarGraph(){
+        ArrayList<Bar> bars = new ArrayList<Bar>();
         double moyenne;
         String moyenecut;
         IMatiere m;
@@ -47,9 +52,14 @@ public class BarGraphique {
             couleur = !(couleur);
             bars.add(d);
         }
+
+        graph.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        graph.setBars(bars);
     }
 
-    public ArrayList<Bar> getBars() {
-        return bars;
+    @Override
+    public View getGraph() {
+        return graph;
     }
+
 }

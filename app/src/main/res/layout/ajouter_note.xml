@@ -154,6 +154,7 @@
             android:inputType="numberDecimal"
             android:ems="10"
             android:layout_marginLeft="20dp"
+            android:hint="toto lastico"
             verificator:testType="regexp"
             verificator:customRegexp="^([0-9]{1,2})|([0-9]{1,2}+.[0-9]{1,3})$"
             verificator:testErrorString="@string/noteField" />

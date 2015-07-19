@@ -1,8 +1,11 @@
-package com.project.baptiste.mesnoteas.graphique;
+package com.project.baptiste.mesnoteas.graphique.composant;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 
 import com.echo.holographlibrary.Line;
+import com.echo.holographlibrary.LineGraph;
 import com.echo.holographlibrary.LinePoint;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
@@ -12,7 +15,7 @@ import java.util.List;
 /**
  * Created by Baptiste on 27/06/2015.
  */
-public class LineGraphique {
+public class HoloLine implements ILineGraph {
     private final String VERT = "#64DD17";
     private final String GRIS = "#BDBDBD";
     private final String ROUGE = "#FF5252";
@@ -24,8 +27,10 @@ public class LineGraphique {
     private int nbMoyennes;
     private double ordX = 0.01;
     private double noteMax = 0;
+    private LineGraph graph;
 
-    public LineGraphique(List<IObjet> moyennes) {
+    public HoloLine(List<IObjet> moyennes, Context c) {
+        this.graph = new LineGraph(c);
         this.moyennes = moyennes;
         nbMoyennes = moyennes.size();
         initGraph();
@@ -51,6 +56,14 @@ public class LineGraphique {
             }
         }
         line.setColor(Color.parseColor(ORANGE));
+
+        if(nbMoyennes > 0){
+            graph.addLine(line);
+            graph.addLine(lineOrd);
+            graph.setRangeY(0, (float) noteMax);
+            graph.setRangeX(0, (float) (ordX - 1.95));
+            //graph.setLineToFill(0);
+        }
     }
 
     public void initNoteMax(){
@@ -69,23 +82,33 @@ public class LineGraphique {
         lineOrd.setColor(Color.parseColor(GRIS));
     }
 
+    @Override
     public Line getLine() {
         return line;
     }
 
+    @Override
     public int getNbMoyennes() {
         return nbMoyennes;
     }
 
+    @Override
     public double getNoteMax() {
         return noteMax;
     }
 
+    @Override
     public double getOrdX() {
         return ordX;
     }
 
+    @Override
     public Line getLineOrd() {
         return lineOrd;
+    }
+
+    @Override
+    public View getGraph() {
+        return graph;
     }
 }
