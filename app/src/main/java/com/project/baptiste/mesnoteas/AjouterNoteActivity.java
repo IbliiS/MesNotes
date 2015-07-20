@@ -256,11 +256,14 @@ public class AjouterNoteActivity extends AppCompatActivity {
             note.setCoef(Integer.valueOf(coefField.getText().toString()));
             /** Si c'est une modification **/
             if(noteADelete != null){
-                runBDD.getMatiereNoteBdd().removeOtherObjectWithID(noteADelete.getId());
+                //runBDD.getMatiereNoteBdd().removeOtherObjectWithID(noteADelete.getId());
+                runBDD.getMatiereNoteBdd().updateOtherObject(noteADelete.getId(),note, matiere);
             }
-
-            note.setId((int) noteBdd.insert(note));
-            runBDD.getMatiereNoteBdd().insert(note, matiere);
+            /** Si c'est un insert **/
+            else {
+                note.setId((int) noteBdd.insert(note));
+                runBDD.getMatiereNoteBdd().insert(note, matiere);
+            }
             runBDD.close();
 //            startActivity(new Intent(getApplicationContext(), AjouterNoteActivity.class));
 //            finish();

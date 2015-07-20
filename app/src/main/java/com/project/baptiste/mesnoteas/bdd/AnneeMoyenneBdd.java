@@ -253,4 +253,10 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
         a.getMoyennes().remove(moyenneADelete);
         return runBDD.getBdd().delete(TABLE_ANNEEMOYENNE, COL_REFMOYENNE + " = " + id, null);
     }
+
+    @Override
+    public void updateOtherObject(int id, IObjet objet, IObjet intoObject) {
+
+    }
+
 }

@@ -172,7 +172,7 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
     @Override
     public void dropTable() {
         open();
-        runBDD.getBdd().delete(TABLE_MATIEREMOYENNE,null,null);
+        runBDD.getBdd().delete(TABLE_MATIEREMOYENNE, null, null);
         close();
     }
 
@@ -216,6 +216,11 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         IMoyenne m = (IMoyenne) moyennesMatieres.get(moyennesMatieres.indexOf(moyenne));
         m.getMatieres().remove(matiereADelete);
         return runBDD.getBdd().delete(TABLE_MATIEREMOYENNE, COL_REFMATIERE + " = " + id, null);
+    }
+
+    @Override
+    public void updateOtherObject(int id, IObjet objet, IObjet intoObject) {
+
     }
 
 }

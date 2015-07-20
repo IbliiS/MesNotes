@@ -73,6 +73,7 @@ public class AccueilActivity extends AppCompatActivity {
         fabGraph = (FloatingActionsMenu) findViewById(R.id.multiple_actions_left);
         fabGraph.setEnabled(false);
         runBDD = RunBDD.getInstance(this);
+        runBDD.recharger();
         initToolbar();
         initVariable();
         initMoyennePeriodeTextView("-- Toutes --");

@@ -35,4 +35,6 @@ public interface IObjetAssoBdd extends ITableBdd{
     int removeWithID(int id);
 
     int removeOtherObjectWithID(int id);
+
+    void updateOtherObject(int id, IObjet objet, IObjet intoObject);
 }

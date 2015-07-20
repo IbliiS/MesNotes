@@ -227,4 +227,29 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
         return runBDD.getBdd().delete(TABLE_MATIERENOTE, COL_REFNOTE + " = " + id, null);
     }
 
+    /**
+     * MAJ d'une note grâce à son id
+     * @param id id de la Note
+     * @param objet La Note
+     * @param intoObject La Matiere dans laquelle inserer la Note
+     */
+    @Override
+    public void updateOtherObject(int id, IObjet objet, IObjet intoObject){
+        INote newNote =  (INote) objet;
+        IMatiere m = (IMatiere) getOtherObjetWithId(id);
+        IMatiere matiereAUp = (IMatiere) intoObject;
+        ((IMatiere) matieresNotes.get(matieresNotes.indexOf(m))).getNotes().remove(newNote);
+        System.out.println("Note Old ID " + id);
+        System.out.println("Matiere Old ID " + m.getId());
+        runBDD.open();
+        runBDD.getNoteBdd().update(id, objet);
+        System.out.println("Note NEW ID " + newNote.getId());
+        System.out.println("Matiere NEW ID " + matiereAUp.getId());
+        ContentValues values = new ContentValues();
+        values.put(COL_REFNOTE, newNote.getId());
+        values.put(COL_REFMATIERE, matiereAUp.getId());
+        runBDD.getBdd().update(TABLE_MATIERENOTE, values, COL_REFNOTE + " = " + id, null);
+        ((IMatiere) matieresNotes.get(matieresNotes.indexOf(matiereAUp)) ).getNotes().add(newNote);
+    }
+
 }

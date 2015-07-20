@@ -49,6 +49,10 @@ public class AnneeBdd implements IObjetBdd {
         if (i != -1){
             a = (IAnnee) annees.get(i);
         }
+//        int j = runBDD.getObjets().indexOf(objet);
+//        if(j != -1){
+//            a = (IAnnee) runBDD.getObjets().get(j);
+//        }
         Boolean estVide = annees.size() == 0;
         if( estVide || a == null) {
             ContentValues values = new ContentValues();

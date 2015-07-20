@@ -21,6 +21,7 @@ public class RunBDD {
     private SQLiteDatabase bdd;
     private MaBaseSQLite maBaseSQLite;
 
+    private List<IObjet> objets =new ArrayList<>();
     private List<ITableBdd> objetsBdd;
     private ITableBdd noteBdd;
     private ITableBdd matiereBdd;
@@ -50,6 +51,10 @@ public class RunBDD {
         matiereNoteBdd = new MatiereNoteBdd(this);
         moyenneMatiereBdd = new MatiereMoyenneBdd(this);
         anneeMoyenneBdd = new AnneeMoyenneBdd(this);
+        recharger();
+    }
+
+    public void recharger(){
         objetsBdd.add(noteBdd);
         objetsBdd.add(matiereBdd);
         objetsBdd.add(moyenneBdd);
@@ -122,5 +127,9 @@ public class RunBDD {
         for(ITableBdd t : objetsBdd){
             t.dropTable();
         }
+    }
+
+    public List<IObjet> getObjets() {
+        return objets;
     }
 }
