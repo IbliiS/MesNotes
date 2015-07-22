@@ -39,7 +39,7 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
     private FormEditText nomMoyenne;
     private List<IObjet> moyennes;
     private List<String> moyenneString;
-    private List<IMoyenne> moyenneSelected = new ArrayList<>();
+    private List<IObjet> moyenneSelected = new ArrayList<>();
     private RunBDD runBDD;
     private IObjetBdd moyenneBdd;
     private IMoyenne moyenne;
@@ -183,17 +183,20 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
                 if (!(item_selected.equals(selectionner))) {
                     runBDD.open();
                     IAnnee annee = (IAnnee) runBDD.getAnneeBdd().getWithName(item_selected);
-                    moyennes.clear();
-                    moyennes = runBDD.getAnneeMoyenneBdd().getListObjetWithId(annee.getId());
+                    moyenneSelected.clear();
+                    moyenneSelected = runBDD.getAnneeMoyenneBdd().getListObjetWithId(annee.getId());
                     runBDD.close();
                     IMoyenne m;
-                    for(IObjet o : moyennes){
+                    for(IObjet o : moyenneSelected){
                         m = (IMoyenne) o;
                         moyenneString.add(m.getNomMoyenne());
                     }
                     estSelect = true;
                 }
-                else estSelect = false;
+                else {
+                    estSelect = false;
+                    moyenneSelected.clear();
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
