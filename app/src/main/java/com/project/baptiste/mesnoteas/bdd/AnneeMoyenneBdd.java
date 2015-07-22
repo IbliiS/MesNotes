@@ -8,6 +8,7 @@ import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetAssoBdd;
 import com.project.baptiste.mesnoteas.general.Annee;
 import com.project.baptiste.mesnoteas.general.Moyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
+import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
@@ -254,9 +255,41 @@ public class AnneeMoyenneBdd implements IObjetAssoBdd {
         return runBDD.getBdd().delete(TABLE_ANNEEMOYENNE, COL_REFMOYENNE + " = " + id, null);
     }
 
+    /**
+     * MAJ d'une moyenne grâce à son id
+     * @param id id de la moyenne
+     * @param objet La moyenne
+     * @param intoObject L'Annéz dans laquelle inserer la moyenne
+     */
     @Override
     public void updateOtherObject(int id, IObjet objet, IObjet intoObject) {
+        IMoyenne newMoyenne = (IMoyenne) objet;
+        IAnnee a = (IAnnee) getOtherObjetWithId(id);
+        IAnnee anneeAUp = (IAnnee) intoObject;
+        ((IAnnee) anneesMoyennes.get(anneesMoyennes.indexOf(a))).getMoyennes().remove(newMoyenne);
+        runBDD.open();
+        runBDD.getMoyenneBdd().update(id, objet);
+        ContentValues values = new ContentValues();
+        values.put(COL_REFMOYENNE, newMoyenne.getId());
+        values.put(COL_REFANNEE, anneeAUp.getId());
+        runBDD.getBdd().update(TABLE_ANNEEMOYENNE, values, COL_REFMOYENNE + " = " + id, null);
+        ((IAnnee) anneesMoyennes.get(anneesMoyennes.indexOf(anneeAUp)) ).getMoyennes().add(newMoyenne);
+        close();
+    }
 
+
+    /**
+     * Ne dois pas être appelée par l'utilisateur
+     * MAJ d'une année par son id
+     * @param id de l'année
+     * @param objet L'année a up
+     */
+    @Override
+    public void updateObject(int id, IObjet objet) {
+        IAnnee annee = (IAnnee) objet;
+        if(anneesMoyennes.contains(annee)) {
+            ((IAnnee) anneesMoyennes.get(anneesMoyennes.indexOf(annee))).setNomAnnee(annee.getNomAnnee());
+        }
     }
 
 }

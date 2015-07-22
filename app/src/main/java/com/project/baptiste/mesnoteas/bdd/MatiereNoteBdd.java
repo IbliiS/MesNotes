@@ -239,17 +239,31 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
         IMatiere m = (IMatiere) getOtherObjetWithId(id);
         IMatiere matiereAUp = (IMatiere) intoObject;
         ((IMatiere) matieresNotes.get(matieresNotes.indexOf(m))).getNotes().remove(newNote);
-        System.out.println("Note Old ID " + id);
-        System.out.println("Matiere Old ID " + m.getId());
         runBDD.open();
         runBDD.getNoteBdd().update(id, objet);
-        System.out.println("Note NEW ID " + newNote.getId());
-        System.out.println("Matiere NEW ID " + matiereAUp.getId());
         ContentValues values = new ContentValues();
         values.put(COL_REFNOTE, newNote.getId());
         values.put(COL_REFMATIERE, matiereAUp.getId());
         runBDD.getBdd().update(TABLE_MATIERENOTE, values, COL_REFNOTE + " = " + id, null);
         ((IMatiere) matieresNotes.get(matieresNotes.indexOf(matiereAUp)) ).getNotes().add(newNote);
+        close();
+    }
+
+    /**
+     * Ne dois pas être appelée par l'utilisateur
+     * MAJ d'une matière par son id
+     * @param id de la matière
+     * @param objet La matière a up
+     */
+    @Override
+    public void updateObject(int id, IObjet objet){
+        IMatiere newMatiere = (IMatiere) objet;
+        ((IMatiere) matieresNotes.get(matieresNotes.indexOf(getOtherObjetWithId(id)))).setNomMatiere(newMatiere.getNomMatiere());
+        ContentValues values = new ContentValues();
+        values.put(COL_REFMATIERE, id);
+        open();
+        runBDD.getBdd().update(TABLE_MATIERENOTE, values, COL_REFMATIERE + " = " + id, null);
+        close();
     }
 
 }

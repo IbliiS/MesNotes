@@ -15,6 +15,8 @@ import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 public class DialogModificationNote extends DialogModification {
     private INote note;
     private String nomMatiere;
+    private AccueilActivity.Refresh refresh;
+
 
     @Override
     public void supprimer() {
@@ -23,6 +25,7 @@ public class DialogModificationNote extends DialogModification {
         runBDD.getNoteBdd().removeWithID(note.getId());
         runBDD.close();
         Toast.makeText(this.getActivity().getApplication().getBaseContext(), "1 note supprimée", Toast.LENGTH_LONG).show();
+        refresh.refresh();
     }
 
     @Override
@@ -38,7 +41,7 @@ public class DialogModificationNote extends DialogModification {
         runBDD.open();
         nomMatiere =  ( (IMatiere) runBDD.getMatiereNoteBdd().getOtherObjetWithId(note.getId()) ).getNomMatiere();
         runBDD.close();
-        builder.setMessage("Matière  " +nomMatiere + " \n"
+        builder.setMessage("Matière  " + nomMatiere + " \n"
                         + "Note  " + note.getNote() + " \n"
                         + "Coef  " + note.getCoef() + " \n"
         );
@@ -47,5 +50,9 @@ public class DialogModificationNote extends DialogModification {
     @Override
     public void initTitle() {
         builder.setTitle("Note");
+    }
+
+    public void setRefresh(Object refresh) {
+        this.refresh = (AccueilActivity.Refresh) refresh;
     }
 }

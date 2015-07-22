@@ -218,9 +218,44 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         return runBDD.getBdd().delete(TABLE_MATIEREMOYENNE, COL_REFMATIERE + " = " + id, null);
     }
 
+
+    /**
+     * MAJ d'une Matière grâce à son id
+     * @param id id de la matière
+     * @param objet La Matière
+     * @param intoObject La Moyenne dans laquelle inserer la matière
+     */
     @Override
     public void updateOtherObject(int id, IObjet objet, IObjet intoObject) {
+        IMatiere newMatiere = (IMatiere) objet;
+        IMoyenne m = (IMoyenne) getOtherObjetWithId(id);
+        IMoyenne moyenneAUp = (IMoyenne) intoObject;
+        ((IMoyenne) moyennesMatieres.get(moyennesMatieres.indexOf(m))).getMatieres().remove(newMatiere);
+        open();
+        ContentValues values = new ContentValues();
+        values.put(COL_REFMATIERE, newMatiere.getId());
+        values.put(COL_REFMOYENNE, moyenneAUp.getId());
+        runBDD.getBdd().update(TABLE_MATIEREMOYENNE, values, COL_REFMATIERE + " = " + id, null);
+        runBDD.getMatiereNoteBdd().updateObject(id, newMatiere);
+        runBDD.getMatiereBdd().update(id, newMatiere);
+        close();
+    }
 
+    /**
+     * Ne dois pas être appelée par l'utilisateur
+     * MAJ d'une moyenne par son id
+     * @param id de la moyenne
+     * @param objet La moyenne a up
+     */
+    @Override
+    public void updateObject(int id, IObjet objet) {
+        IMoyenne newMoyenne = (IMoyenne) objet;
+        ((IMoyenne) moyennesMatieres.get(moyennesMatieres.indexOf(getOtherObjetWithId(id)))).setNomMoyenne(newMoyenne.getNomMoyenne());
+        ContentValues values = new ContentValues();
+        values.put(COL_REFMOYENNE, id);
+        open();
+        runBDD.getBdd().update(TABLE_MATIEREMOYENNE, values, COL_REFMOYENNE + " = " + id, null);
+        close();
     }
 
 }

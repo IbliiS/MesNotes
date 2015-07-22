@@ -17,7 +17,7 @@ public abstract class DialogModification extends DialogFragment {
     protected AlertDialog.Builder builder;
     protected IObjet data;
     protected RunBDD runBDD;
-    protected AccueilActivity.Refresh refresh;
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -28,7 +28,6 @@ public abstract class DialogModification extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 supprimer();
-                refresh.refresh();
             }
         });
         builder.setNegativeButton("Modifier", new DialogInterface.OnClickListener() {
@@ -58,8 +57,8 @@ public abstract class DialogModification extends DialogFragment {
         this.runBDD = runBDD;
     }
 
-    public void setRefresh(AccueilActivity.Refresh refresh) {
-        this.refresh = refresh;
+    public void setRefresh(Object refresh) {
+
     }
 
     public abstract void supprimer();

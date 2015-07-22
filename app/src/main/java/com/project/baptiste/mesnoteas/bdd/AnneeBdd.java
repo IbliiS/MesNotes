@@ -84,6 +84,7 @@ public class AnneeBdd implements IObjetBdd {
         values.put(COL_MOYENNE, annee.getMoyenne());
         annee.setId(id);
         annees.add(annee);
+        runBDD.getAnneeMoyenneBdd().updateObject(id,annee);
         return runBDD.getBdd().update(TABLE_ANNEE, values, COL_ID + " = " + id, null);
     }
 

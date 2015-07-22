@@ -21,7 +21,6 @@ public class RunBDD {
     private SQLiteDatabase bdd;
     private MaBaseSQLite maBaseSQLite;
 
-    private List<IObjet> objets =new ArrayList<>();
     private List<ITableBdd> objetsBdd;
     private ITableBdd noteBdd;
     private ITableBdd matiereBdd;
@@ -129,7 +128,4 @@ public class RunBDD {
         }
     }
 
-    public List<IObjet> getObjets() {
-        return objets;
-    }
 }

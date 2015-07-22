@@ -2,6 +2,7 @@ package com.project.baptiste.mesnoteas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -9,12 +10,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity.*;
 import com.andreabaccega.widget.FormEditText;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
+import com.project.baptiste.mesnoteas.fragment.DialogModification;
+import com.project.baptiste.mesnoteas.fragment.DialogModificationAnnee;
 import com.project.baptiste.mesnoteas.general.Annee;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
@@ -35,12 +39,16 @@ public class AjouterAnneeActivity extends AppCompatActivity {
     private IAnnee annee;
     private int countSelectItem = 0;
     private List<IObjet> list_selected = new ArrayList<>();
+    private FragmentActivity myContext;
+    private IAnnee anneeAModifier;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajouter_annee);
+        myContext = this;
         initField();
         initVar();
         initToolbar();
@@ -133,6 +141,19 @@ public class AjouterAnneeActivity extends AppCompatActivity {
             }
 
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myContext.getSupportFragmentManager();
+                DialogModification d = new DialogModificationAnnee();
+                d.setRefresh(new Refresh());
+                d.setData(annees.get(position));
+                d.setRunBDD(runBDD);
+                d.show(myContext.getFragmentManager(), null);
+                anneeAModifier = (IAnnee) annees.get(position);
+            }
+        });
     }
 
     private void supprimerAnnee(List<IObjet> list_selected) {
@@ -174,13 +195,22 @@ public class AjouterAnneeActivity extends AppCompatActivity {
             }
             if (allValid) {
                 annee = new Annee();
-                annee.setNomAnnee(String.valueOf(nomAnnee));
+                annee.setNomAnnee(nomAnnee);
                 runBDD.getAnneeBdd().open();
-                runBDD.getAnneeBdd().insert(annee);
+                if(anneeAModifier == null) {
+                    runBDD.getAnneeBdd().insert(annee);
+                    Toast.makeText(getApplicationContext(), "Année ajoutée", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    annee.setId(anneeAModifier.getId());
+                    runBDD.getAnneeBdd().update(anneeAModifier.getId(), annee);
+                    Toast.makeText(getApplicationContext(), "Année modifée en "+annee.getNomAnnee(), Toast.LENGTH_LONG).show();
+
+                }
                 runBDD.getAnneeBdd().close();
                 startActivity(new Intent(getApplicationContext(), AjouterAnneeActivity.class));
                 finish();
-                Toast.makeText(getApplicationContext(), "Année ajoutée", Toast.LENGTH_LONG).show();
+
             }
         }
     }
@@ -195,5 +225,16 @@ public class AjouterAnneeActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
         super.onBackPressed();
+    }
+
+    public class Refresh{
+        public void refresh(){
+            initVar();
+            initListView();
+        }
+
+        public void modifier(){
+            nomAnnee.setText(anneeAModifier.getNomAnnee());
+        }
     }
 }
