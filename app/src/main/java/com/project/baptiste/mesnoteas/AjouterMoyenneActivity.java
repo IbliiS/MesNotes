@@ -1,7 +1,9 @@
 package com.project.baptiste.mesnoteas;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
@@ -19,10 +21,13 @@ import android.widget.Toast;
 import com.andreabaccega.widget.FormEditText;
 import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
+import com.project.baptiste.mesnoteas.fragment.DialogModification;
+import com.project.baptiste.mesnoteas.fragment.DialogModificationMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.listAdapter.MoyenneListViewAdapter;
+import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,7 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
     private FormEditText nomMoyenne;
     private List<IObjet> moyennes;
     private List<String> moyenneString;
+    private List<IMoyenne> moyenneSelected = new ArrayList<>();
     private RunBDD runBDD;
     private IObjetBdd moyenneBdd;
     private IMoyenne moyenne;
@@ -42,11 +48,15 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
     private boolean estSelect = false;
     private int countSelectItem = 0;
     private List<IObjet> list_selected = new ArrayList<>();
+    private IMoyenne moyenneAModifier;
+    private FragmentActivity myContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajouter_moyenne);
+        myContext = this;
         initField();
         initToolbar();
         initVar();
@@ -97,7 +107,8 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
     }
 
     private void initListView() {
-        MoyenneListViewAdapter moyenneListViewAdapter = new MoyenneListViewAdapter(moyennes,this);
+        Utilitaire u = new Utilitaire();
+        MoyenneListViewAdapter moyenneListViewAdapter = new MoyenneListViewAdapter(u.copyList(moyennes),this);
         ListView listView = (ListView) findViewById(R.id.listViewMoyenne);
         listView.setAdapter(moyenneListViewAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -146,6 +157,19 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
                 list_selected.clear();
                 initListView();
                 initAnneeSpinner();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myContext.getSupportFragmentManager();
+                DialogModification d = new DialogModificationMoyenne();
+                d.setRefresh(new Refresh());
+                d.setData(moyennes.get(position));
+                d.setRunBDD(runBDD);
+                d.show(myContext.getFragmentManager(), null);
+                moyenneAModifier = (IMoyenne) moyennes.get(position);
             }
         });
     }
@@ -248,5 +272,16 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
         super.onBackPressed();
+    }
+
+    public class Refresh{
+        public void refresh(){
+            moyennes = runBDD.getMoyenneBdd().getAll();
+            initListView();
+            initAnneeSpinner();
+        }
+        public void modifier(){
+            nomMoyenne.setText(moyenneAModifier.getNomMoyenne());
+        }
     }
 }
