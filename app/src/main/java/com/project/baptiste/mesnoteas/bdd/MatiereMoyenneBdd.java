@@ -231,14 +231,12 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         IMoyenne m = (IMoyenne) getOtherObjetWithId(id);
         IMoyenne moyenneAUp = (IMoyenne) intoObject;
         ((IMoyenne) moyennesMatieres.get(moyennesMatieres.indexOf(m))).getMatieres().remove(newMatiere);
-        open();
         ContentValues values = new ContentValues();
         values.put(COL_REFMATIERE, newMatiere.getId());
         values.put(COL_REFMOYENNE, moyenneAUp.getId());
         runBDD.getBdd().update(TABLE_MATIEREMOYENNE, values, COL_REFMATIERE + " = " + id, null);
         runBDD.getMatiereNoteBdd().updateObject(id, newMatiere);
         runBDD.getMatiereBdd().update(id, newMatiere);
-        close();
     }
 
     /**
@@ -253,9 +251,7 @@ public class MatiereMoyenneBdd implements IObjetAssoBdd {
         ((IMoyenne) moyennesMatieres.get(moyennesMatieres.indexOf(getOtherObjetWithId(id)))).setNomMoyenne(newMoyenne.getNomMoyenne());
         ContentValues values = new ContentValues();
         values.put(COL_REFMOYENNE, id);
-        open();
         runBDD.getBdd().update(TABLE_MATIEREMOYENNE, values, COL_REFMOYENNE + " = " + id, null);
-        close();
     }
 
 }

@@ -2,6 +2,7 @@ package com.project.baptiste.mesnoteas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 import com.andreabaccega.widget.FormEditText;
 import com.project.baptiste.mesnoteas.bdd.interfacesBdd.IObjetBdd;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
+import com.project.baptiste.mesnoteas.fragment.DialogModification;
+import com.project.baptiste.mesnoteas.fragment.DialogModificationMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
@@ -45,12 +48,15 @@ public class AjouterMatiereActivity extends AppCompatActivity {
     private List<IObjet> list_selected = new ArrayList<>();
     private List<IObjet> listMatieres;
     private Utilitaire utilitaire = new Utilitaire();
+    private IMatiere matiereAModifier;
+    private FragmentActivity myContext;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajouter_matiere);
+        myContext = this;
         runBDD = RunBDD.getInstance(this);
         listMatieres = runBDD.getMatiereBdd().getAll();
         initToolbar();
@@ -134,6 +140,19 @@ public class AjouterMatiereActivity extends AppCompatActivity {
                 initSpinnerMoyenne();
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myContext.getSupportFragmentManager();
+                DialogModification d = new DialogModificationMatiere();
+                d.setRefresh(new Refresh());
+                d.setData(listMatieres.get(position));
+                d.setRunBDD(runBDD);
+                d.show(myContext.getFragmentManager(), null);
+                matiereAModifier = (IMatiere) listMatieres.get(position);
+            }
+        });
     }
 
     private void supprimerMatiere(List<IObjet> list_selected) {
@@ -162,7 +181,6 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         MySpinner ms = new MySpinnerBlack();
         ajouterMatiereSpinnerMoyenne = ms.creerSpinner(ajouterMatiereSpinnerMoyenne,utilitaire.copyList(moyennes),selectionner,this,moyennes.size() == 0);
         ajouterMatiereSpinnerMoyenne.setSelection(0);
-
         ajouterMatiereSpinnerMoyenne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -171,7 +189,6 @@ public class AjouterMatiereActivity extends AppCompatActivity {
                     tousValides[1] = true;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 return;
@@ -190,7 +207,7 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         runBDD.open();
         IMatiere m = (IMatiere) runBDD.getMatiereBdd().getWithName(nomMatiere);
         runBDD.close();
-        if( !(m.getNomMatiere().equals("")) ){
+        if( !(m.getNomMatiere().equals("")) && matiereAModifier != null && !(matiereAModifier.getNomMatiere().equals(nomMatiere)) ){
             Toast.makeText(getApplicationContext(), "Ce nom existe déjà, changer de nom", Toast.LENGTH_LONG).show();
         }
         else tousValides[0]=true;
@@ -215,12 +232,21 @@ public class AjouterMatiereActivity extends AppCompatActivity {
                 matiere = moyenne.creerMatiere();
                 matiere.setNomMatiere(String.valueOf(nomMatiereField.getText().toString()));
                 matiere.setCoef(Integer.valueOf(coefMatiereField.getText().toString()));
-                matiere.setId((int) runBDD.getMatiereBdd().insert(matiere));
-                runBDD.getMoyenneMatiereBdd().insert(matiere, moyenne);
+                if(matiereAModifier != null){
+                    matiere.setId(matiereAModifier.getId());
+                    runBDD.getMoyenneMatiereBdd().updateOtherObject(matiereAModifier.getId(), matiere, moyenne);
+                    Toast.makeText(getApplicationContext(), "Matière modifiée dans " + nomMoyenne, Toast.LENGTH_LONG).show();
+
+                }
+                else {
+                    matiere.setId((int) runBDD.getMatiereBdd().insert(matiere));
+                    runBDD.getMoyenneMatiereBdd().insert(matiere, moyenne);
+                    Toast.makeText(getApplicationContext(), "Matière ajoutée dans " + nomMoyenne, Toast.LENGTH_LONG).show();
+
+                }
                 runBDD.close();
                 startActivity(new Intent(getApplicationContext(), AjouterMatiereActivity.class));
                 finish();
-                Toast.makeText(getApplicationContext(), "Matière ajoutée dans " +nomMoyenne, Toast.LENGTH_LONG).show();
             }
         }
         else{
@@ -240,5 +266,16 @@ public class AjouterMatiereActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
         finish();
         super.onBackPressed();
+    }
+
+    public class Refresh{
+        public void refresh(){
+            moyennes = runBDD.getMoyenneBdd().getAll();
+            initListView();
+            initSpinnerMoyenne();
+        }
+        public void modifier(){
+            nomMatiereField.setText(matiereAModifier.getNomMatiere());
+        }
     }
 }

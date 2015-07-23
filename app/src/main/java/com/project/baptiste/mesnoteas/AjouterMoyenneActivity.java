@@ -243,15 +243,16 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
                 moyenne.setNomMoyenne(String.valueOf(nomMoyenne));
                 if(moyenneAModifier != null){
                     runBDD.getAnneeMoyenneBdd().updateOtherObject(moyenneAModifier.getId(),moyenne,annee);
+                    Toast.makeText(getApplicationContext(), "Période modifiée dans " + nomAnnee, Toast.LENGTH_LONG).show();
                 }
                 else {
                     moyenne.setId((int) runBDD.getMoyenneBdd().insert(moyenne));
                     runBDD.getAnneeMoyenneBdd().insert(moyenne, annee);
+                    Toast.makeText(getApplicationContext(), "Période ajoutée dans " + nomAnnee, Toast.LENGTH_LONG).show();
                 }
                 moyenneBdd.close();
                 startActivity(new Intent(getApplicationContext(), AjouterMoyenneActivity.class));
                 finish();
-                Toast.makeText(getApplicationContext(), "Période ajoutée dans "+nomAnnee, Toast.LENGTH_LONG).show();
             }
             else{
                 Toast.makeText(getApplicationContext(), "Selectionner une année", Toast.LENGTH_LONG).show();

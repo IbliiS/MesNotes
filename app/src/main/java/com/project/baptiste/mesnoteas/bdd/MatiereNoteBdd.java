@@ -246,7 +246,6 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
         values.put(COL_REFMATIERE, matiereAUp.getId());
         runBDD.getBdd().update(TABLE_MATIERENOTE, values, COL_REFNOTE + " = " + id, null);
         ((IMatiere) matieresNotes.get(matieresNotes.indexOf(matiereAUp)) ).getNotes().add(newNote);
-        close();
     }
 
     /**
@@ -258,12 +257,13 @@ public class MatiereNoteBdd implements IObjetAssoBdd {
     @Override
     public void updateObject(int id, IObjet objet){
         IMatiere newMatiere = (IMatiere) objet;
-        ((IMatiere) matieresNotes.get(matieresNotes.indexOf(getOtherObjetWithId(id)))).setNomMatiere(newMatiere.getNomMatiere());
+        IMatiere mat = (IMatiere) runBDD.getMatiereBdd().getWithId(id);
+        if(matieresNotes.contains(mat)){
+        ((IMatiere) matieresNotes.get(matieresNotes.indexOf(mat))).setNomMatiere(newMatiere.getNomMatiere());
         ContentValues values = new ContentValues();
         values.put(COL_REFMATIERE, id);
-        open();
         runBDD.getBdd().update(TABLE_MATIERENOTE, values, COL_REFMATIERE + " = " + id, null);
-        close();
+        }
     }
 
 }

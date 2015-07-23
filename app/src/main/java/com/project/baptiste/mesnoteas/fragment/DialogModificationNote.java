@@ -46,10 +46,10 @@ public class DialogModificationNote extends DialogModification {
         IAnnee ann = (IAnnee) runBDD.getAnneeMoyenneBdd().getOtherObjetWithId(moy.getId());
         nomMatiere =  mat.getNomMatiere();
         runBDD.close();
-        builder.setMessage("Année "+ann.getNomAnnee() + " \n"
+        builder.setMessage("Note  " + note.getNote() + " Coef  " + note.getCoef() + " \n\n"
+                        + "Année "+ann.getNomAnnee() + " \n"
                         + "Période " +moy.getNomMoyenne() + " \n"
-                        + "Matière  " + nomMatiere + " \n"
-                        + "Note  " + note.getNote() + " Coef  " + note.getCoef() + " \n"
+                        + "Matière  " + nomMatiere + ", Moyenne = " + mat.getMoyenne() + " \n"
         );
     }
 
