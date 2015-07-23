@@ -4,7 +4,13 @@ import android.widget.Toast;
 
 import com.project.baptiste.mesnoteas.AjouterAnneeActivity;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
+import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
+import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Baptiste on 21/07/2015.
@@ -34,11 +40,27 @@ public class DialogModificationAnnee extends DialogModification {
         annee = (IAnnee) data;
         nomAnnee = annee.getNomAnnee();
         runBDD.open();
-        int nbMoyenne = runBDD.getAnneeMoyenneBdd().getListObjetWithId(annee.getId()).size();
+        annee.setMoyennes(runBDD.getAnneeMoyenneBdd().getListObjetWithId(annee.getId()));
+        int nbMoyenne = annee.getMoyennes().size();
+        List<IObjet> moyennes = new ArrayList<>();
+        List<IObjet> matieres;
+        IMoyenne m;
+        IMatiere mat;
+        for(IObjet o : annee.getMoyennes()){
+            m = (IMoyenne) o;
+            matieres = runBDD.getMoyenneMatiereBdd().getListObjetWithId(m.getId());
+            for(IObjet ob : matieres){
+                mat = (IMatiere) ob;
+                mat.setNotes(runBDD.getMatiereNoteBdd().getListObjetWithId(mat.getId()));
+            }
+            m.setMatieres(matieres);
+            moyennes.add(m);
+        }
+        annee.setMoyennes(moyennes);
         runBDD.close();
         builder.setMessage("Année  " + nomAnnee + " \n"
-                + "Contient " + nbMoyenne + " période(s)\n"
-                + "Moyenne = " + ut.coupeMoyenne(annee.getMoyenne())
+                        + "Contient " + nbMoyenne + " période(s)\n"
+                        + "Moyenne = " + ut.coupeMoyenne(annee.getMoyenne())
         );
 
     }

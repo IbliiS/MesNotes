@@ -4,8 +4,12 @@ import android.widget.Toast;
 
 import com.project.baptiste.mesnoteas.AjouterMoyenneActivity;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
+import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
+import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
+
+import java.util.List;
 
 /**
  * Created by Baptiste on 22/07/2015.
@@ -36,9 +40,16 @@ public class DialogModificationMoyenne extends DialogModification {
         nomMoyenne = moyenne.getNomMoyenne();
         runBDD.open();
         String nomAnnee = ((IAnnee) runBDD.getAnneeMoyenneBdd().getOtherObjetWithId(moyenne.getId())).getNomAnnee();
-        int nbMatieres = runBDD.getMoyenneMatiereBdd().getListObjetWithId(moyenne.getId()).size();
+        List<IObjet> matieres = runBDD.getMoyenneMatiereBdd().getListObjetWithId(moyenne.getId());
+        int nbMatieres = matieres.size();
+        IMatiere mat;
+        for(IObjet o : matieres){
+            mat = (IMatiere) o;
+            mat.setNotes(runBDD.getMatiereNoteBdd().getListObjetWithId(mat.getId()));
+        }
+        moyenne.setMatieres(matieres);
         runBDD.close();
-        builder.setMessage("Moyenne  " + nomMoyenne + " est dans " + nomAnnee + "\n"
+        builder.setMessage("Période  " + nomMoyenne + " est dans " + nomAnnee + "\n"
                         + "Contient " + nbMatieres + " matière(s)\n"
                         + "Moyenne = " + ut.coupeMoyenne(moyenne.getMoyenne())
         );

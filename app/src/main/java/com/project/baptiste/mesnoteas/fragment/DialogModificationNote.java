@@ -5,7 +5,9 @@ import android.widget.Toast;
 
 import com.project.baptiste.mesnoteas.AccueilActivity;
 import com.project.baptiste.mesnoteas.AjouterNoteActivity;
+import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMatiere;
+import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
 import com.project.baptiste.mesnoteas.general.interfaces.IObjet;
 
@@ -39,11 +41,15 @@ public class DialogModificationNote extends DialogModification {
     public void initText() {
         note = (INote) data;
         runBDD.open();
-        nomMatiere =  ( (IMatiere) runBDD.getMatiereNoteBdd().getOtherObjetWithId(note.getId()) ).getNomMatiere();
+        IMatiere mat =(IMatiere) runBDD.getMatiereNoteBdd().getOtherObjetWithId(note.getId());
+        IMoyenne moy = (IMoyenne) runBDD.getMoyenneMatiereBdd().getOtherObjetWithId(mat.getId());
+        IAnnee ann = (IAnnee) runBDD.getAnneeMoyenneBdd().getOtherObjetWithId(moy.getId());
+        nomMatiere =  mat.getNomMatiere();
         runBDD.close();
-        builder.setMessage("Matière  " + nomMatiere + " \n"
-                        + "Note  " + note.getNote() + " \n"
-                        + "Coef  " + note.getCoef() + " \n"
+        builder.setMessage("Année "+ann.getNomAnnee() + " \n"
+                        + "Période " +moy.getNomMoyenne() + " \n"
+                        + "Matière  " + nomMatiere + " \n"
+                        + "Note  " + note.getNote() + " Coef  " + note.getCoef() + " \n"
         );
     }
 

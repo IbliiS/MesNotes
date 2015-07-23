@@ -48,7 +48,7 @@
     <string name="ajouterMoyenneBouton">Ajouter</string>
     <string name="retourMoyenneBouton">Retour</string>
     <string name="nom_moyenneField">Entrez une période correcte</string>
-    <string name="labelAnneeAjoutMoyenne">Choix année</string>
+    <string name="labelAnneeAjoutMoyenne">Année</string>
 
     <!-- note  -->
     <string name="nom_matiere">Matiere</string>

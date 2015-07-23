@@ -38,8 +38,6 @@ import java.util.List;
 public class AjouterMoyenneActivity extends AppCompatActivity {
     private FormEditText nomMoyenne;
     private List<IObjet> moyennes;
-    private List<String> moyenneString;
-    private List<IObjet> moyenneSelected = new ArrayList<>();
     private RunBDD runBDD;
     private IObjetBdd moyenneBdd;
     private IMoyenne moyenne;
@@ -183,19 +181,12 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
                 if (!(item_selected.equals(selectionner))) {
                     runBDD.open();
                     IAnnee annee = (IAnnee) runBDD.getAnneeBdd().getWithName(item_selected);
-                    moyenneSelected.clear();
-                    moyenneSelected = runBDD.getAnneeMoyenneBdd().getListObjetWithId(annee.getId());
                     runBDD.close();
                     IMoyenne m;
-                    for(IObjet o : moyenneSelected){
-                        m = (IMoyenne) o;
-                        moyenneString.add(m.getNomMoyenne());
-                    }
                     estSelect = true;
                 }
                 else {
                     estSelect = false;
-                    moyenneSelected.clear();
                 }
             }
             @Override
@@ -222,7 +213,6 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
         annees = runBDD.getAnneeBdd().getAll();
         moyenneBdd = runBDD.getMoyenneBdd();
         moyennes = runBDD.getMoyenneBdd().getAll();
-        moyenneString = new ArrayList<>();
         anneeSpinner = (Spinner) findViewById(R.id.ajouterMoyenneSpinnerAnnee);
     }
 
@@ -251,8 +241,13 @@ public class AjouterMoyenneActivity extends AppCompatActivity {
                 IAnnee annee = (IAnnee) runBDD.getAnneeBdd().getWithName(nomAnnee);
                 moyenne = annee.creerMoyenne();
                 moyenne.setNomMoyenne(String.valueOf(nomMoyenne));
-                moyenne.setId((int) runBDD.getMoyenneBdd().insert(moyenne));
-                runBDD.getAnneeMoyenneBdd().insert(moyenne, annee);
+                if(moyenneAModifier != null){
+                    runBDD.getAnneeMoyenneBdd().updateOtherObject(moyenneAModifier.getId(),moyenne,annee);
+                }
+                else {
+                    moyenne.setId((int) runBDD.getMoyenneBdd().insert(moyenne));
+                    runBDD.getAnneeMoyenneBdd().insert(moyenne, annee);
+                }
                 moyenneBdd.close();
                 startActivity(new Intent(getApplicationContext(), AjouterMoyenneActivity.class));
                 finish();
