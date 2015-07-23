@@ -2,7 +2,6 @@ package com.project.baptiste.mesnoteas;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,11 +18,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.project.baptiste.mesnoteas.R.*;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.project.baptiste.mesnoteas.bdd.RunBDD;
 import com.project.baptiste.mesnoteas.fragment.DialogModification;
 import com.project.baptiste.mesnoteas.fragment.DialogModificationNote;
+import com.project.baptiste.mesnoteas.fragment.DialogResetBdd;
 import com.project.baptiste.mesnoteas.general.interfaces.IAnnee;
 import com.project.baptiste.mesnoteas.general.interfaces.IMoyenne;
 import com.project.baptiste.mesnoteas.general.interfaces.INote;
@@ -36,7 +37,6 @@ import com.project.baptiste.mesnoteas.utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class AccueilActivity extends AppCompatActivity {
@@ -91,9 +91,13 @@ public class AccueilActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_settings) {
+            DialogResetBdd d = new DialogResetBdd();
+            d.setRunBDD(runBDD);
+            d.setRefresh(new Refresh());
+            d.show(myContext.getFragmentManager(), null);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -143,8 +147,6 @@ public class AccueilActivity extends AppCompatActivity {
         });
 
     }
-
-
 
     public void beginSpinner(){
         if(begin){
@@ -406,7 +408,14 @@ public class AccueilActivity extends AppCompatActivity {
             finish();
 
         }
+
+        public void reset(){
+            startActivity(new Intent(getApplicationContext(), AccueilActivity.class));
+            finish();
+            Toast.makeText(getApplicationContext(), "La base de donnée a été vidée.", Toast.LENGTH_LONG).show();
+        }
     }
+
     private void initButtonGraphique() {
         FloatingActionButton graphButton  = (FloatingActionButton) findViewById(R.id.buttonFloatGraphiqueHolo);
         graphButton.setOnClickListener(new Button.OnClickListener() {

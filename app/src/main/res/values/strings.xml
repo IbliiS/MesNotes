@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Mes Notes</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Options</string>
+    <string name="action_settings">Reset</string>
 
     <!-- accueil  -->
     <string name="accueilTitre">Mes notes</string>
